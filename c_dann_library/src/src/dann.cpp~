@@ -1,0 +1,247 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+//#include <ncurses.h>
+#include "NeuralNet.h"
+#include "DNA.h"
+
+
+#include "SynapseJni.h"
+
+
+double Test(double Input1, double Input2);
+void Train();
+
+
+NeuralNet* NewNet;
+
+
+int main(void)
+{
+	bool UseStructAlg = true;
+
+
+	srand( (unsigned)time( NULL ) );
+	DNA* NewDNA = new DNA();
+	NewNet = new NeuralNet(NewDNA, 2, 1);
+
+	NewNet->AddLayerAfterInput(4);
+//	NewNet->AddLayerAfterInput(4);
+//	NewNet->AddLayerAfterInput(4);
+	//NewNet->ConnectAllFeedForward();
+	NewNet->ConnectLayeredFeedForward();
+
+	bool Quiting = false;
+	while( !Quiting )
+	{
+		printf("Please choose an options:\r\n");
+		printf("O) Output\r\n");
+		printf("T) Train\r\n");
+		printf("A) Toggle Structure algorithm\r\n");
+		printf("S) Statistics\r\n");
+		printf("R) Reset network\r\n");
+		printf("B) Debugging break\r\n");
+		printf("Q) Quit\r\n");
+		printf("Please Enter Input: ");
+
+		char InputChar = getchar();
+		while((ferror(stdin)==0)&&((InputChar==EOF)||(InputChar=='\r')||(InputChar=='\n')))
+			InputChar = getchar();
+
+		switch( InputChar )
+		{
+		case 'T':
+		case 't':
+			printf("T\r\n\r\n");
+			printf("Training 1000 times: ");
+			for( int TrainLcv1 = 0; TrainLcv1 < 10; TrainLcv1++ )
+			{
+				for( int TrainLcv2 = 0; TrainLcv2 < 10000; TrainLcv2++ )
+				{
+					Train();
+				}
+				if( UseStructAlg )
+					NewNet->BackPropogateStructureTraining();
+				printf(".");
+			}
+
+			for( int TrainLcv2 = 0; TrainLcv2 < 1000; TrainLcv2++ )
+			{
+				Train();
+			}
+
+			printf(" Done\r\n\r\n\r\n");
+			break;
+
+		case 'O':
+		case 'o':
+			printf("O\r\n\r\n");
+			printf("-1, -1: %f\r\n", Test(-1, -1));
+			printf("-1,  1: %f\r\n", Test(-1, 1));
+			printf(" 1, -1: %f\r\n", Test(1, -1));
+			printf(" 1,  1: %f\r\n", Test(1, 1));
+			printf("\r\n\r\n");
+			break;
+
+		case 's':
+		case 'S':
+			printf("S\r\n\r\n");
+			printf("Max Outgoing: %i\r\n", NewNet->GetMaximumOutgoingConnectionCount());
+			printf("Min Outgoing: %i\r\n", NewNet->GetMinimumOutgoingConnectionCount());
+			printf("Max Incomming: %i\r\n", NewNet->GetMaximumIncommingConnectionCount());
+			printf("Min Incomming: %i\r\n", NewNet->GetMinimumIncommingConnectionCount());
+			printf("Avg Outgoing: %f\r\n", ((double)NewNet->GetOutgoingConnectionCount())/((double)NewNet->GetNeuronCount()) );
+			printf("Avg Incomming: %f\r\n", ((double)NewNet->GetIncommingConnectionCount())/((double)NewNet->GetNeuronCount()) );
+			printf("\r\n\r\n");
+			break;
+
+		case 'a':
+		case 'A':
+			printf("A\r\n\r\n");
+
+			if( UseStructAlg )
+			{
+				UseStructAlg = false;
+				printf("No longer using structure learning algorithm\r\n");
+			}
+			else
+			{
+				UseStructAlg = true;
+				printf("Using structure learning algorithm\r\n");
+			}
+			printf("\r\n\r\n");
+
+			break;
+
+		case 'r':
+		case 'R':
+			printf("R\r\n\r\n");
+
+			delete NewNet;
+			NewNet = new NeuralNet(NewDNA, 2, 1);
+
+			NewNet->AddLayerAfterInput(4);
+//			NewNet->AddLayerAfterInput(4);
+			NewNet->ConnectLayeredFeedForward();
+			printf("Network Reset\r\n");
+			printf("\r\n\r\n");
+			break;
+
+		case 'b':
+		case 'B':
+			printf("B\r\n\r\n");
+			printf("Breaking\r\n");
+			printf("\r\n\r\n");
+			break;
+
+		case 'Q':
+		case 'q':
+			Quiting = true;
+			break;
+		default:
+			printf("Invalid input %i\r\n\r\n\r\n", InputChar);
+		}
+	}
+
+	printf("Q\r\n\r\n");
+	printf("Thank you for using dANN the Dynamic Artificial Neural Network\r\n\r\n\r\n");
+
+	delete NewNet;
+	delete NewDNA;
+
+	return 0;
+}
+
+double Test(double Input1, double Input2)
+{
+	double* InputArray = new double[2];
+	InputArray[0] = Input1;
+	InputArray[1] = Input2;
+
+	NewNet->SetCurrentInput(InputArray);
+	NewNet->PropogateOutput();
+	double* OutputArray = NewNet->GetCurrentOutput();
+	
+	return OutputArray[0];
+}
+
+void Train()
+{
+	double* TrainArray = new double[1];
+
+	Test(-1,-1);
+	TrainArray[0] = -1;
+	NewNet->SetCurrentTraining(TrainArray);
+	NewNet->BackPropogateWeightTraining();
+
+	Test(-1,1);
+	TrainArray[0] = 1;
+	NewNet->SetCurrentTraining(TrainArray);
+	NewNet->BackPropogateWeightTraining();
+
+	Test(1,-1);
+	TrainArray[0] = 1;
+	NewNet->SetCurrentTraining(TrainArray);
+	NewNet->BackPropogateWeightTraining();
+
+	Test(1,1);
+	TrainArray[0] = -1;
+	NewNet->SetCurrentTraining(TrainArray);
+	NewNet->BackPropogateWeightTraining();
+}
+
+
+
+/*
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <ncurses.h>
+
+void create_box(int y, int x, int w, int h)
+{
+	mvaddch(y, x, '+');
+	mvaddch(y, x + w, '+');
+	mvaddch(y + h, x, '+');
+	mvaddch(y + h, x + w, '+');
+	mvhline(y, x + 1, '-', w - 1);
+	mvhline(y + h, x + 1, '-', w - 1);
+	mvvline(y + 1, x, '|', h - 1);
+	mvvline(y + 1, x + w, '|', h - 1);
+}
+
+int main()
+{
+	int startx, starty, height, width;
+	
+	initscr();
+	start_color();
+	cbreak();
+	keypad(stdscr, TRUE);
+	noecho();
+
+	init_pair(1, COLOR_BLACK, COLOR_CYAN);
+	
+	height = 2;
+	width = 30;
+	starty = (LINES - height)/2;
+	startx = (COLS - width)/2;
+
+	attron(COLOR_PAIR(1));
+	
+	create_box(starty, startx, width, height);
+	mvprintw(starty, startx + 3, " Hello World! " );
+	mvprintw(starty+1,startx+1," Type any char to exit       ");
+	mvprintw(0,0,"");
+	refresh();
+	getch();
+	
+	endwin();
+	return 0;
+}
+*/
