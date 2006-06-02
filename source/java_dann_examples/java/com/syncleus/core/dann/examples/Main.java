@@ -28,6 +28,31 @@ public class Main
 		try
 		{
 			BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
+			
+			String[] newArgs = null;
+			if( args.length > 1 )
+			{
+				newArgs = new String[args.length - 1];
+				for( int index = 1; index < args.length; index++ )
+				{
+					newArgs[index-1] = args[index];
+				}
+			}
+			else
+				newArgs = new String[0];
+			
+			String selectorArg = null;
+			if( args.length > 0 )
+				selectorArg = args[0];
+
+			if( selectorArg != null )
+			{
+				if( selectorArg.compareTo("--xor") == 0 )
+					com.syncleus.core.dann.examples.xor.Main.main(newArgs);
+				
+				return;
+			}
+			
 			System.out.println("dANN Example Sets");
 
 			int currentCommand = 'q';
@@ -38,6 +63,7 @@ public class Main
 				{
 					System.out.println();
 					System.out.println("X) XOR Example");
+					System.out.println("H) Command Line Help");
 					System.out.println("Q) quit");
 					System.out.print("\tEnter command: ");
 				
@@ -51,11 +77,19 @@ public class Main
 						received = false;
 					}
 				}
+				
+				System.out.println();
 
 				switch( currentCommand )
 				{
 					case 'x':
-						com.syncleus.core.dann.examples.xor.Main.main(args);
+						com.syncleus.core.dann.examples.xor.Main.main(newArgs);
+						break;
+					case 'h':
+						System.out.println("The command line differs for each of the example files.");
+						System.out.println();
+						System.out.println("XOR Exmaple:");
+						System.out.println("java -jar bin dANN-examples.jar --xor [save-location]");
 						break;
 					case 'q':
 						break;
