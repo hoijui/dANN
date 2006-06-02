@@ -19,8 +19,7 @@
 package com.syncleus.core.dann.examples.xor;
 
 import java.io.*;
-import com.syncleus.dann.Brain;
-import com.syncleus.dann.DNA;
+import com.syncleus.dann.*;
 
 
 /**
@@ -29,22 +28,42 @@ import com.syncleus.dann.DNA;
 public class MainConsole
 {
 	private static DNA myDNA = new DNA();
-	private static Brain myBrain = null;
 	private static BufferedReader inReader = null;
+	private static InputNeuronProcessingUnit inputA = null;
+	private static InputNeuronProcessingUnit inputB = null;
+	private static InputNeuronProcessingUnit inputC = null;
+	private static LayerProcessingUnit firstLayer = null;
+	private static LayerProcessingUnit secondLayer = null;
+	private static OutputNeuronProcessingUnit output = null;
 			
 	public static void main(String args[])
 	{
 		try
 		{
 			inReader = new BufferedReader(new InputStreamReader(System.in));
-			myBrain = new Brain(myDNA, 3, 1);
         
-			//creates the neurons in the brain.
-			myBrain.AddLayerAfterInput(10);
-			myBrain.AddLayerAfterInput(10);
+			//creates the first layer which holds all the input neurons
+			inputA = new InputNeuronProcessingUnit(myDNA);
+			inputB = new InputNeuronProcessingUnit(myDNA);
+			inputC = new InputNeuronProcessingUnit(myDNA);
+			firstLayer = new LayerProcessingUnit(myDNA);
+			firstLayer.add(inputA);
+			firstLayer.add(inputB);
+			firstLayer.add(inputC);
 			
-			//connects all the neurons in the brain in a feedforward style.
-			myBrain.ConnectAllFeedForward();
+			//creates the second layer of neurons containing 10 neurons.
+			secondLayer = new LayerProcessingUnit(myDNA);
+			for( int lcv = 0; lcv < 10; lcv++ )
+			{
+				secondLayer.add(new NeuronProcessingUnit(myDNA));
+			}
+			
+			//the output layer is just a single neuron
+			output = new OutputNeuronProcessingUnit(myDNA);
+			
+			//connects the network in a feedforward fasion.
+			firstLayer.connectAllTo(secondLayer);
+			secondLayer.connectAllTo(output);
 
 			System.out.println("dANN nXOR Example");
 			System.out.println();
@@ -88,74 +107,88 @@ public class MainConsole
 		}
 		catch(Exception caughtException)
 		{
+			caughtException.printStackTrace();
 			throw new InternalError("Unhandled Exception: " + caughtException);
 		}
+	}
+	
+	private static void propogateOutput()
+	{
+		firstLayer.propogate();
+		secondLayer.propogate();
+		output.propogate();
+	}
+	
+	private static void backPropogateTraining()
+	{
+		output.backPropogate();
+		secondLayer.backPropogate();
+		firstLayer.backPropogate();
+	}
+	
+	private static void setCurrentInput(double[] inputToSet)
+	{
+		inputA.setInput(inputToSet[0]);
+		inputB.setInput(inputToSet[1]);
+		inputC.setInput(inputToSet[2]);
 	}
 	
 	private static void testOutput()
 	{
         double[] curInput = {0, 0, 0};
-        myBrain.SetCurrentInput(curInput);
-        myBrain.PropogateOutput();
+        setCurrentInput(curInput);
+        propogateOutput();
         double[] curOutput;
-        curOutput = myBrain.GetCurrentOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + curOutput[0]);
+        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 1;
 		  curInput[1] = 0;
 		  curInput[2] = 0;
-        myBrain.SetCurrentInput(curInput);
-        myBrain.PropogateOutput();
-        curOutput = myBrain.GetCurrentOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + curOutput[0]);
+        setCurrentInput(curInput);
+        propogateOutput();
+        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 0;
 		  curInput[1] = 1;
 		  curInput[2] = 0;
-        myBrain.SetCurrentInput(curInput);
-        myBrain.PropogateOutput();
-        curOutput = myBrain.GetCurrentOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + curOutput[0]);
+        setCurrentInput(curInput);
+        propogateOutput();
+        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 0;
 		  curInput[1] = 0;
 		  curInput[2] = 1;
-        myBrain.SetCurrentInput(curInput);
-        myBrain.PropogateOutput();
-        curOutput = myBrain.GetCurrentOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + curOutput[0]);
+        setCurrentInput(curInput);
+        propogateOutput();
+        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 1;
 		  curInput[1] = 1;
 		  curInput[2] = 0;
-        myBrain.SetCurrentInput(curInput);
-        myBrain.PropogateOutput();
-        curOutput = myBrain.GetCurrentOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + curOutput[0]);
+        setCurrentInput(curInput);
+        propogateOutput();
+        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 0;
 		  curInput[1] = 1;
 		  curInput[2] = 1;
-        myBrain.SetCurrentInput(curInput);
-        myBrain.PropogateOutput();
-        curOutput = myBrain.GetCurrentOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + curOutput[0]);
+        setCurrentInput(curInput);
+        propogateOutput();
+        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 1;
 		  curInput[1] = 0;
 		  curInput[2] = 1;
-        myBrain.SetCurrentInput(curInput);
-        myBrain.PropogateOutput();
-        curOutput = myBrain.GetCurrentOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + curOutput[0]);
+        setCurrentInput(curInput);
+        propogateOutput();
+        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 1;
 		  curInput[1] = 1;
 		  curInput[2] = 1;
-        myBrain.SetCurrentInput(curInput);
-        myBrain.PropogateOutput();
-        curOutput = myBrain.GetCurrentOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + curOutput[0]);
+        setCurrentInput(curInput);
+        propogateOutput();
+        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 	}
 	
 	private static void train(int count)
@@ -163,74 +196,74 @@ public class MainConsole
         for(int lcv = 0; lcv < count; lcv++)
         {
             double[] curInput = {0, 0, 0};
-            double[] curTrain = {-1};
-            myBrain.SetCurrentInput(curInput);
-            myBrain.PropogateOutput();
-            myBrain.SetCurrentTraining(curTrain);
-            myBrain.BackPropogateTraining();
+            double curTrain = -1;
+            setCurrentInput(curInput);
+            propogateOutput();
+            output.setDesired(curTrain);
+            backPropogateTraining();
 				
             curInput[0] = 1;
 				curInput[1] = 0;
 				curInput[2] = 0;
-            curTrain[0] = 1;
-            myBrain.SetCurrentInput(curInput);
-            myBrain.PropogateOutput();
-            myBrain.SetCurrentTraining(curTrain);
-            myBrain.BackPropogateTraining();
+            curTrain = 1;
+            setCurrentInput(curInput);
+            propogateOutput();
+            output.setDesired(curTrain);
+            backPropogateTraining();
 				
             curInput[0] = 0;
 				curInput[1] = 1;
 				curInput[2] = 0;
-            curTrain[0] = 1;
-            myBrain.SetCurrentInput(curInput);
-            myBrain.PropogateOutput();
-            myBrain.SetCurrentTraining(curTrain);
-            myBrain.BackPropogateTraining();
+            curTrain = 1;
+            setCurrentInput(curInput);
+            propogateOutput();
+            output.setDesired(curTrain);
+            backPropogateTraining();
 				
             curInput[0] = 0;
 				curInput[1] = 0;
 				curInput[2] = 1;
-            curTrain[0] = 1;
-            myBrain.SetCurrentInput(curInput);
-            myBrain.PropogateOutput();
-            myBrain.SetCurrentTraining(curTrain);
-            myBrain.BackPropogateTraining();
+            curTrain = 1;
+            setCurrentInput(curInput);
+            propogateOutput();
+            output.setDesired(curTrain);
+            backPropogateTraining();
 				
             curInput[0] = 1;
 				curInput[1] = 1;
 				curInput[2] = 0;
-            curTrain[0] = -1;
-            myBrain.SetCurrentInput(curInput);
-            myBrain.PropogateOutput();
-            myBrain.SetCurrentTraining(curTrain);
-            myBrain.BackPropogateTraining();
+            curTrain = -1;
+            setCurrentInput(curInput);
+            propogateOutput();
+            output.setDesired(curTrain);
+            backPropogateTraining();
 				
             curInput[0] = 0;
 				curInput[1] = 1;
 				curInput[2] = 1;
-            curTrain[0] = -1;
-            myBrain.SetCurrentInput(curInput);
-            myBrain.PropogateOutput();
-            myBrain.SetCurrentTraining(curTrain);
-            myBrain.BackPropogateTraining();
+            curTrain = -1;
+            setCurrentInput(curInput);
+            propogateOutput();
+            output.setDesired(curTrain);
+            backPropogateTraining();
 				
             curInput[0] = 1;
 				curInput[1] = 0;
 				curInput[2] = 1;
-            curTrain[0] = -1;
-            myBrain.SetCurrentInput(curInput);
-            myBrain.PropogateOutput();
-            myBrain.SetCurrentTraining(curTrain);
-            myBrain.BackPropogateTraining();
+            curTrain = -1;
+            setCurrentInput(curInput);
+            propogateOutput();
+            output.setDesired(curTrain);
+            backPropogateTraining();
 				
             curInput[0] = 1;
 				curInput[1] = 1;
 				curInput[2] = 1;
-            curTrain[0] = -1;
-            myBrain.SetCurrentInput(curInput);
-            myBrain.PropogateOutput();
-            myBrain.SetCurrentTraining(curTrain);
-            myBrain.BackPropogateTraining();
+            curTrain = -1;
+            setCurrentInput(curInput);
+            propogateOutput();
+            output.setDesired(curTrain);
+            backPropogateTraining();
         }
 	}
 }
