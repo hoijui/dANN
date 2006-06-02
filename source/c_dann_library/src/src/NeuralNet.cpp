@@ -1,0 +1,293 @@
+#include "NeuralNet.h"
+#include "DataTypes.h"
+#include "Layer.h"
+#include "Neuron.h"
+#include <math.h>
+#include <time.h>
+#include <stdlib.h>
+
+
+bool NeuralNet::Randomized = false;
+
+
+
+NeuralNet::NeuralNet(DNA* OwnedDNAToSet, int InputCount, int OutputCount)
+{
+	if(NeuralNet::Randomized == false)
+	{
+		srand( (unsigned)time( NULL ) );
+		NeuralNet::Randomized = true;
+	}
+	//Initilizes the attributes
+	this->LayerCount = 2;
+	this->OwnedDNA = OwnedDNAToSet;
+
+	//Creates the layers
+	this->InLayer = new Layer(this, this->OwnedDNA, NULL, NULL);
+	this->OutLayer = new Layer(this, this->OwnedDNA, NULL, this->InLayer);
+	this->InLayer->DestinationLayer = this->OutLayer;
+
+	//Creates the neurons in the in and out layers
+	this->InLayer->AddNeurons(InputCount);
+	this->OutLayer->AddNeurons(OutputCount);
+}
+
+NeuralNet::~NeuralNet()
+{
+	//delete all the layers
+	Layer* CurrentLayer = this->InLayer;
+	while( CurrentLayer != NULL )
+	{
+		Layer* ToDelete = CurrentLayer;
+		CurrentLayer = CurrentLayer->DestinationLayer;
+		delete ToDelete;
+	}
+	LayerCount = 0;
+	this->InLayer = NULL;
+	this->OutLayer = NULL;
+}
+
+Layer* NeuralNet::AddLayerAfterInput(int NeuronCount)
+{
+	return this->AddLayerAfter(NeuronCount, this->InLayer);
+}
+
+Layer* NeuralNet::AddLayerBeforeOutput(int NeuronCount)
+{
+	return this->AddLayerBefore(NeuronCount, this->OutLayer);
+}
+
+Layer* NeuralNet::AddLayerBefore(int NeuronCount, Layer* LayerToAddBefore)
+{
+	//Creates new layer and adds it to the doubly-linked list;
+	Layer* NewLayer = new Layer(this, this->OwnedDNA, LayerToAddBefore, LayerToAddBefore->SourceLayer );
+	LayerToAddBefore->SourceLayer->DestinationLayer = NewLayer;
+	LayerToAddBefore->SourceLayer = NewLayer;
+
+	//creates new neurons for the layer;
+	NewLayer->AddNeurons(NeuronCount);
+
+	return NewLayer;
+}
+
+Layer* NeuralNet::AddLayerAfter(int NeuronCount, Layer* LayerToAddAfter)
+{
+	//Creates new layer and adds it to the doubly-linked list;
+	Layer* NewLayer = new Layer(this, this->OwnedDNA, LayerToAddAfter->DestinationLayer, LayerToAddAfter);
+	LayerToAddAfter->DestinationLayer->SourceLayer = NewLayer;
+	LayerToAddAfter->DestinationLayer = NewLayer;
+
+	//creates new neurons for the layer;
+	NewLayer->AddNeurons(NeuronCount);
+
+	return NewLayer;
+}
+
+void NeuralNet::ConnectAllFeedForward()
+{
+	Layer* CurrentLayer = this->InLayer;
+	while( (CurrentLayer != NULL) && (CurrentLayer != this->OutLayer) )
+	{
+		CurrentLayer->ConnectAllToForwardLayers(NULL);
+
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+}
+
+void NeuralNet::ConnectLayeredFeedForward()
+{
+	Layer* CurrentLayer = this->InLayer;
+	while( (CurrentLayer != NULL) && (CurrentLayer != this->OutLayer) )
+	{
+		CurrentLayer->ConnectAllToNextLayer();
+
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+}
+
+Neuron* NeuralNet::GetRandomForwardNeuron(Neuron* StartNeuron)
+{
+	//Calculate how many layers postceed the StartNeurons layer
+	Layer* CurrentLayer = StartNeuron->GetParentLayer()->DestinationLayer;
+	int LayerCount = 0;
+	while( CurrentLayer != NULL )
+	{
+		LayerCount++;
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	if( LayerCount <= 0 )
+		throw 0;
+
+	//Pick a random layer that follows the start neurons layer
+	int RandLayerIndex = floor((((double)rand() + 1) / ((double)RAND_MAX + 2)) * LayerCount);
+	CurrentLayer = StartNeuron->GetParentLayer()->DestinationLayer;
+	for( int LayerLcv = 0; LayerLcv < RandLayerIndex; LayerLcv++ )
+	{
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	return CurrentLayer->GetRandomNeuron();
+}
+
+int NeuralNet::GetNeuronCount()
+{
+	int RetVal = 0;
+	Layer* CurrentLayer = this->InLayer;
+	while( CurrentLayer!=NULL )
+	{
+		RetVal += CurrentLayer->NeuronCount();
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	return RetVal;
+}
+
+int NeuralNet::GetOutgoingConnectionCount()
+{
+	int RetVal = 0;
+	Layer* CurrentLayer = this->InLayer;
+	while( CurrentLayer!=NULL )
+	{
+		RetVal += CurrentLayer->OutgoingConnectionCount();
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	return RetVal;
+}
+
+int NeuralNet::GetIncommingConnectionCount()
+{
+	int RetVal = 0;
+	Layer* CurrentLayer = this->InLayer;
+	while( CurrentLayer!=NULL )
+	{
+		RetVal += CurrentLayer->IncommingConnectionCount();
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	return RetVal;
+}
+
+int NeuralNet::GetMaximumOutgoingConnectionCount()
+{
+	int RetVal = 0;
+	Layer* CurrentLayer = this->InLayer;
+	while( (CurrentLayer!=NULL) )
+	{
+		if( RetVal < CurrentLayer->MaximumOutgoingConnectionCount() )
+			RetVal = CurrentLayer->MaximumOutgoingConnectionCount();
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	return RetVal;
+}
+
+int NeuralNet::GetMinimumOutgoingConnectionCount()
+{
+	Layer* CurrentLayer = this->InLayer;
+	int RetVal = CurrentLayer->MinimumOutgoingConnectionCount();
+	while( (CurrentLayer!=NULL)&&(CurrentLayer != this->OutLayer) )
+	{
+		if( RetVal > CurrentLayer->MinimumOutgoingConnectionCount() )
+			RetVal = CurrentLayer->MinimumOutgoingConnectionCount();
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	return RetVal;
+}
+
+int NeuralNet::GetMaximumIncommingConnectionCount()
+{
+	int RetVal = 0;
+	Layer* CurrentLayer = this->InLayer;
+	while( CurrentLayer!=NULL )
+	{
+		if( RetVal < CurrentLayer->MaximumIncommingConnectionCount() )
+			RetVal = CurrentLayer->MaximumIncommingConnectionCount();
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	return RetVal;
+}
+
+int NeuralNet::GetMinimumIncommingConnectionCount()
+{
+	Layer* CurrentLayer = this->InLayer->DestinationLayer;
+	int RetVal = CurrentLayer->MinimumIncommingConnectionCount();
+	while( CurrentLayer!=NULL )
+	{
+		if( RetVal > CurrentLayer->MinimumIncommingConnectionCount() )
+			RetVal = CurrentLayer->MinimumIncommingConnectionCount();
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+
+	return RetVal;
+}
+
+unsigned int NeuralNet::GetNextNeuronId()
+{
+	return 0;
+}
+
+void NeuralNet::FreeNeuronId(unsigned int IdToFree)
+{
+}
+
+unsigned int NeuralNet::GetNextLayerId()
+{
+	return 0;
+}
+
+void NeuralNet::FreeLayerId(unsigned int IdToFree)
+{
+}
+
+double* NeuralNet::GetCurrentOutput()
+{
+	return this->OutLayer->GetOutput();
+}
+
+void NeuralNet::SetCurrentInput(double* InputToSet)
+{
+	this->InLayer->SetInput(InputToSet);
+}
+
+void NeuralNet::PropogateOutput()
+{
+	Layer* CurrentLayer = this->InLayer;
+	while( (CurrentLayer != NULL) )
+	{
+		CurrentLayer->PropogateAll();
+
+		CurrentLayer = CurrentLayer->DestinationLayer;
+	}
+}
+
+void NeuralNet::SetCurrentTraining(double* TrainingToSet)
+{
+	this->OutLayer->SetTrainData(TrainingToSet);
+}
+
+void NeuralNet::BackPropogateWeightTraining()
+{
+	Layer* CurrentLayer = this->OutLayer;
+	while( (CurrentLayer != NULL) )
+	{
+		CurrentLayer->BackPropogateWeightAll();
+
+		CurrentLayer = CurrentLayer->SourceLayer;
+	}
+}
+
+void NeuralNet::BackPropogateStructureTraining()
+{
+	Layer* CurrentLayer = this->OutLayer;
+	while( (CurrentLayer != NULL) )
+	{
+		CurrentLayer->BackPropogateStructureAll();
+
+		CurrentLayer = CurrentLayer->SourceLayer;
+	}
+}
+
