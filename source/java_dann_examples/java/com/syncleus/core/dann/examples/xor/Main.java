@@ -50,7 +50,10 @@ public class Main
 				saveLocation = new String(args[0]);
 			
 			inReader = new BufferedReader(new InputStreamReader(System.in));
-        
+			
+			//Adjust the learning rate
+			myDNA.learningRate = 0.05;
+			
 			//creates the first layer which holds all the input neurons
 			inputA = new InputNeuronProcessingUnit(myDNA);
 			inputB = new InputNeuronProcessingUnit(myDNA);
@@ -59,37 +62,51 @@ public class Main
 			firstLayer.add(inputA);
 			firstLayer.add(inputB);
 			firstLayer.add(inputC);
-			
+
 			//creates the second layer of neurons containing 10 neurons.
 			secondLayer = new LayerProcessingUnit(myDNA);
 			for( int lcv = 0; lcv < 10; lcv++ )
 			{
 				secondLayer.add(new NeuronProcessingUnit(myDNA));
 			}
-			
+
 			//the output layer is just a single neuron
 			output = new OutputNeuronProcessingUnit(myDNA);
-			
+
 			//connects the network in a feedforward fasion.
 			firstLayer.connectAllTo(secondLayer);
 			secondLayer.connectAllTo(output);
 
 			//now that we have created the neural network lets put it to use.
 			System.out.println("dANN nXOR Example");
-			System.out.println();
 
 			int currentCommand = 'q';
 			do
 			{
-				System.out.println("d) display current circuit pin-out");
-				System.out.println("t) train the current circuit");
-				System.out.println("s) save");
-				System.out.println("l) load");
-				System.out.println("q) quit");
-				System.out.print("\tEnter command: ");
-				currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
-				System.out.println();
+				boolean received = false;
+				while( received == false )
+				{
+					System.out.println();
+					System.out.println("D) display current circuit pin-out");
+					System.out.println("T) train the current circuit");
+					System.out.println("S) save");
+					System.out.println("L) load");
+					System.out.println("Q) quit");
+					System.out.print("\tEnter command: ");
 				
+					received = true;
+					try
+					{
+						currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
+					}
+					catch(ArrayIndexOutOfBoundsException caughtException)
+					{
+						received = false;
+					}
+				}
+				
+				System.out.println();
+
 				switch( currentCommand )
 				{
 					case 'd':
@@ -130,7 +147,7 @@ public class Main
 		}
 	}
 	
-	private static void save() throws Exception
+	private static void save() throws IOException, ClassNotFoundException
 	{
 		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveLocation));
 		try
@@ -147,11 +164,23 @@ public class Main
 		{
 			out.close();
 		}
+		
+		System.out.println("File Saved");
 	}
 	
-	private static void load() throws Exception
+	private static void load() throws IOException, ClassNotFoundException
 	{
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream(saveLocation));
+		ObjectInputStream in = null;
+		try
+		{
+			in = new ObjectInputStream(new FileInputStream(saveLocation));
+		}
+		catch(FileNotFoundException caughtException)
+		{
+			System.out.println("the specified file does not exist!");
+			return;
+		}
+		
 		try
 		{
 			firstLayer = (LayerProcessingUnit) in.readObject();
@@ -165,6 +194,8 @@ public class Main
 		{
 			in.close();
 		}
+		
+		System.out.println("File Loaded");
 	}
 	
 	private static void propogateOutput()
