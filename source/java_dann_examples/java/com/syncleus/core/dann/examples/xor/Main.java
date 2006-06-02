@@ -40,11 +40,15 @@ public class Main
 	private static LayerProcessingUnit firstLayer = null;
 	private static LayerProcessingUnit secondLayer = null;
 	private static OutputNeuronProcessingUnit output = null;
+	private static String saveLocation = "default.dann";
 			
 	public static void main(String args[])
 	{
 		try
 		{
+			if( args.length > 0 )
+				saveLocation = new String(args[0]);
+			
 			inReader = new BufferedReader(new InputStreamReader(System.in));
         
 			//creates the first layer which holds all the input neurons
@@ -58,7 +62,7 @@ public class Main
 			
 			//creates the second layer of neurons containing 10 neurons.
 			secondLayer = new LayerProcessingUnit(myDNA);
-			for( int lcv = 0; lcv < 6; lcv++ )
+			for( int lcv = 0; lcv < 10; lcv++ )
 			{
 				secondLayer.add(new NeuronProcessingUnit(myDNA));
 			}
@@ -79,6 +83,8 @@ public class Main
 			{
 				System.out.println("d) display current circuit pin-out");
 				System.out.println("t) train the current circuit");
+				System.out.println("s) save");
+				System.out.println("l) load");
 				System.out.println("q) quit");
 				System.out.print("\tEnter command: ");
 				currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
@@ -103,6 +109,12 @@ public class Main
 						train(cycles);
 						System.out.println("Training Complete!");
 						break;
+					case 's':
+						save();
+						break;
+					case 'l':
+						load();
+						break;
 					case 'q':
 						System.out.println("Quiting...");
 						break;
@@ -115,6 +127,43 @@ public class Main
 		{
 			caughtException.printStackTrace();
 			throw new InternalError("Unhandled Exception: " + caughtException);
+		}
+	}
+	
+	private static void save() throws Exception
+	{
+		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveLocation));
+		try
+		{
+			out.writeObject(firstLayer);
+			out.writeObject(secondLayer);
+			out.writeObject(output);
+			out.writeObject(inputA);
+			out.writeObject(inputB);
+			out.writeObject(inputC);
+			out.flush();
+		}
+		finally
+		{
+			out.close();
+		}
+	}
+	
+	private static void load() throws Exception
+	{
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream(saveLocation));
+		try
+		{
+			firstLayer = (LayerProcessingUnit) in.readObject();
+			secondLayer = (LayerProcessingUnit) in.readObject();
+			output = (OutputNeuronProcessingUnit) in.readObject();
+			inputA = (InputNeuronProcessingUnit) in.readObject();
+			inputB = (InputNeuronProcessingUnit) in.readObject();
+			inputC = (InputNeuronProcessingUnit) in.readObject();
+		}
+		finally
+		{
+			in.close();
 		}
 	}
 	
