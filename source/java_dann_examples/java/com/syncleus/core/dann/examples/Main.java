@@ -49,6 +49,8 @@ public class Main
 			{
 				if( selectorArg.compareTo("--xor") == 0 )
 					com.syncleus.core.dann.examples.xor.Main.main(newArgs);
+				else if( selectorArg.compareTo("--nci") == 0 )
+					com.syncleus.core.dann.examples.nci.Main.main(newArgs);
 				
 				return;
 			}
@@ -63,6 +65,7 @@ public class Main
 				{
 					System.out.println();
 					System.out.println("X) XOR Example");
+					System.out.println("I) Image Compression Example");
 					System.out.println("H) Command Line Help");
 					System.out.println("Q) quit");
 					System.out.print("\tEnter command: ");
@@ -84,6 +87,9 @@ public class Main
 				{
 					case 'x':
 						com.syncleus.core.dann.examples.xor.Main.main(newArgs);
+						break;
+					case 'i':
+						com.syncleus.core.dann.examples.nci.Main.main(newArgs);
 						break;
 					case 'h':
 						System.out.println("The command line differs for each of the example files.");
