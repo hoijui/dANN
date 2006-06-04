@@ -86,7 +86,7 @@ public class CompressionNeuron extends NeuronProcessingUnit implements java.io.S
 		 {
 			 super.output = this.getDoubleInput();
 			 
-			 for( Synapse current : this.destination )
+			 for( Synapse current : this.destinations )
 			 {
 				 current.setInput(newOutput);
 			 }
