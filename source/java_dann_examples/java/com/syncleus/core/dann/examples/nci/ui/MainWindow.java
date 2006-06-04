@@ -1,6 +1,6 @@
 /******************************************************************************
  *                                                                             *
- *  Copyright: (c) Jeffrey Phillips Freeman                                    *
+ *  Copyright: (c)                                    *
  *                                                                             *
  *  You may redistribute and modify this source code under the terms and       *
  *  conditions of the Open Source Community License - Type C version 1.0       *
