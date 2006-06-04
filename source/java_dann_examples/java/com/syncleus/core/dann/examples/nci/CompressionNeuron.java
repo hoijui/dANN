@@ -21,15 +21,23 @@ package com.syncleus.core.dann.examples.nci;
 
 import com.syncleus.dann.*;
 
+/**
+ * <!-- Author: Jeffrey Phillips Freeman -->
+ * @author Jeffrey Phillips Freeman
+ * @since 0.1
+ */
 public class CompressionNeuron extends NeuronProcessingUnit implements java.io.Serializable
 {
 	/**
-	 * Holds the current input value for this neuron<BR>
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 0.1
 	 */
 	protected int input = 0;
-	
+
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	protected boolean inputSet = false;
     
     /**
@@ -59,11 +67,19 @@ public class CompressionNeuron extends NeuronProcessingUnit implements java.io.S
 		  this.inputSet = true;
     }
 	 
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	 public void unsetInput()
 	 {
 		 this.inputSet = false;
 	 }
 	 
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	 public int getChannelOutput()
 	 {
 		 int newChannel = (int) Math.ceil(super.getOutput() * 256.0);
@@ -73,11 +89,19 @@ public class CompressionNeuron extends NeuronProcessingUnit implements java.io.S
 		 return newChannel;
 	 }
 	 
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	 private double getDoubleInput()
 	 {
 		 return ((double)this.input) / 255.0;
 	 }
 	 
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	 protected void setOutput(double newOutput)
 	 {
 		 if( this.inputSet == false )

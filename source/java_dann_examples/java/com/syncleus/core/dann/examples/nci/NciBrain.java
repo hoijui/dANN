@@ -22,22 +22,101 @@ package com.syncleus.core.dann.examples.nci;
 import com.syncleus.dann.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * <!-- Author: Jeffrey Phillips Freeman -->
+ * @author Jeffrey Phillips Freeman
+ * @since 0.1
+ */
 public class NciBrain implements java.io.Serializable
 {
+	/**
+	* <!-- Author: Jeffrey Phillips Freeman -->
+	* @since 0.1
+	*/
 	private static final DNA sharedDna = new DNA();
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private double actualCompression = 0.0;
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private int xSize = 0;
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private int ySize = 0;
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private InputNeuronProcessingUnit[][][] inputNeurons = null;
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private LayerProcessingUnit inputLayer = new LayerProcessingUnit(sharedDna);
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private NeuronProcessingUnit[][][] inputHiddenNeurons = null;
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private LayerProcessingUnit inputHiddenLayer = new LayerProcessingUnit(sharedDna);
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private CompressionNeuron[] compressedNeurons = null;
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private LayerProcessingUnit compressedLayer = new LayerProcessingUnit(sharedDna);
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private NeuronProcessingUnit[][][] outputHiddenNeurons = null;
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private LayerProcessingUnit outputHiddenLayer = new LayerProcessingUnit(sharedDna);
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private OutputNeuronProcessingUnit[][][] outputNeurons = null;
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private LayerProcessingUnit outputLayer = new LayerProcessingUnit(sharedDna);
+	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private boolean learning = true;
 	
 	/**
@@ -100,21 +179,37 @@ public class NciBrain implements java.io.Serializable
 		}
 	}
 	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	public double getCompression()
 	{
 		return this.actualCompression;
 	}
 	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	public boolean getLearning()
 	{
 		return this.learning;
 	}
 	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	public void setLearning(boolean learningToSet)
 	{
 		this.learning = learningToSet;
 	}
 	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private void propogate()
 	{
 		this.inputLayer.propogate();
@@ -124,6 +219,10 @@ public class NciBrain implements java.io.Serializable
 		this.outputLayer.propogate();
 	}
 	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	private void backPropogate()
 	{
 		this.outputLayer.backPropogate();
@@ -133,6 +232,10 @@ public class NciBrain implements java.io.Serializable
 		this.inputLayer.backPropogate();
 	}
 	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	public BufferedImage uncompress(int[] compressedData)
 	{
 		BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_4BYTE_ABGR);
@@ -181,6 +284,10 @@ public class NciBrain implements java.io.Serializable
 		return uncompressedImage;
 	}
 	
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 0.1
+	 */
 	public int[] compress(BufferedImage imageToCompress)
 	{
 		//set the image onto the inputs
