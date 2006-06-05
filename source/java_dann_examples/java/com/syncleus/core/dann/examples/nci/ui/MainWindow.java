@@ -29,8 +29,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -38,7 +39,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 
 /**
@@ -56,9 +56,10 @@ public class MainWindow extends JFrame implements ActionListener {
 	
 	////////////////
 	// CONFIG START
-	final String JFRAME_TITLE = "dAAN-nci - Image Compression";
-	final int JFRAME_WIDTH = 800;
-	final int JFRAME_HEIGHT = 600;
+	final String JFRAME_TITLE = "dANN-nci - Image Compression";
+//	final int JFRAME_WIDTH = 800;
+//	final int JFRAME_HEIGHT = 600;
+	final String ICON_PATH = "./";
 	// CONFIG END
 	////////////////
 	
@@ -161,7 +162,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		// introduce the software
 		welcomeText = "Welcome to Neural Compressed Image (nci), a software tool for image compression.\n\n";
-		welcomeText += "Nci is based on the dANN library (dynamic Artificial Neural Network).\n";
+		welcomeText += "Nci is based on the dANN library (Dynamic Artificial Neural Network).\n";
 
 		myTextArea.setText(welcomeText);
 		myTextArea.setBackground(new Color(235, 235, 235));
@@ -178,7 +179,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		JLabel myLabel = new JLabel();
 		String myText = null;
 		this.selectFileBox = new JComboBox();
-		this.selectFileButton = new JButton();
+		Icon myIcon = new ImageIcon("fileopen.png");
+		this.selectFileButton = new JButton("Browse...", myIcon);
 		
 		myPanel.setLayout(new GridBagLayout());
 		myText = "Please select an image file: ";
@@ -190,9 +192,8 @@ public class MainWindow extends JFrame implements ActionListener {
 //		this.selectFileBox.setAutoscrolls(false);
 //		this.selectFileBox.setEditable(true);
 //		this.selectFileBox.setEnabled(false);
-//		this.selectFileBox.setPopupVisible(false);
-		
-		this.selectFileButton.setText("Browse...");
+
+//		this.selectFileButton.setText("Browse...");
 		this.selectFileButton.addActionListener(this);
 		
 		myPanel.setBorder(BorderFactory.createTitledBorder("File selection"));
