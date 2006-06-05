@@ -68,7 +68,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private final int nbCyclesInitVal = 20; // number of training cylces
 	private final int brainXInitVal = 10; // size X of the brain
 	private final int brainYInitVal = 10; // size Y of the brain
-
+	private final double compressionRateInitVal = 0.5; // compression rate: 0 - 1.0 
 	// CONFIG END
 	////////////////
 	
@@ -102,6 +102,10 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JSpinner brainYSizeSpin;
 	private int nbCycles;
 	private ImageIcon myMatrixIcon;
+	private ImageIcon myCompressIcon;
+	private JSpinner compressionRateSpin;
+	private ImageIcon myCancelIcon;
+	private double compressionRate;
 		
 	public MainWindow() {
 
@@ -249,17 +253,25 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	private JPanel createOptionSelector() {
 		JPanel myPanel = new JPanel();
+		
 		this.myTrainIcon = new ImageIcon(this.ICON_PATH+"reload.png");
 		JLabel nbCyclesSpinLabel = new JLabel();
 		String nbCyclesSpinText = null;
 		this.nbCyclesSpin = new JSpinner();
-		this.myMatrixIcon = new ImageIcon(this.ICON_PATH+"math_matrix.png");
+		
+		this.myMatrixIcon = new ImageIcon(this.ICON_PATH+"math_matrix.png");		
 		JLabel brainXSizeSpinLabel = new JLabel();
 		String brainXSizeSpinText = null;
 		this.brainXSizeSpin = new JSpinner();
+		
 		JLabel brainYSizeSpinLabel = new JLabel();
 		String brainYSizeSpinText = null;
 		this.brainYSizeSpin = new JSpinner();
+
+		this.myCompressIcon = new ImageIcon(this.ICON_PATH+"khtml_kget.png");		
+		JLabel compressionRateSpinLabel = new JLabel();
+		String compressionRateSpinText = null;
+		this.compressionRateSpin = new JSpinner();
 		
 		myPanel.setLayout(new GridBagLayout());
 
@@ -276,7 +288,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		((JSpinner.DefaultEditor)this.nbCyclesSpin.getEditor())
 		.getTextField().setEditable(false);
 		
-		// brain size x
+		// brain size x option
 		brainXSizeSpinLabel.setIcon(this.myMatrixIcon);
 		brainXSizeSpinText = "Brain X size:";
 		brainXSizeSpinLabel.setText(brainXSizeSpinText);
@@ -290,7 +302,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		((JSpinner.DefaultEditor)this.brainXSizeSpin.getEditor())
 		.getTextField().setEditable(false);
 		
-		// brain size y
+		// brain size y option
 		brainYSizeSpinLabel.setIcon(this.myMatrixIcon);
 		brainYSizeSpinText = "Brain Y size:";
 		brainYSizeSpinLabel.setText(brainYSizeSpinText);
@@ -302,7 +314,20 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.brainYSizeSpin.setModel(brainYSizeSpinModel);
 		((JSpinner.DefaultEditor)this.brainYSizeSpin.getEditor())
 		.getTextField().setEditable(false);
-				
+		
+		// compression rate option
+		compressionRateSpinLabel.setIcon(this.myCompressIcon);
+		compressionRateSpinText = "Compression rate:";
+		compressionRateSpinLabel.setText(compressionRateSpinText);
+		SpinnerModel compressionRateSpinModel =
+	        new SpinnerNumberModel(compressionRateInitVal, //initial value
+	                               0.1, //min
+	                               0.9, //max
+	                               0.1); //step
+		this.compressionRateSpin.setModel(compressionRateSpinModel);
+		((JSpinner.DefaultEditor)this.compressionRateSpin.getEditor())
+		.getTextField().setEditable(false);
+		
 		myPanel.setBorder(BorderFactory.createTitledBorder("Options"));
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -335,6 +360,14 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		myPanel.add(this.brainYSizeSpin, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		myPanel.add(compressionRateSpinLabel, gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		myPanel.add(this.compressionRateSpin, gbc);
 
 		return myPanel;
 		
@@ -372,27 +405,28 @@ public class MainWindow extends JFrame implements ActionListener {
 	
 	private JPanel createCommandSelector() {
 		JPanel myPanel = new JPanel();
-		runButton = new JButton();
-		myRunIcon = new ImageIcon(this.ICON_PATH+"button_ok.png");
-		trainButton = new JButton();
-		quitButton = new JButton();
-		myQuitIcon = new ImageIcon(this.ICON_PATH+"button_cancel.png");
+		this.runButton = new JButton();
+		this.myRunIcon = new ImageIcon(this.ICON_PATH+"button_ok.png");
+		this.trainButton = new JButton();
+		this.quitButton = new JButton();
+		this.myQuitIcon = new ImageIcon(this.ICON_PATH+"exit.png");
+		this.myCancelIcon = new ImageIcon(this.ICON_PATH+"button_cancel.png");
 		
 		myPanel.setLayout(new GridBagLayout());
 
-		runButton.setText(" Run Compression ");
-		runButton.setIcon(myRunIcon);
-		runButton.addActionListener(this);
+		this.runButton.setText(" Run Compression ");
+		this.runButton.setIcon(myRunIcon);
+		this.runButton.addActionListener(this);
 		// run compression not available yet.
-		runButton.setEnabled(false);
+		this.runButton.setEnabled(false);
 		
-		trainButton.setText(" Train Compression ");
-		trainButton.setIcon(myTrainIcon);
-		trainButton.addActionListener(this);
+		this.trainButton.setText(" Train Compression ");
+		this.trainButton.setIcon(myTrainIcon);
+		this.trainButton.addActionListener(this);
 
-		quitButton.setText("Quit");
-		quitButton.setIcon(myQuitIcon);
-		quitButton.addActionListener(this);
+		this.quitButton.setText("Quit");
+		this.quitButton.setIcon(myQuitIcon);
+		this.quitButton.addActionListener(this);
 
 		myPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -442,7 +476,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			if (this.getApplicationStatus() == 0) { // application was ready
 				this.setApplicationStatus(1); // set to running
 				if (this.getApplicationStatus() == 1) {
-					this.runButton.setIcon(this.myQuitIcon);
+					this.runButton.setIcon(this.myCancelIcon);
 					this.runButton.setText("Abort compression");
 				}
 			}
@@ -454,7 +488,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			else if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
 				this.setApplicationStatus(1); // set to running
 				if (this.getApplicationStatus() == 1) {
-					this.runButton.setIcon(this.myQuitIcon);					
+					this.runButton.setIcon(this.myCancelIcon);					
 					this.runButton.setText("Abort compression");
 				}
 			}
@@ -469,7 +503,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			if (this.getApplicationStatus() == 0) { // application was ready
 				this.setApplicationStatus(3); // set to run training
 				if (this.getApplicationStatus() == 3) {
-					this.trainButton.setIcon(this.myQuitIcon);
+					this.trainButton.setIcon(this.myCancelIcon);
 					this.trainButton.setText("Abort training");
 					
 					// show the train dialog and strat the training
@@ -484,7 +518,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			else if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
 				this.setApplicationStatus(3); // set to run training
 				if (this.getApplicationStatus() == 3) {
-					this.trainButton.setIcon(this.myQuitIcon);
+					this.trainButton.setIcon(this.myCancelIcon);
 					this.trainButton.setText("Abort training");
 					// show the train dialog and strat the training
 					this.train();
@@ -554,15 +588,14 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.nbCycles = (Integer) this.nbCyclesSpin.getValue();
 		this.brainXSize = (Integer) this.brainXSizeSpin.getValue();
 		this.brainYSize = (Integer) this.brainYSizeSpin.getValue();
-		
+		this.compressionRate = (Double) this.compressionRateSpin.getValue();
 		// complement the status info
 
-//		brain = new NciBrain(0.5, brainXSize, brainYSize, true);
-
-//		NciBrain brain = new NciBrain();
-//		see... NciBrain(double compression, int xSize, int ySize, boolean extraConnectivity)
-
-//		brain.setLearning(true);
+		brain = new NciBrain(this.compressionRate, this.brainXSize, this.brainYSize, true);
+		brain.setLearning(true);
+		
+		// for nbCycles...
+		// repeate training...
 		// and so on....
 	
 	}
@@ -583,7 +616,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.applicationStatus = statusToSet;
 
 		switch (statusToSet) {
-			case 0: this.myStatusText = "Ready."; break;
+			case 0: this.myStatusText = "Ready. Wating for command."; break;
 			case 1: this.myStatusText = "Running... compressing file "+this.selectedFile.getName(); break;
 			case 2: this.myStatusText = "Error! No file selected."; break;
 			case 3: this.myStatusText = "Running NN training on file "+this.selectedFile.getName()+" for "+this.nbCyclesSpin.getValue()+" cycles."; break;
