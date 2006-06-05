@@ -39,7 +39,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 import com.syncleus.core.dann.examples.nci.NciBrain;
 
@@ -58,10 +61,14 @@ public class MainWindow extends JFrame implements ActionListener {
 	
 	////////////////
 	// CONFIG START
-	final String JFRAME_TITLE = "dANN-nci - Image Compression";
-//	final int JFRAME_WIDTH = 800;
-//	final int JFRAME_HEIGHT = 600;
-	final String ICON_PATH = "./icons/";
+	private final String JFRAME_TITLE = "dANN-nci - Image Compression";
+	private final String ICON_PATH = "./icons/";
+
+	// default options
+	private final int nbCyclesInitVal = 20; // number of training cylces
+	private final int brainXInitVal = 10; // size X of the brain
+	private final int brainYInitVal = 10; // size Y of the brain
+
 	// CONFIG END
 	////////////////
 	
@@ -69,7 +76,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JPanel myFileSelector;
 	private JPanel myOptionSelector;
 	private JPanel myStatusReporter;
-	private JPanel myActionSelector;
+	private JPanel myCommandSelector;
 	
 	private JComboBox selectFileBox;
 	private JButton selectFileButton;
@@ -86,10 +93,16 @@ public class MainWindow extends JFrame implements ActionListener {
 	private ImageIcon myRunIcon;
 	private ImageIcon myTrainIcon;
 	private ImageIcon myQuitIcon;
-	private JButton trainConfirmButton;
-	private JButton trainCancelButton;
 	
-	
+	private NciBrain brain;
+	private int brainXSize;
+	private int brainYSize;
+	private JSpinner nbCyclesSpin;
+	private JSpinner brainXSizeSpin;
+	private JSpinner brainYSizeSpin;
+	private int nbCycles;
+	private ImageIcon myMatrixIcon;
+		
 	public MainWindow() {
 
 		// some basic JFrame settings
@@ -109,7 +122,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		myStatusReporter = createStatusReporter();
 		
-		myActionSelector = createActionSelector();
+		myCommandSelector = createCommandSelector();
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		
@@ -148,7 +161,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.gridwidth = 1;
-		getContentPane().add(myActionSelector, gbc);
+		getContentPane().add(myCommandSelector, gbc);
 
 		// optimize the window size
 		pack();
@@ -192,12 +205,12 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.selectFileButton = new JButton();
 		
 		myPanel.setLayout(new GridBagLayout());
-		myText = "Please select an image file: ";
+		myText = "Please select an input image file: ";
 
 		myLabel.setText(myText);
 
 //		String defaultEntry = "not set";
-		this.selectFileBox.setPrototypeDisplayValue("WWWWWWWWWWWWWWWWWWWWWWWWWW");
+		this.selectFileBox.setPrototypeDisplayValue("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
 //		this.selectFileBox.setAutoscrolls(false);
 //		this.selectFileBox.setEditable(true);
 //		this.selectFileBox.setEnabled(false);
@@ -236,13 +249,60 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	private JPanel createOptionSelector() {
 		JPanel myPanel = new JPanel();
-		JLabel myLabel = new JLabel();
-		String myText = null;
+		this.myTrainIcon = new ImageIcon(this.ICON_PATH+"reload.png");
+		JLabel nbCyclesSpinLabel = new JLabel();
+		String nbCyclesSpinText = null;
+		this.nbCyclesSpin = new JSpinner();
+		this.myMatrixIcon = new ImageIcon(this.ICON_PATH+"math_matrix.png");
+		JLabel brainXSizeSpinLabel = new JLabel();
+		String brainXSizeSpinText = null;
+		this.brainXSizeSpin = new JSpinner();
+		JLabel brainYSizeSpinLabel = new JLabel();
+		String brainYSizeSpinText = null;
+		this.brainYSizeSpin = new JSpinner();
 		
 		myPanel.setLayout(new GridBagLayout());
-		myText = "Here come the options...";
-		myLabel.setText(myText);
+
+		// number of cycles to perform for training
+		nbCyclesSpinLabel.setIcon(this.myTrainIcon);
+		nbCyclesSpinText = "Training cycles: ";
+		nbCyclesSpinLabel.setText(nbCyclesSpinText);	
+		SpinnerModel nbCycelesSpinModel =
+	        new SpinnerNumberModel(nbCyclesInitVal, //initial value
+	                               10, //min
+	                               1000, //max
+	                               10); //step
+		this.nbCyclesSpin.setModel(nbCycelesSpinModel);
+		((JSpinner.DefaultEditor)this.nbCyclesSpin.getEditor())
+		.getTextField().setEditable(false);
 		
+		// brain size x
+		brainXSizeSpinLabel.setIcon(this.myMatrixIcon);
+		brainXSizeSpinText = "Brain X size:";
+		brainXSizeSpinLabel.setText(brainXSizeSpinText);
+
+		SpinnerModel brainXSizeSpinModel =
+	        new SpinnerNumberModel(brainXInitVal, //initial value
+	                               2, //min
+	                               40, //max
+	                               1); //step
+		this.brainXSizeSpin.setModel(brainXSizeSpinModel);
+		((JSpinner.DefaultEditor)this.brainXSizeSpin.getEditor())
+		.getTextField().setEditable(false);
+		
+		// brain size y
+		brainYSizeSpinLabel.setIcon(this.myMatrixIcon);
+		brainYSizeSpinText = "Brain Y size:";
+		brainYSizeSpinLabel.setText(brainYSizeSpinText);
+		SpinnerModel brainYSizeSpinModel =
+	        new SpinnerNumberModel(brainYInitVal, //initial value
+	                               2, //min
+	                               40, //max
+	                               1); //step
+		this.brainYSizeSpin.setModel(brainYSizeSpinModel);
+		((JSpinner.DefaultEditor)this.brainYSizeSpin.getEditor())
+		.getTextField().setEditable(false);
+				
 		myPanel.setBorder(BorderFactory.createTitledBorder("Options"));
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -254,12 +314,28 @@ public class MainWindow extends JFrame implements ActionListener {
 		// header on top, full width
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		myPanel.add(myLabel, gbc);
-
-//		gbc.gridx = 1;
-//		gbc.gridy = 0;
-//		myPanel.add(xxx, gbc);
+		myPanel.add(nbCyclesSpinLabel, gbc);
 		
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		myPanel.add(this.nbCyclesSpin, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		myPanel.add(brainXSizeSpinLabel, gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		myPanel.add(this.brainXSizeSpin, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		myPanel.add(brainYSizeSpinLabel, gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		myPanel.add(this.brainYSizeSpin, gbc);
+
 		return myPanel;
 		
 	}
@@ -294,12 +370,11 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 	}
 	
-	private JPanel createActionSelector() {
+	private JPanel createCommandSelector() {
 		JPanel myPanel = new JPanel();
 		runButton = new JButton();
 		myRunIcon = new ImageIcon(this.ICON_PATH+"button_ok.png");
 		trainButton = new JButton();
-		myTrainIcon = new ImageIcon(this.ICON_PATH+"reload.png");
 		quitButton = new JButton();
 		myQuitIcon = new ImageIcon(this.ICON_PATH+"button_cancel.png");
 		
@@ -319,7 +394,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		quitButton.setIcon(myQuitIcon);
 		quitButton.addActionListener(this);
 
-		myPanel.setBorder(BorderFactory.createTitledBorder("Action"));
+		myPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		// add insets for a less densely packed gui
@@ -337,7 +412,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.gridheight = 2;
 		myPanel.add(this.quitButton, gbc);
 
 		return myPanel;
@@ -393,27 +467,27 @@ public class MainWindow extends JFrame implements ActionListener {
 			// run or stop the compression training
 
 			if (this.getApplicationStatus() == 0) { // application was ready
-				this.setApplicationStatus(1); // set to running
-				if (this.getApplicationStatus() == 1) {
+				this.setApplicationStatus(3); // set to run training
+				if (this.getApplicationStatus() == 3) {
 					this.trainButton.setIcon(this.myQuitIcon);
 					this.trainButton.setText("Abort training");
 					
 					// show the train dialog and strat the training
-					this.train(this.trainDialog());
+					this.train();
 				}
 			}
-			else if (this.getApplicationStatus() == 1) { // application was running
+			else if (this.getApplicationStatus() == 3) { // application was running
 				this.setApplicationStatus(0); // ready
 				this.trainButton.setIcon(this.myTrainIcon);
 				this.trainButton.setText(" Run training ");
 			}
 			else if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
-				this.setApplicationStatus(1); // set to running
-				if (this.getApplicationStatus() == 1) {
+				this.setApplicationStatus(3); // set to run training
+				if (this.getApplicationStatus() == 3) {
 					this.trainButton.setIcon(this.myQuitIcon);
 					this.trainButton.setText("Abort training");
 					// show the train dialog and strat the training
-					this.train(this.trainDialog());
+					this.train();
 				}
 			}
 			else {
@@ -445,47 +519,46 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 	}
 
-	
-	private int trainDialog() {
-		int nbCycles = -1;
-		
-		boolean inputOk = false;
-		
-		while (!(inputOk)) {
-			String inputValue = JOptionPane.showInputDialog(this, "Please enter a number of\ntraining cycles (1 - 1000)");
-			try {
-				nbCycles = Integer.valueOf(inputValue);
-				if ((nbCycles > 0) && (nbCycles <= 1000)) {
-					inputOk = true;
-				}
-			}
-			catch (Exception ex) {
-				System.out.println("xxxx"+ex.toString());
-				if (ex.toString().matches(".*null.*")) {
-					// then cancel was pressed
-					nbCycles = -1;
-					inputOk = true;
-				}
-			}
-		}
-		
-		return nbCycles;
-	}
+//	// deprecated
+//	private int trainDialog() {
+//		int nbCycles = -1;
+//		
+//		boolean inputOk = false;
+//		
+//		while (!(inputOk)) {
+//			String inputValue = JOptionPane.showInputDialog(this, "Please enter a number of\ntraining cycles (1 - 1000)");
+//			try {
+//				nbCycles = Integer.valueOf(inputValue);
+//				if ((nbCycles > 0) && (nbCycles <= 1000)) {
+//					inputOk = true;
+//				}
+//			}
+//			catch (Exception ex) {
+//				System.out.println("xxxx"+ex.toString());
+//				if (ex.toString().matches(".*null.*")) {
+//					// then cancel was pressed
+//					nbCycles = -1;
+//					inputOk = true;
+//				}
+//			}
+//		}
+//		
+//		return nbCycles;
+//	}
 
 
-	private void train(int nbCycles) {
-		// start the training only if nbCycles > 0
-		if (nbCycles < 0) {
-			return;
-		}
+	private void train() {
 		
-		// if we are here, we have a valid value of nbCycles to
-		// start the training
+		// start the training with the selected options
+		
+		this.nbCycles = (Integer) this.nbCyclesSpin.getValue();
+		this.brainXSize = (Integer) this.brainXSizeSpin.getValue();
+		this.brainYSize = (Integer) this.brainYSizeSpin.getValue();
 		
 		// complement the status info
-		this.myStatusText += " for "+nbCycles+" cycles.";
-		this.myStatusLabel.setText(this.myStatusText);
-		
+
+//		brain = new NciBrain(0.5, brainXSize, brainYSize, true);
+
 //		NciBrain brain = new NciBrain();
 //		see... NciBrain(double compression, int xSize, int ySize, boolean extraConnectivity)
 
@@ -503,17 +576,18 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 	
 		// check if a file was selected
-		if ((statusToSet == 1) && (selectedFile == null)) {
+		if (((statusToSet == 1) || (statusToSet == 3)) && (selectedFile == null)) {
 			statusToSet = 2; // error
 		}
-
+		
 		this.applicationStatus = statusToSet;
 
 		switch (statusToSet) {
-			case 0: this.myStatusText = "ready."; break;
-			case 1: this.myStatusText = "running... compressing file "+this.selectedFile.getName()+" (fake for now)"; break;
-			case 2: this.myStatusText = "error! No file selected."; break;
-			default: this.myStatusText = "unknown.";
+			case 0: this.myStatusText = "Ready."; break;
+			case 1: this.myStatusText = "Running... compressing file "+this.selectedFile.getName(); break;
+			case 2: this.myStatusText = "Error! No file selected."; break;
+			case 3: this.myStatusText = "Running NN training on file "+this.selectedFile.getName()+" for "+this.nbCyclesSpin.getValue()+" cycles."; break;
+			default: this.myStatusText = "Unknown.";
 		}
 //		myStatusPanel.remove(this.myStatusLabel);
 		this.myStatusLabel.setText(this.myStatusText);
