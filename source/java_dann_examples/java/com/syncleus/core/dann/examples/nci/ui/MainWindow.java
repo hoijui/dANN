@@ -59,7 +59,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	final String JFRAME_TITLE = "dANN-nci - Image Compression";
 //	final int JFRAME_WIDTH = 800;
 //	final int JFRAME_HEIGHT = 600;
-	final String ICON_PATH = "./";
+	final String ICON_PATH = "./icons/";
 	// CONFIG END
 	////////////////
 	
@@ -179,8 +179,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		JLabel myLabel = new JLabel();
 		String myText = null;
 		this.selectFileBox = new JComboBox();
-		Icon myIcon = new ImageIcon("fileopen.png");
-		this.selectFileButton = new JButton("Browse...", myIcon);
+		Icon myIcon = new ImageIcon(this.ICON_PATH+"fileopen.png");
+		this.selectFileButton = new JButton();
 		
 		myPanel.setLayout(new GridBagLayout());
 		myText = "Please select an image file: ";
@@ -193,7 +193,8 @@ public class MainWindow extends JFrame implements ActionListener {
 //		this.selectFileBox.setEditable(true);
 //		this.selectFileBox.setEnabled(false);
 
-//		this.selectFileButton.setText("Browse...");
+		this.selectFileButton.setText("Browse...");
+		this.selectFileButton.setIcon(myIcon);
 		this.selectFileButton.addActionListener(this);
 		
 		myPanel.setBorder(BorderFactory.createTitledBorder("File selection"));
@@ -287,14 +288,18 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JPanel createActionSelector() {
 		JPanel myPanel = new JPanel();
 		runButton = new JButton();
+		Icon myRunIcon = new ImageIcon(this.ICON_PATH+"button_ok.png");
 		quitButton = new JButton();
+		Icon myQuitIcon = new ImageIcon(this.ICON_PATH+"button_cancel.png");
 		
 		myPanel.setLayout(new GridBagLayout());
 
 		runButton.setText(" Run Compression ");
+		runButton.setIcon(myRunIcon);
 		runButton.addActionListener(this);
 
 		quitButton.setText("Quit");
+		quitButton.setIcon(myQuitIcon);
 		quitButton.addActionListener(this);
 
 		myPanel.setBorder(BorderFactory.createTitledBorder("Action"));
