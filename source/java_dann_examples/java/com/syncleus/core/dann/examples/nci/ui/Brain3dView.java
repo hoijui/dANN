@@ -19,6 +19,8 @@
 
 package com.syncleus.core.dann.examples.nci.ui;
 
+import java.awt.Component;
+
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Background;
@@ -64,16 +66,20 @@ public class Brain3dView extends JFrame {
 	// CONFIG START
 
 	// Size of the Window containing the 3d visualization
-	private final int JFRAME_WIDTH = 800;
-	private final int JFRAME_HEIGHT = 600;
+	private final int JFRAME_WIDTH = 500;
+	private final int JFRAME_HEIGHT = 400;
+	private JFrame myMainWindow;
 
 	// CONFIG END
 	////////////////
 
-	public Brain3dView() {
+	public Brain3dView(JFrame myMainWindow) {
+		
+		this.myMainWindow = myMainWindow;
+		
 		// Create a 3D graphics canvas.
 	    Canvas3D canvas3D = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-	    canvas3D.setSize(900, 700);
+	    canvas3D.setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
 	    canvas3D.setLocation(0, 0);
 
 	    // Create the scene branchgroup.
@@ -112,8 +118,17 @@ public class Brain3dView extends JFrame {
 	    // Turn off the layout manager, widgets will be sized
 	    // and positioned explicitly.
 	    setLayout(null);
-	    setSize(900, 700);
+	    setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
 	    setTitle("dANN Brain visulisation");
+
+	    // fix the window size for now...
+		setResizable(false);
+		
+		this.setLocationRelativeTo(myMainWindow); // will center the window according to the position of the MainWindow
+
+		// move the window a little
+		this.setLocation(this.getX() - 220, this.getY() - 150);
+		
 	    setVisible(true);
 	  }  
 	    

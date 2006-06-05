@@ -17,7 +17,6 @@
  *                                                                             *
  ******************************************************************************/
 
-
 package com.syncleus.core.dann.examples.nci.ui;
 
 import java.awt.BorderLayout;
@@ -106,6 +105,8 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JSpinner compressionRateSpin;
 	private ImageIcon myCancelIcon;
 	private double compressionRate;
+	private JButton showBrain3dViewButton;
+	private ImageIcon myShowBrain3dViewIcon;
 		
 	public MainWindow() {
 
@@ -253,13 +254,13 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	private JPanel createOptionSelector() {
 		JPanel myPanel = new JPanel();
-		
 		this.myTrainIcon = new ImageIcon(this.ICON_PATH+"reload.png");
 		JLabel nbCyclesSpinLabel = new JLabel();
 		String nbCyclesSpinText = null;
 		this.nbCyclesSpin = new JSpinner();
 		
-		this.myMatrixIcon = new ImageIcon(this.ICON_PATH+"math_matrix.png");		
+//		this.myMatrixIcon = new ImageIcon(this.ICON_PATH+"math_matrix.png"); //	ugly
+		this.myMatrixIcon = new ImageIcon(this.ICON_PATH+"randr.png"); //	ugly
 		JLabel brainXSizeSpinLabel = new JLabel();
 		String brainXSizeSpinText = null;
 		this.brainXSizeSpin = new JSpinner();
@@ -377,27 +378,36 @@ public class MainWindow extends JFrame implements ActionListener {
 		JPanel myPanel = new JPanel();
 		this.myStatusLabel = new JLabel();
 		this.myStatusText = null;
-		
+		// The button opening the 3d visualization of the brain
+		// is set here, as it shows the "status" of the brain
+		this.myShowBrain3dViewIcon = new ImageIcon(this.ICON_PATH+"view_multicolumn.png");
+		this.showBrain3dViewButton = new JButton();
 		myPanel.setLayout(new GridBagLayout());
 		this.setApplicationStatus(0);
 
 //		myStatusLabel.setText(myStatusText);
 		
+		this.showBrain3dViewButton.setIcon(this.myShowBrain3dViewIcon);
+		this.showBrain3dViewButton.setText("Show Brain in 3d");
+		this.showBrain3dViewButton.addActionListener(this);
+	
 		myPanel.setBorder(BorderFactory.createTitledBorder("Status"));
+		
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		// add insets for a less densely packed gui
 		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		// header on top, full width
+		// status report
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		myPanel.add(this.myStatusLabel, gbc);
 
-//		gbc.gridx = 1;
-//		gbc.gridy = 0;
-//		myPanel.add(xxx, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		myPanel.add(this.showBrain3dViewButton, gbc);
 		
 		return myPanel;
 		
@@ -454,6 +464,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 		// Handling of user actions
 		
+		// input file selection
 		if (evt.getSource().equals(this.selectFileButton)) {
 			// then open the filechooser			
 			JFileChooser myFileChooser = new JFileChooser();
@@ -470,6 +481,8 @@ public class MainWindow extends JFrame implements ActionListener {
 				System.out.println("FileChooser: cancel pressed.");
 			}
 		}
+		
+		// commands buttons
 		else if (evt.getSource().equals(this.runButton)) {
 			// run or stop the compression
 
@@ -547,6 +560,13 @@ public class MainWindow extends JFrame implements ActionListener {
 				// should not happen
 			}
 		}
+		
+		// show the Brain3dView
+		else if (evt.getSource().equals(this.showBrain3dViewButton)) {
+			Brain3dView myBrain3dView = new Brain3dView(this);
+			
+		}
+
 		else {
 			// should not happen
 		}
