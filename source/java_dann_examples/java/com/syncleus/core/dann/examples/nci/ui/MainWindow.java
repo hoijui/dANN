@@ -41,6 +41,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.syncleus.core.dann.examples.nci.NciBrain;
+
 /**
  * A graphical user interface based on java swing
  * for the nci example application of dANN.
@@ -84,6 +86,8 @@ public class MainWindow extends JFrame implements ActionListener {
 	private ImageIcon myRunIcon;
 	private ImageIcon myTrainIcon;
 	private ImageIcon myQuitIcon;
+	private JButton trainConfirmButton;
+	private JButton trainCancelButton;
 	
 	
 	public MainWindow() {
@@ -333,7 +337,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.ipady = 2;
+		gbc.gridheight = 2;
 		myPanel.add(this.quitButton, gbc);
 
 		return myPanel;
@@ -373,7 +377,7 @@ public class MainWindow extends JFrame implements ActionListener {
 				this.runButton.setIcon(this.myRunIcon);
 				this.runButton.setText(" Run compression ");
 			}
-			if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
+			else if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
 				this.setApplicationStatus(1); // set to running
 				if (this.getApplicationStatus() == 1) {
 					this.runButton.setIcon(this.myQuitIcon);					
@@ -393,6 +397,9 @@ public class MainWindow extends JFrame implements ActionListener {
 				if (this.getApplicationStatus() == 1) {
 					this.trainButton.setIcon(this.myQuitIcon);
 					this.trainButton.setText("Abort training");
+					
+					// show the train dialog and strat the training
+					this.train(this.trainDialog());
 				}
 			}
 			else if (this.getApplicationStatus() == 1) { // application was running
@@ -400,11 +407,13 @@ public class MainWindow extends JFrame implements ActionListener {
 				this.trainButton.setIcon(this.myTrainIcon);
 				this.trainButton.setText(" Run training ");
 			}
-			if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
+			else if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
 				this.setApplicationStatus(1); // set to running
 				if (this.getApplicationStatus() == 1) {
 					this.trainButton.setIcon(this.myQuitIcon);
 					this.trainButton.setText("Abort training");
+					// show the train dialog and strat the training
+					this.train(this.trainDialog());
 				}
 			}
 			else {
@@ -434,6 +443,55 @@ public class MainWindow extends JFrame implements ActionListener {
 			// should not happen
 		}
 		
+	}
+
+	
+	private int trainDialog() {
+		int nbCycles = -1;
+		
+		boolean inputOk = false;
+		
+		while (!(inputOk)) {
+			String inputValue = JOptionPane.showInputDialog(this, "Please enter a number of\ntraining cycles (1 - 1000)");
+			try {
+				nbCycles = Integer.valueOf(inputValue);
+				if ((nbCycles > 0) && (nbCycles <= 1000)) {
+					inputOk = true;
+				}
+			}
+			catch (Exception ex) {
+				System.out.println("xxxx"+ex.toString());
+				if (ex.toString().matches(".*null.*")) {
+					// then cancel was pressed
+					nbCycles = -1;
+					inputOk = true;
+				}
+			}
+		}
+		
+		return nbCycles;
+	}
+
+
+	private void train(int nbCycles) {
+		// start the training only if nbCycles > 0
+		if (nbCycles < 0) {
+			return;
+		}
+		
+		// if we are here, we have a valid value of nbCycles to
+		// start the training
+		
+		// complement the status info
+		this.myStatusText += " for "+nbCycles+" cycles.";
+		this.myStatusLabel.setText(this.myStatusText);
+		
+//		NciBrain brain = new NciBrain();
+//		see... NciBrain(double compression, int xSize, int ySize, boolean extraConnectivity)
+
+//		brain.setLearning(true);
+		// and so on....
+	
 	}
 
 
