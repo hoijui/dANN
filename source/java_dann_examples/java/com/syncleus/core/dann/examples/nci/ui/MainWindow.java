@@ -74,11 +74,16 @@ public class MainWindow extends JFrame implements ActionListener {
 	private File selectedFile;
 	
 	private JButton runButton;
+	private JButton trainButton;
 	private JButton quitButton;
 	private String myStatusText;
 	private JLabel myStatusLabel;
 	private JPanel myStatusPanel;
 	private int applicationStatus;
+	private ImageIcon myFileOpenIcon;
+	private ImageIcon myRunIcon;
+	private ImageIcon myTrainIcon;
+	private ImageIcon myQuitIcon;
 	
 	
 	public MainWindow() {
@@ -179,7 +184,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		JLabel myLabel = new JLabel();
 		String myText = null;
 		this.selectFileBox = new JComboBox();
-		Icon myIcon = new ImageIcon(this.ICON_PATH+"fileopen.png");
+		myFileOpenIcon = new ImageIcon(this.ICON_PATH+"fileopen.png");
 		this.selectFileButton = new JButton();
 		
 		myPanel.setLayout(new GridBagLayout());
@@ -194,7 +199,7 @@ public class MainWindow extends JFrame implements ActionListener {
 //		this.selectFileBox.setEnabled(false);
 
 		this.selectFileButton.setText("Browse...");
-		this.selectFileButton.setIcon(myIcon);
+		this.selectFileButton.setIcon(myFileOpenIcon);
 		this.selectFileButton.addActionListener(this);
 		
 		myPanel.setBorder(BorderFactory.createTitledBorder("File selection"));
@@ -288,15 +293,23 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JPanel createActionSelector() {
 		JPanel myPanel = new JPanel();
 		runButton = new JButton();
-		Icon myRunIcon = new ImageIcon(this.ICON_PATH+"button_ok.png");
+		myRunIcon = new ImageIcon(this.ICON_PATH+"button_ok.png");
+		trainButton = new JButton();
+		myTrainIcon = new ImageIcon(this.ICON_PATH+"reload.png");
 		quitButton = new JButton();
-		Icon myQuitIcon = new ImageIcon(this.ICON_PATH+"button_cancel.png");
+		myQuitIcon = new ImageIcon(this.ICON_PATH+"button_cancel.png");
 		
 		myPanel.setLayout(new GridBagLayout());
 
 		runButton.setText(" Run Compression ");
 		runButton.setIcon(myRunIcon);
 		runButton.addActionListener(this);
+		// run compression not available yet.
+		runButton.setEnabled(false);
+		
+		trainButton.setText(" Train Compression ");
+		trainButton.setIcon(myTrainIcon);
+		trainButton.addActionListener(this);
 
 		quitButton.setText("Quit");
 		quitButton.setIcon(myQuitIcon);
@@ -314,8 +327,13 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridy = 0;
 		myPanel.add(this.runButton, gbc);
 
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		myPanel.add(this.trainButton, gbc);
+
 		gbc.gridx = 1;
 		gbc.gridy = 0;
+		gbc.ipady = 2;
 		myPanel.add(this.quitButton, gbc);
 
 		return myPanel;
@@ -324,7 +342,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 		// Handling of user actions
 		
-		if (evt.getSource().equals(selectFileButton)) {
+		if (evt.getSource().equals(this.selectFileButton)) {
 			// then open the filechooser			
 			JFileChooser myFileChooser = new JFileChooser();
 		
@@ -340,42 +358,61 @@ public class MainWindow extends JFrame implements ActionListener {
 				System.out.println("FileChooser: cancel pressed.");
 			}
 		}
-		else if (evt.getSource().equals(runButton)) {
+		else if (evt.getSource().equals(this.runButton)) {
 			// run or stop the compression
 
 			if (this.getApplicationStatus() == 0) { // application was ready
 				this.setApplicationStatus(1); // set to running
 				if (this.getApplicationStatus() == 1) {
+					this.runButton.setIcon(this.myQuitIcon);
 					this.runButton.setText("Abort compression");
 				}
 			}
 			else if (this.getApplicationStatus() == 1) { // application was running
 				this.setApplicationStatus(0); // ready
+				this.runButton.setIcon(this.myRunIcon);
 				this.runButton.setText(" Run compression ");
 			}
 			if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
 				this.setApplicationStatus(1); // set to running
 				if (this.getApplicationStatus() == 1) {
+					this.runButton.setIcon(this.myQuitIcon);					
 					this.runButton.setText("Abort compression");
 				}
 			}
 			else {
 				// not handled yet.
 			}
-
-			// simulate a run for now...
-			
-//			try {
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-			
-			// run finished ok.
-//			this.setApplicationStatus(0);
-			
 		}
-		else if (evt.getSource().equals(quitButton)) {
+		
+		else if (evt.getSource().equals(this.trainButton)) {
+			// run or stop the compression training
+
+			if (this.getApplicationStatus() == 0) { // application was ready
+				this.setApplicationStatus(1); // set to running
+				if (this.getApplicationStatus() == 1) {
+					this.trainButton.setIcon(this.myQuitIcon);
+					this.trainButton.setText("Abort training");
+				}
+			}
+			else if (this.getApplicationStatus() == 1) { // application was running
+				this.setApplicationStatus(0); // ready
+				this.trainButton.setIcon(this.myTrainIcon);
+				this.trainButton.setText(" Run training ");
+			}
+			if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
+				this.setApplicationStatus(1); // set to running
+				if (this.getApplicationStatus() == 1) {
+					this.trainButton.setIcon(this.myQuitIcon);
+					this.trainButton.setText("Abort training");
+				}
+			}
+			else {
+				// not handled yet.
+			}
+		}
+		
+		else if (evt.getSource().equals(this.quitButton)) {
 			// quit? ask for confirmation
 			Object[] options = { "Yes", "No" };
 			int selectedValue = JOptionPane.showOptionDialog(null, "Do you really want to quit?", "Warning",
