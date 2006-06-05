@@ -19,7 +19,13 @@
 
 package com.syncleus.core.dann.examples.nci.ui;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
@@ -29,10 +35,13 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
+import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
 import javax.media.j3d.Node;
 import javax.media.j3d.PickRay;
 import javax.media.j3d.SceneGraphPath;
+import javax.media.j3d.Texture;
+import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.View;
@@ -45,6 +54,8 @@ import javax.vecmath.Vector3f;
 import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
 import com.sun.j3d.utils.behaviors.vp.OrbitBehavior;
 import com.sun.j3d.utils.geometry.ColorCube;
+import com.sun.j3d.utils.geometry.Sphere;
+import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 
@@ -202,14 +213,19 @@ public class Brain3dView extends JFrame {
 	    transform2.set(1f, new Vector3f(2f, 0.0f, -10.0f));
 	    transformGroup2.setTransform(transform2);
 	    
-	    ColorCube myCube1 = new ColorCube(0.4);
-	    ColorCube myCube2 = new ColorCube(0.4);
-
+	    //ColorCube myCube1 = new ColorCube(0.4);
+	    //ColorCube myCube2 = new ColorCube(0.4);
+	    Sphere myNeuron1 = new Sphere(1.0f);
+	    
+//	    myNeuron1.setAppearance(this.makeMappingFromImage(this.createNeuronTextureImage("Neuron 1", Color.RED)));
+	    
+	    Sphere myNeuron2 = new Sphere(1.0f);
+	    
 //	    Box myBox = new Box(10f, 10f, 10f, poleMaterial);
 //	    transformGroup.addChild(myBox);
 	    
-	    transformGroup1.addChild(myCube1);
-	    transformGroup2.addChild(myCube2);
+	    transformGroup1.addChild(myNeuron1);
+	    transformGroup2.addChild(myNeuron2);
 	    
 	    branchGroup.addChild(transformGroup1);
 	    branchGroup.addChild(transformGroup2);
@@ -236,5 +252,134 @@ public class Brain3dView extends JFrame {
 //	    Node pickedObject = pickResults[0].getObject();
 //	  }
 	  
+//	  public BufferedImage createNeuronTextureImage(String
+//			  myName, String myDescription1, String myDescription2, String m
+//			 yDescription3, String myDescription4, Color myColor) {
+
+	  public BufferedImage createNeuronTextureImage(String
+				  myNeuronName, Color myColor) {
+
+		  int imSizeX = 512; // high quality for now
+		  int imSizeY = 512;
+		  
+		  BufferedImage myNeuronTextureImage = new BufferedImage(imSizeX, imSizeY, BufferedImage.TYPE_INT_RGB);
+
+		  Graphics2D g2d = myNeuronTextureImage.createGraphics(); // creates a Graphics2D to draw in the BufferedImage
+		  g2d.setBackground(myColor);
+		  g2d.clearRect(0, 0, myNeuronTextureImage.getWidth(), myNeuronTextureImage.getHeight());
+		  
+		  int tempFontSize = 128; // high quality for now
+		  
+		  g2d.setFont(new Font("Courrier",Font.BOLD,tempFontSize));
+		  g2d.setColor(Color.BLACK);
+		  FontMetrics fm = g2d.getFontMetrics();
+		  g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		  	
+		  int tempStringWidth = fm.stringWidth(myNeuronName);
+		  int tempTextPosX = Math.round(imSizeX/2 - tempStringWidth/2);
+		  g2d.drawString(myNeuronName, tempTextPosX, 200);
+		
+		  g2d.drawImage(myNeuronTextureImage, null, 0, 0);
+		  return(myNeuronTextureImage);
+
+	  }
+	  
+      public Appearance makeMappingFromImage(BufferedImage myImage) {
+    	  Appearance mapping = new Appearance();
+
+    	  mapping.setCapability(Appearance.ALLOW_MATERIAL_READ);
+    	  mapping.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
+
+    	  TextureLoader loader = new TextureLoader(myImage, TextureLoader.GENERATE_MIPMAP);
+    	  ImageComponent2D image = loader.getImage();
+
+    	  int imageWidth = image.getWidth();
+    	  int imageHeight = image.getHeight();
+
+    	  Texture2D texture = new Texture2D(Texture.MULTI_LEVEL_MIPMAP,Texture.RGB, imageWidth, imageHeight);
+
+    	  // Mipmapping of the texture -- WARNING: original picture sizes have to be ^2 (e.g. 1024x512)
+    	  int imageLevel = 0;
+    	  texture.setImage(imageLevel, image);
+
+    	  while (imageWidth > 1 || imageHeight > 1) {
+    		  imageLevel++;
+    		  if (imageWidth > 1) imageWidth /= 2;
+    		  if (imageHeight > 1) imageHeight /= 2;
+    		  image = loader.getScaledImage(imageWidth, imageHeight);
+    		  texture.setImage(imageLevel, image);
+    		  System.out.println("From mipmapping in Container: image: Auto-generated image - width:"+imageWidth);
+    	  }
+
+    	  // Texture quality
+    	  texture.setMagFilter(Texture.BASE_LEVEL_LINEAR); //nice!
+    	  texture.setMinFilter(Texture.MULTI_LEVEL_LINEAR); //nice!
+    	  
+    	  mapping.setTexture(texture);
+
+    	  ////////
+    	  // Nicer appearance:
+
+//    		                // Coloring Attributes
+//    		                // Intrinsic color, Gouraud shading
+//    		                ColoringAttributes ca = new ColoringAttributes();
+//    		                ca.setColor(1.0f, 1.0f, 0.0f);
+//    		                ca.setShadeModel(ColoringAttributes.SHADE_GOURAUD);
+//    		                mapping.setColoringAttributes(ca);
+    		  //
+    		  //
+//    		                // Material Attributes
+//    		                // Ambient, emissive, diffuse, and specular colors
+//    		                Material mat = new Material();
+//    		                mat.setAmbientColor(0.3f, 0.3f, 0.3f);
+//    		                mat.setDiffuseColor(1.0f, 0.0f, 0.0f);
+//    		                mat.setEmissiveColor(0.0f, 0.0f, 0.0f);
+//    		                mat.setSpecularColor(1.0f, 1.0f, 1.0f);
+//    		                mat.setShininess(80.0f);
+//    		                mat.setCapability(Material.ALLOW_COMPONENT_READ);
+//    		                mat.setCapability(Material.ALLOW_COMPONENT_WRITE);
+//    		                mat.setLightingEnable(true);
+//    		                mapping.setMaterial(mat);
+    		  //
+//    		                // Transparency Attributes
+//    		                // Semi-transparent, alpha-blended
+//    		                TransparencyAttributes ta = new TransparencyAttributes();
+//    		                ta.setTransparency(0.01f);
+//    		                ta.setTransparencyMode(TransparencyAttributes.BLENDED);
+//    		                mapping.setTransparencyAttributes(ta);
+    		  //
+    		  //
+//    		                // Point Attributes
+//    		                // 10 pixel points, not anti-aliased
+//    		                PointAttributes pta = new PointAttributes();
+//    		                pta.setPointSize(10.0f);
+//    		                pta.setPointAntialiasingEnable(false);
+//    		                mapping.setPointAttributes(pta);
+    		  //
+//    		                // Line Attributes
+//    		                // 10 pixel lines, solid, not anti-aliased
+//    		                LineAttributes lta = new LineAttributes();
+//    		                lta.setLineWidth(10.0f);
+//    		                lta.setLineAntialiasingEnable(true);
+////    		              lta.setLineAntialiasingEnable(false);
+//    		                lta.setLinePattern(LineAttributes.PATTERN_SOLID);
+//    		                mapping.setLineAttributes(lta);
+    		  //
+//    		                // Polygon Attributes
+//    		                // Filled polygons, front and back faces
+//    		                PolygonAttributes pa = new PolygonAttributes();
+////    		              pa.setPolygonMode(PolygonAttributes.POLYGON_FILL);
+////    		              pa.setPolygonMode(PolygonAttributes.POLYGON_LINE);
+////    		              pa.setCullFace(PolygonAttributes.CULL_NONE);
+//    		                mapping.setPolygonAttributes(pa);
+
+    		                  //
+    		                  ////////
+
+    	  return mapping;
+
+      }
+
+
 
 }
