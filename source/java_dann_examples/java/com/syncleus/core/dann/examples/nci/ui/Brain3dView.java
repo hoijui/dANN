@@ -42,6 +42,7 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 
+import com.sun.j3d.utils.behaviors.vp.OrbitBehavior;
 import com.sun.j3d.utils.geometry.ColorCube;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
@@ -78,15 +79,15 @@ public class Brain3dView extends JFrame {
 		this.myMainWindow = myMainWindow;
 		
 		// Create a 3D graphics canvas.
-	    Canvas3D canvas3D = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-	    canvas3D.setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
-	    canvas3D.setLocation(0, 0);
+	    Canvas3D myCanvas3D = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+	    myCanvas3D.setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
+	    myCanvas3D.setLocation(0, 0);
 
 	    // Create the scene branchgroup.
 	    BranchGroup scene3D = createScene3D();
 	    
 	   // Create a universe with the Java3D universe utility.
-	    SimpleUniverse universe = new SimpleUniverse(canvas3D);
+	    SimpleUniverse universe = new SimpleUniverse(myCanvas3D);
 	    universe.addBranchGraph(scene3D);
 	    
 	    // Add a pick behavior
@@ -96,11 +97,17 @@ public class Brain3dView extends JFrame {
 	    View view = universe.getViewer().getView();
 //	    view.setProjectionPolicy(View.PARALLEL_PROJECTION);
 
-	    // Set the universe Transform3D object.
+	    // Set the view Transform3D object.
 	    TransformGroup tg = universe.getViewingPlatform().getViewPlatformTransform();
 	    Transform3D transform = new Transform3D();
-	    transform.set(1f, new Vector3f(2.0f, 2.0f, 10.0f));
+	    transform.set(1f, new Vector3f(0f, 0f, 0f));
 	    tg.setTransform(transform);
+	     
+	    // add an orbital mouse control to the scene
+	    OrbitBehavior myOrbital = new OrbitBehavior(myCanvas3D);
+	    myOrbital.setRotationCenter(new Point3d(0f, 0f, -10f));
+	    myOrbital.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), Double.POSITIVE_INFINITY));
+	    universe.getViewingPlatform().setViewPlatformBehavior(myOrbital);
 
 	    // Create the canvas container.
 	    JPanel myPanel = new JPanel();
@@ -110,7 +117,7 @@ public class Brain3dView extends JFrame {
 	    myPanel.setLayout(null);
 
 	    // Add the 3D canvas to the container.
-	    myPanel.add(canvas3D);
+	    myPanel.add(myCanvas3D);
 
 	    // a the panel containing the 3D canvas to the JFrame
 	    getContentPane().add(myPanel);
@@ -181,14 +188,14 @@ public class Brain3dView extends JFrame {
 	    transformGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 	    transformGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 	    Transform3D transform1 = new Transform3D();
-	    transform1.set(1f, new Vector3f(-2.0f, 0.0f, -10.0f));
+	    transform1.set(1f, new Vector3f(-2f, 0.0f, -10.0f));
 	    transformGroup1.setTransform(transform1);
 
 	    TransformGroup transformGroup2 = new TransformGroup();
 	    transformGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 	    transformGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 	    Transform3D transform2 = new Transform3D();
-	    transform2.set(1f, new Vector3f(2.0f, 0.0f, -10.0f));
+	    transform2.set(1f, new Vector3f(2f, 0.0f, -10.0f));
 	    transformGroup2.setTransform(transform2);
 	    
 	    ColorCube myCube1 = new ColorCube(0.4);
