@@ -24,10 +24,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -38,10 +43,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 
 import com.syncleus.core.dann.examples.nci.NciBrain;
 
@@ -65,8 +72,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	// default options
 	private final int nbCyclesInitVal = 20; // number of training cylces
-	private final int brainXInitVal = 10; // size X of the brain
-	private final int brainYInitVal = 10; // size Y of the brain
+	private final int imageChunkXInitVal = 10; // size X of image chunks sent to the brain
+	private final int imageChunkYInitVal = 10; // size Y of image chunks sent to the brain
 	private final double compressionRateInitVal = 0.5; // compression rate: 0 - 1.0 
 	// CONFIG END
 	////////////////
@@ -86,7 +93,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JButton quitButton;
 	private String myStatusText;
 	private JLabel myStatusLabel;
-	private JPanel myStatusPanel;
 	private int applicationStatus;
 	private ImageIcon myFileOpenIcon;
 	private ImageIcon myRunIcon;
@@ -94,11 +100,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private ImageIcon myQuitIcon;
 	
 	private NciBrain brain;
-	private int brainXSize;
-	private int brainYSize;
 	private JSpinner nbCyclesSpin;
-	private JSpinner brainXSizeSpin;
-	private JSpinner brainYSizeSpin;
 	private int nbCycles;
 	private ImageIcon myMatrixIcon;
 	private ImageIcon myCompressIcon;
@@ -107,7 +109,12 @@ public class MainWindow extends JFrame implements ActionListener {
 	private double compressionRate;
 	private JButton showBrain3dViewButton;
 	private ImageIcon myShowBrain3dViewIcon;
-		
+	private JSpinner imageChunkXSizeSpin;
+	private JSpinner imageChunkYSizeSpin;
+	private Integer imageChunkXSize;
+	private Integer imageChunkYSize;
+	private final Random random = new Random();
+	
 	public MainWindow() {
 
 		// some basic JFrame settings
@@ -261,13 +268,13 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 //		this.myMatrixIcon = new ImageIcon(this.ICON_PATH+"math_matrix.png"); //	ugly
 		this.myMatrixIcon = new ImageIcon(this.ICON_PATH+"randr.png"); //	ugly
-		JLabel brainXSizeSpinLabel = new JLabel();
-		String brainXSizeSpinText = null;
-		this.brainXSizeSpin = new JSpinner();
+		JLabel imageChunkXSizeSpinLabel = new JLabel();
+		String imageChunkXSizeSpinText = null;
+		this.imageChunkXSizeSpin = new JSpinner();
 		
-		JLabel brainYSizeSpinLabel = new JLabel();
-		String brainYSizeSpinText = null;
-		this.brainYSizeSpin = new JSpinner();
+		JLabel imageChunkYSizeSpinLabel = new JLabel();
+		String imageChunkYSizeSpinText = null;
+		this.imageChunkYSizeSpin = new JSpinner();
 
 		this.myCompressIcon = new ImageIcon(this.ICON_PATH+"khtml_kget.png");		
 		JLabel compressionRateSpinLabel = new JLabel();
@@ -290,30 +297,30 @@ public class MainWindow extends JFrame implements ActionListener {
 		.getTextField().setEditable(false);
 		
 		// brain size x option
-		brainXSizeSpinLabel.setIcon(this.myMatrixIcon);
-		brainXSizeSpinText = "Brain X size:";
-		brainXSizeSpinLabel.setText(brainXSizeSpinText);
+		imageChunkXSizeSpinLabel.setIcon(this.myMatrixIcon);
+		imageChunkXSizeSpinText = "Image Chunks X size (pixels):";
+		imageChunkXSizeSpinLabel.setText(imageChunkXSizeSpinText);
 
-		SpinnerModel brainXSizeSpinModel =
-	        new SpinnerNumberModel(brainXInitVal, //initial value
+		SpinnerModel imageChunkXSizeSpinModel =
+	        new SpinnerNumberModel(imageChunkXInitVal, //initial value
 	                               2, //min
-	                               40, //max
+	                               20, //max
 	                               1); //step
-		this.brainXSizeSpin.setModel(brainXSizeSpinModel);
-		((JSpinner.DefaultEditor)this.brainXSizeSpin.getEditor())
+		this.imageChunkXSizeSpin.setModel(imageChunkXSizeSpinModel);
+		((JSpinner.DefaultEditor)this.imageChunkXSizeSpin.getEditor())
 		.getTextField().setEditable(false);
 		
 		// brain size y option
-		brainYSizeSpinLabel.setIcon(this.myMatrixIcon);
-		brainYSizeSpinText = "Brain Y size:";
-		brainYSizeSpinLabel.setText(brainYSizeSpinText);
-		SpinnerModel brainYSizeSpinModel =
-	        new SpinnerNumberModel(brainYInitVal, //initial value
+		imageChunkYSizeSpinLabel.setIcon(this.myMatrixIcon);
+		imageChunkYSizeSpinText = "Image Chunks Y size (pixels):";
+		imageChunkYSizeSpinLabel.setText(imageChunkYSizeSpinText);
+		SpinnerModel imageChunkYSizeSpinModel =
+	        new SpinnerNumberModel(imageChunkYInitVal, //initial value
 	                               2, //min
-	                               40, //max
+	                               20, //max
 	                               1); //step
-		this.brainYSizeSpin.setModel(brainYSizeSpinModel);
-		((JSpinner.DefaultEditor)this.brainYSizeSpin.getEditor())
+		this.imageChunkYSizeSpin.setModel(imageChunkYSizeSpinModel);
+		((JSpinner.DefaultEditor)this.imageChunkYSizeSpin.getEditor())
 		.getTextField().setEditable(false);
 		
 		// compression rate option
@@ -348,19 +355,19 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		myPanel.add(brainXSizeSpinLabel, gbc);
+		myPanel.add(imageChunkXSizeSpinLabel, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 1;
-		myPanel.add(this.brainXSizeSpin, gbc);
+		myPanel.add(this.imageChunkXSizeSpin, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		myPanel.add(brainYSizeSpinLabel, gbc);
+		myPanel.add(imageChunkYSizeSpinLabel, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 2;
-		myPanel.add(this.brainYSizeSpin, gbc);
+		myPanel.add(this.imageChunkYSizeSpin, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 3;
@@ -404,7 +411,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridy = 0;
 		myPanel.add(this.myStatusLabel, gbc);
 
-		
+		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		myPanel.add(this.showBrain3dViewButton, gbc);
@@ -606,19 +613,76 @@ public class MainWindow extends JFrame implements ActionListener {
 		// start the training with the selected options
 		
 		this.nbCycles = (Integer) this.nbCyclesSpin.getValue();
-		this.brainXSize = (Integer) this.brainXSizeSpin.getValue();
-		this.brainYSize = (Integer) this.brainYSizeSpin.getValue();
+		this.imageChunkXSize = (Integer) this.imageChunkXSizeSpin.getValue();
+		this.imageChunkYSize = (Integer) this.imageChunkYSizeSpin.getValue();
 		this.compressionRate = (Double) this.compressionRateSpin.getValue();
-		// complement the status info
 
-		brain = new NciBrain(this.compressionRate, this.brainXSize, this.brainYSize, true);
-		brain.setLearning(true);
+		// start the training of the brain within a thread
+		// so the status can be reported in the gui
 		
-		// for nbCycles...
-		// repeate training...
-		// and so on....
-	
-	}
+		if (this.myStatusReporter.getComponentCount() == 3) { // remove the last progress bar if any
+			this.myStatusReporter.remove(2);
+		}
+		final JProgressBar myProgressBar = new JProgressBar();
+		myProgressBar.setMaximum(this.nbCycles); // we will report the progress for each training iteration
+        myProgressBar.setStringPainted(true);
+        
+		// Add the progress bar to the status panel
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+ 		this.myStatusReporter.add(myProgressBar, gbc);
+		
+		// start the thread
+		Thread worker1 = new Thread() {
+                public void run() {
+                        try {
+                        	// simulate the first percents progress while creating the brain
+                        	myProgressBar.setValue(1);
+                        	brain = new NciBrain(compressionRate, imageChunkXSize, imageChunkYSize, true);
+                        	brain.setLearning(true); // a brain wants to learn, this is the nature!
+                        	
+                        	// for nbCycles...
+                        	// repeate training...
+                    			
+                        	for (int i = 1; i <= nbCycles; i++) {
+                        		myProgressBar.setValue(i); // update the progress bar
+                    			
+//                        		currentTrainImage = ImageIO.read(trainingImages[random.nextInt(trainingImages.length)]);
+                        		
+                        		// only one input image for now.
+                        		BufferedImage currentTrainImage = ImageIO.read(selectedFile);
+                        		
+                    			// select a random subsection of the image of 
+                        		// imageChunkXSize and imageChunkYSize dimension
+                    			currentTrainImage = currentTrainImage.getSubimage(random.nextInt(currentTrainImage.getWidth() - imageChunkXSize), random.nextInt(currentTrainImage.getHeight() - imageChunkYSize), imageChunkXSize, imageChunkYSize);
+
+                    			//now train the image
+                    			brain.compress(currentTrainImage);
+                    			
+                        	}
+                        	
+                        	// end of training
+                        	brain.setLearning(false);
+                        	
+                        	// reset the command button for the next run
+                        	trainButton.setIcon(myTrainIcon);
+            				trainButton.setText(" Run training ");
+            				setApplicationStatus(0); // set the status back to "ready" for the next run
+                        }
+                        catch (Exception ex) {
+                        	// nothing here
+                        }
+                        SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+//                                        System.out.println("Ready!");
+                                }
+                        });
+                } // end of Thread run
+        };
+        worker1.start();
+	}	
 
 
 	private void setApplicationStatus(int statusToSet) {
