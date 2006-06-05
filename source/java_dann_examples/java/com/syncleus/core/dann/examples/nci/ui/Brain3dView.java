@@ -42,6 +42,7 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 
+import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
 import com.sun.j3d.utils.behaviors.vp.OrbitBehavior;
 import com.sun.j3d.utils.geometry.ColorCube;
 import com.sun.j3d.utils.universe.SimpleUniverse;
@@ -98,10 +99,10 @@ public class Brain3dView extends JFrame {
 //	    view.setProjectionPolicy(View.PARALLEL_PROJECTION);
 
 	    // Set the view Transform3D object.
-	    TransformGroup tg = universe.getViewingPlatform().getViewPlatformTransform();
-	    Transform3D transform = new Transform3D();
-	    transform.set(1f, new Vector3f(0f, 0f, 0f));
-	    tg.setTransform(transform);
+	    TransformGroup tgView = universe.getViewingPlatform().getViewPlatformTransform();
+	    Transform3D transformView = new Transform3D();
+	    transformView.set(1f, new Vector3f(0f, 0f, 0f));
+	    tgView.setTransform(transformView);
 	     
 	    // add an orbital mouse control to the scene
 	    OrbitBehavior myOrbital = new OrbitBehavior(myCanvas3D);
@@ -109,6 +110,9 @@ public class Brain3dView extends JFrame {
 	    myOrbital.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), Double.POSITIVE_INFINITY));
 	    universe.getViewingPlatform().setViewPlatformBehavior(myOrbital);
 
+	    // a zoom control with the mouse wheel
+	    MouseWheelZoom myMouseWheelZ = new MouseWheelZoom(tgView);
+	    
 	    // Create the canvas container.
 	    JPanel myPanel = new JPanel();
 	    myPanel.setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
