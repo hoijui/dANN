@@ -58,14 +58,13 @@ import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-
 /**
  * 3d component of the graphical user interface based on java swing
  * for the nci example application of dANN.
  * -> "nci" stands for "Neural Compressed Image".
  * 
  * This class implements the java3d Window of the gui.
- * The nciBrain is visualized in 3d in a JFram started
+ * The nciBrain is visualized in 3d in a JFrame started
  * from the MainWindow class (main window of the gui)
  * 
  * <!-- Author: chickenf -->
