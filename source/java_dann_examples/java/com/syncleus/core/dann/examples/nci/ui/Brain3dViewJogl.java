@@ -35,13 +35,17 @@ package com.syncleus.core.dann.examples.nci.ui;
  */
 
 
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLDrawableFactory;
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Brain3dViewJogl extends JFrame {
+public class Brain3dViewJogl extends JFrame implements GLEventListener {
 
 	////////////////
 	// CONFIG START
@@ -54,20 +58,33 @@ public class Brain3dViewJogl extends JFrame {
 	// CONFIG END
 	////////////////
 
+	
+	private int gear1, gear2, gear3;
+	
 	public Brain3dViewJogl(JFrame myMainWindow) {
 		
 		this.myMainWindow = myMainWindow;
 
 		// initialization: creation of a GLCanvas with JOGL
-		GLCapabilities capabilities = new GLCapabilities();
-		GLCanvas myGLCanvas = GLDrawableFactory.getFactory().createGLCanvas(capabilities);
-
+//		JOGLRenderer renderer = new JOGLRenderer();
+//		GLCapabilities capabilities = new GLCapabilities();
+//		GLCanvas myGLCanvas = GLDrawableFactory.getFactory().createGLCanvas(capabilities);
+//		GLCanvas myGLCanvas = GLDrawableFactory.getFactory().
 //		myGLCanvas.addGLEventListener(this);
-	
+		GLCanvas myGLCanvas = new GLCanvas();
+		
 		myGLCanvas.setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
 		myGLCanvas.setLocation(0, 0);
 
-	    // Create the canvas container.
+		
+	    myGLCanvas.addGLEventListener(this);
+//	    myGLCanvas.addKeyListener(this);
+//	    myGLCanvas.addMouseListener(this);
+//	    myGLCanvas.addMouseMotionListener(this);
+	    
+//	    GL gl = GLAutoDrawable.getGL();
+	    
+	    // Create the GLcanvas container.
 	    JPanel myPanel = new JPanel();
 	    myPanel.setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
 	    myPanel.setLocation(0, 0);
@@ -95,5 +112,28 @@ public class Brain3dViewJogl extends JFrame {
 		this.setLocation(this.getX() - 190, this.getY() - 100);
 		
 	    setVisible(true);
+	}
+
+	public void init(GLAutoDrawable drawable) {
+		GL gl = drawable.getGL();
+		
+		gl.setSwapInterval(1);
+		
+	
+	}
+
+	public void display(GLAutoDrawable drawable) {
+//		GL gl = drawable.getGL();
+		
+	}
+
+	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {
+		// TODO Auto-generated method stub
+		
 	}
 }
