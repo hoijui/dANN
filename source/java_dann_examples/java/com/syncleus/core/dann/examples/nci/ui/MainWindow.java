@@ -108,6 +108,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private ImageIcon myCancelIcon;
 	private double compressionRate;
 	private JButton showBrain3dViewButton;
+	private JButton showBrain3dViewButton2;
 	private ImageIcon myShowBrain3dViewIcon;
 	private JSpinner imageChunkXSizeSpin;
 	private JSpinner imageChunkYSizeSpin;
@@ -389,14 +390,19 @@ public class MainWindow extends JFrame implements ActionListener {
 		// is set here, as it shows the "status" of the brain
 		this.myShowBrain3dViewIcon = new ImageIcon(this.ICON_PATH+"view_multicolumn.png");
 		this.showBrain3dViewButton = new JButton();
+		this.showBrain3dViewButton2 = new JButton();
 		myPanel.setLayout(new GridBagLayout());
 		this.setApplicationStatus(0);
 
 //		myStatusLabel.setText(myStatusText);
 		
 		this.showBrain3dViewButton.setIcon(this.myShowBrain3dViewIcon);
-		this.showBrain3dViewButton.setText("Show Brain in 3d");
+		this.showBrain3dViewButton.setText("Show Brain in 3d (Java3D)");
 		this.showBrain3dViewButton.addActionListener(this);
+
+		this.showBrain3dViewButton2.setIcon(this.myShowBrain3dViewIcon);
+		this.showBrain3dViewButton2.setText("Show Brain in 3d (JOGL)");
+		this.showBrain3dViewButton2.addActionListener(this);
 	
 		myPanel.setBorder(BorderFactory.createTitledBorder("Status"));
 		
@@ -415,6 +421,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		myPanel.add(this.showBrain3dViewButton, gbc);
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		myPanel.add(this.showBrain3dViewButton2, gbc);
 		
 		return myPanel;
 		
@@ -568,9 +578,14 @@ public class MainWindow extends JFrame implements ActionListener {
 			}
 		}
 		
-		// show the Brain3dView
+		// show the Brain3dView (Java3D version)
 		else if (evt.getSource().equals(this.showBrain3dViewButton)) {
 			Brain3dView myBrain3dView = new Brain3dView(this);
+			
+		}
+		// show the Brain3dView (JOGL version)
+		else if (evt.getSource().equals(this.showBrain3dViewButton2)) {
+			Brain3dViewJogl myBrain3dViewJogl = new Brain3dViewJogl(this);
 			
 		}
 
