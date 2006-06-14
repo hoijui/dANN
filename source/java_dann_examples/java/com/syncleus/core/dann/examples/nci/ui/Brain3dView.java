@@ -140,7 +140,7 @@ public class Brain3dView extends JFrame {
 	    // and positioned explicitly.
 	    setLayout(null);
 	    setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
-	    setTitle("dANN Brain visulisation");
+	    setTitle("dANN Brain visulisation (Java3D)");
 
 	    // fix the window size for now...
 		setResizable(false);
