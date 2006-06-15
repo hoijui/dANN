@@ -94,7 +94,7 @@ public class Brain3dViewJogl extends JFrame implements GLEventListener {
 	    // Add the 3D canvas to the container.
 	    myPanel.add(myGLCanvas);
 
-	    // a the panel containing the 3D canvas to the JFrame
+	    // add the panel containing the GLCanvas to the JFrame
 	    getContentPane().add(myPanel);
 
 	    // Turn off the layout manager, widgets will be sized

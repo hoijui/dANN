@@ -133,7 +133,7 @@ public class Brain3dView extends JFrame {
 	    // Add the 3D canvas to the container.
 	    myPanel.add(myCanvas3D);
 
-	    // a the panel containing the 3D canvas to the JFrame
+	    // add the panel containing the 3D canvas to the JFrame
 	    getContentPane().add(myPanel);
 
 	    // Turn off the layout manager, widgets will be sized
