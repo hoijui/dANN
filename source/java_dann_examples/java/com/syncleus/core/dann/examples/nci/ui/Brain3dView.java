@@ -80,12 +80,12 @@ public class Brain3dView extends JFrame {
 	// Size of the Window containing the 3d visualization
 	private final int JFRAME_WIDTH = 500;
 	private final int JFRAME_HEIGHT = 400;
-	private JFrame myMainWindow;
+	private MainWindow myMainWindow;
 
 	// CONFIG END
 	////////////////
 
-	public Brain3dView(JFrame myMainWindow) {
+	public Brain3dView(MainWindow myMainWindow) {
 		
 		this.myMainWindow = myMainWindow;
 		

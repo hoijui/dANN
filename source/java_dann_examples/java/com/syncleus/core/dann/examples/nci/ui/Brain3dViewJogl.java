@@ -34,7 +34,6 @@ package com.syncleus.core.dann.examples.nci.ui;
  * @author chickenf
  */
 
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -53,7 +52,7 @@ public class Brain3dViewJogl extends JFrame implements GLEventListener {
 	// Size of the Window containing the 3d visualization
 	private final int JFRAME_WIDTH = 500;
 	private final int JFRAME_HEIGHT = 400;
-	private JFrame myMainWindow;
+	private MainWindow myMainWindow;
 
 	// CONFIG END
 	////////////////
@@ -61,7 +60,7 @@ public class Brain3dViewJogl extends JFrame implements GLEventListener {
 	
 	private int gear1, gear2, gear3;
 	
-	public Brain3dViewJogl(JFrame myMainWindow) {
+	public Brain3dViewJogl(MainWindow myMainWindow) {
 		
 		this.myMainWindow = myMainWindow;
 
