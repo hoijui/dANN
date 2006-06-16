@@ -421,16 +421,19 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		// add insets for a less densely packed gui
 		gbc.insets = new Insets(10, 10, 10, 10);
+		
 		gbc.fill = GridBagConstraints.BOTH;
 
 		// status report
 		gbc.gridx = 0;
 		gbc.gridy = 0;
+		gbc.gridwidth = 3;
 		myPanel.add(this.myStatusLabel, gbc);
 
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridx = 0;
 		gbc.gridy = 1;
+		gbc.gridwidth = 1;
 		myPanel.add(this.showBrain3dViewButton, gbc);
 
 		gbc.gridx = 1;
@@ -661,20 +664,25 @@ public class MainWindow extends JFrame implements ActionListener {
 		// start the training of the brain within a thread
 		// so the status can be reported in the gui
 		
-		if (this.myStatusReporter.getComponentCount() == 3) { // remove the last progress bar if any
-			this.myStatusReporter.remove(2);
+		if (this.myStatusReporter.getComponentCount() == 5) { // remove the last progress bar if any
+			this.myStatusReporter.remove(4);
 		}
 		final JProgressBar myProgressBar = new JProgressBar();
 		myProgressBar.setMaximum(this.nbCycles); // we will report the progress for each training iteration
-        myProgressBar.setStringPainted(true);
+		myProgressBar.setValue(0);
+		myProgressBar.setStringPainted(true);
         
 		// Add the progress bar to the status panel
 		GridBagConstraints gbc = new GridBagConstraints();
 		
+		gbc.insets = new Insets(10, 10, 10, 10);
+		gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
         gbc.gridy = 2;
- 		this.myStatusReporter.add(myProgressBar, gbc);
-		
+		gbc.gridwidth = 3;
+        this.myStatusReporter.add(myProgressBar, gbc);
+ //		pack();
+ 		
 		// start the thread
 		Thread worker1 = new Thread() {
                 public void run() {
@@ -744,7 +752,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			case 0: this.myStatusText = "Ready. Wating for command."; break;
 			case 1: this.myStatusText = "Running... compressing file "+this.selectedFile.getName(); break;
 			case 2: this.myStatusText = "Error! No file selected."; break;
-			case 3: this.myStatusText = "Running NN training on file "+this.selectedFile.getName()+" for "+this.nbCyclesSpin.getValue()+" cycles."; break;
+			case 3: this.myStatusText = "Running NN training on "+this.selectedFile.getName()+" for "+this.nbCyclesSpin.getValue()+" cycles."; break;
 			default: this.myStatusText = "Unknown.";
 		}
 //		myStatusPanel.remove(this.myStatusLabel);
