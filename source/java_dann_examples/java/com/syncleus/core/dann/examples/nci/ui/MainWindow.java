@@ -111,14 +111,14 @@ public class MainWindow extends JFrame implements ActionListener {
 	private double compressionRate;
 	private JButton showBrain3dViewButton;
 	private JButton showBrain3dViewButton2;
-	private JButton showPictureButton;
+	private JButton showImageButton;
 	private ImageIcon myShowBrain3dViewIcon;
 	private JSpinner imageChunkXSizeSpin;
 	private JSpinner imageChunkYSizeSpin;
 	private Integer imageChunkXSize;
 	private Integer imageChunkYSize;
 	private final Random random = new Random();
-	private ImageIcon myPictureIcon;
+	private ImageIcon myImageIcon;
 	private URL selectedFileUrl;
 	
 	public MainWindow() {
@@ -394,10 +394,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		// The button opening the 3d visualization of the brain
 		// is set here, as it shows the "status" of the brain
 		this.myShowBrain3dViewIcon = new ImageIcon(this.ICON_PATH+"view_multicolumn.png");
-		this.myPictureIcon = new ImageIcon(this.ICON_PATH+"frame_image.png");
+		this.myImageIcon = new ImageIcon(this.ICON_PATH+"frame_image.png");
 		this.showBrain3dViewButton = new JButton();
 		this.showBrain3dViewButton2 = new JButton();
-		this.showPictureButton = new JButton();
+		this.showImageButton = new JButton();
 		myPanel.setLayout(new GridBagLayout());
 		this.setApplicationStatus(0);
 
@@ -411,9 +411,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.showBrain3dViewButton2.setText("Show Brain in 3d (JOGL)");
 		this.showBrain3dViewButton2.addActionListener(this);
 
-		this.showPictureButton.setIcon(this.myPictureIcon);
-		this.showPictureButton.setText("Show Picture");
-		this.showPictureButton.addActionListener(this);
+		this.showImageButton.setIcon(this.myImageIcon);
+		this.showImageButton.setText("Show Picture");
+		this.showImageButton.addActionListener(this);
 
 		myPanel.setBorder(BorderFactory.createTitledBorder("Status"));
 		
@@ -439,7 +439,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		gbc.gridx = 2;
 		gbc.gridy = 1;
-		myPanel.add(this.showPictureButton, gbc);
+		myPanel.add(this.showImageButton, gbc);
 
 		return myPanel;
 		
@@ -609,9 +609,9 @@ public class MainWindow extends JFrame implements ActionListener {
 			Brain3dViewJogl myBrain3dViewJogl = new Brain3dViewJogl(this);
 			
 		}
-		// show the picture(s) browser
-		else if (evt.getSource().equals(this.showPictureButton)) {
-			PictureViewer myPictureViewer = new PictureViewer(this);
+		// show the image(s)
+		else if (evt.getSource().equals(this.showImageButton)) {
+			ImageViewer myImageViewer = new ImageViewer(this);
 			
 		}
 
