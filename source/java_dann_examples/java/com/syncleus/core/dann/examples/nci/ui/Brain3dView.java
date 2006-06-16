@@ -82,6 +82,16 @@ public class Brain3dView extends JFrame {
 	private final int JFRAME_HEIGHT = 400;
 	private MainWindow myMainWindow;
 
+    // Define colors
+	private Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
+	private Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
+	private Color3f red = new Color3f(0.80f, 0.20f, 0.2f);
+	private Color3f ambient = new Color3f(0.25f, 0.25f, 0.25f);
+	private Color3f diffuse = new Color3f(0.7f, 0.7f, 0.7f);
+	private Color3f specular = new Color3f(0.9f, 0.9f, 0.9f);
+	private Color3f ambientRed = new Color3f(0.2f, 0.05f, 0.0f);
+	private Color3f bgColor = new Color3f(0.05f, 0.05f, 0.2f);
+
 	// CONFIG END
 	////////////////
 
@@ -108,10 +118,10 @@ public class Brain3dView extends JFrame {
 	    View view = universe.getViewer().getView();
 //	    view.setProjectionPolicy(View.PARALLEL_PROJECTION);
 
-	    // Set the view Transform3D object.
+	    // Set the initial view position
 	    TransformGroup tgView = universe.getViewingPlatform().getViewPlatformTransform();
 	    Transform3D transformView = new Transform3D();
-	    transformView.set(1f, new Vector3f(0f, 0f, 0f));
+	    transformView.set(1f, new Vector3f(0f, 0f, 30f));
 	    tgView.setTransform(transformView);
 	     
 	    // add an orbital mouse control to the scene
@@ -155,16 +165,6 @@ public class Brain3dView extends JFrame {
 	    
 	  public BranchGroup createScene3D() {
 
-	    // Define colors
-	    Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
-	    Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
-	    Color3f red = new Color3f(0.80f, 0.20f, 0.2f);
-	    Color3f ambient = new Color3f(0.25f, 0.25f, 0.25f);
-	    Color3f diffuse = new Color3f(0.7f, 0.7f, 0.7f);
-	    Color3f specular = new Color3f(0.9f, 0.9f, 0.9f);
-	    Color3f ambientRed = new Color3f(0.2f, 0.05f, 0.0f);
-	    Color3f bgColor = new Color3f(0.05f, 0.05f, 0.2f);
-
 	    // Create the branch group
 	    BranchGroup branchGroup = new BranchGroup();
 
@@ -185,65 +185,78 @@ public class Brain3dView extends JFrame {
 	    branchGroup.addChild(ambLight);
 
 	    // Create the directional light
-	    Vector3f dir = new Vector3f(-1.0f, -1.0f, -1.0f);
+	    Vector3f dir = new Vector3f(-1f, -1f, -1f);
 	    DirectionalLight dirLight = new DirectionalLight(white, dir);
 	    dirLight.setInfluencingBounds(bounds);
 	    branchGroup.addChild(dirLight);
 
-	    // Create the pole appearance
-	    Material poleMaterial = new Material(ambient, black, diffuse, specular,
-	        110.f);
-	    poleMaterial.setLightingEnable(true);
-	    Appearance poleAppearance = new Appearance();
-	    poleAppearance.setMaterial(poleMaterial);
+//	    Sphere myNeuron1 = new Sphere(1.0f);
+	    float positionsX[] = {
+	    		-10f,-9f,-8f,-7f,-6f,-5f,-4f,-3f,-2f,-1f,
+	    		0f,1f,2f,3f,4f,5f,6f,7f,8f,9f
+	    };
+	    float positionsY[] = {
+	    		-2f,0f,2f,0f,0f,0f,0f,0f,0f,0f,
+	    		0f,0f,0f,0f,0f,0f,0f,0f,0f,0f
+	    };
+	    float positionsZ[] = {
+	    		10f,9f,8f,7f,6f,5f,4f,3f,2f,1f,
+	    		0f,-1f,-2f,-3f,-4f,-5f,-6f,-7f,-8f,-9f
+	    };
 
-	    // Create the transform group node
-	    TransformGroup transformGroup1 = new TransformGroup();
-	    transformGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-	    transformGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	    Transform3D transform1 = new Transform3D();
-	    transform1.set(1f, new Vector3f(-2f, 0.0f, -10.0f));
-	    transformGroup1.setTransform(transform1);
+//	    branchGroup.addChild(this.createSphere(-10f, 0.5f, 0.0f, 1f));
 
-	    TransformGroup transformGroup2 = new TransformGroup();
-	    transformGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-	    transformGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	    Transform3D transform2 = new Transform3D();
-	    transform2.set(1f, new Vector3f(2f, 0.0f, -10.0f));
-	    transformGroup2.setTransform(transform2);
-	    
-	    //ColorCube myCube1 = new ColorCube(0.4);
-	    //ColorCube myCube2 = new ColorCube(0.4);
-	    Sphere myNeuron1 = new Sphere(1.0f);
-	    
-//	    myNeuron1.setAppearance(this.makeMappingFromImage(this.createNeuronTextureImage("Neuron 1", Color.RED)));
-	    
-	    Sphere myNeuron2 = new Sphere(1.0f);
-	    
-//	    Box myBox = new Box(10f, 10f, 10f, poleMaterial);
-//	    transformGroup.addChild(myBox);
-	    
-	    transformGroup1.addChild(myNeuron1);
-	    transformGroup2.addChild(myNeuron2);
-	    
-	    branchGroup.addChild(transformGroup1);
-	    branchGroup.addChild(transformGroup2);
+	    for (int i = 5; i < 15; i++) {
+		    for (int j = 5; j < 15; j++) {
+		    	// add one sphere (a neuron) to the 3d scene
+		    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[0],positionsZ[j], 0.2f));
+		    }
+	    }
 
-	    // Create the poles
-//	    Poles poles = new Poles(poleAppearance);
-//	    transformGroup.addChild(poles.getChild());
+	    for (int i = 0; i < 20; i++) {
+		    for (int j = 0; j < 20; j++) {
+		    	// add one sphere (a neuron) to the 3d scene
+		    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[1],positionsZ[j], 0.2f));
+		    }
+	    }
 
-	    // Add the position markers to the transform group
-//	    transformGroup.addChild(positions.getChild());
-
-	    // Let the positions object know about the transform group
-//	    positions.setTransformGroup(transformGroup);
-
+	    for (int i = 5; i < 15; i++) {
+		    for (int j = 5; j < 15; j++) {
+		    	// add one sphere (a neuron) to the 3d scene
+		    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[2],positionsZ[j], 0.2f));
+		    }
+	    }
+	    
 	    return branchGroup;
 	    
 	  }
 	  
-	  // nothing can be picked on the Brain3dView for now
+	  public TransformGroup createSphere(float posX, float posY, float posZ, float radius) {
+		  
+	  	// Create the transform group node holding the sphere
+	    TransformGroup myTransformGroup = new TransformGroup();
+	    myTransformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+	    myTransformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+	    Transform3D myTransform = new Transform3D();
+	    myTransform.set(1f, new Vector3f(posX, posY, posZ));
+	    myTransformGroup.setTransform(myTransform);
+	    
+	    Sphere myNeuron = new Sphere(radius);
+	    
+	    // Create a "metal" appearance
+	    Material metal = new Material(ambient, black, diffuse, specular,
+	        110.f);
+	    metal.setLightingEnable(true);
+	    Appearance metalAppearance = new Appearance();
+	    metalAppearance.setMaterial(metal);
+	    myNeuron.setAppearance(metalAppearance);
+	    
+	    myTransformGroup.addChild(myNeuron);
+	  
+	    return myTransformGroup;
+	  }  
+
+	// nothing can be picked on the Brain3dView for now
 //	  public void addPick(BranchGroup myBranchGroup) {
 ////	    PickRay myRay = new PickRay( origin, direction );
 //	    PickRay myRay = new PickRay();
