@@ -30,6 +30,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -109,12 +111,15 @@ public class MainWindow extends JFrame implements ActionListener {
 	private double compressionRate;
 	private JButton showBrain3dViewButton;
 	private JButton showBrain3dViewButton2;
+	private JButton showPictureButton;
 	private ImageIcon myShowBrain3dViewIcon;
 	private JSpinner imageChunkXSizeSpin;
 	private JSpinner imageChunkYSizeSpin;
 	private Integer imageChunkXSize;
 	private Integer imageChunkYSize;
 	private final Random random = new Random();
+	private ImageIcon myPictureIcon;
+	private URL selectedFileUrl;
 	
 	public MainWindow() {
 
@@ -389,8 +394,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		// The button opening the 3d visualization of the brain
 		// is set here, as it shows the "status" of the brain
 		this.myShowBrain3dViewIcon = new ImageIcon(this.ICON_PATH+"view_multicolumn.png");
+		this.myPictureIcon = new ImageIcon(this.ICON_PATH+"frame_image.png");
 		this.showBrain3dViewButton = new JButton();
 		this.showBrain3dViewButton2 = new JButton();
+		this.showPictureButton = new JButton();
 		myPanel.setLayout(new GridBagLayout());
 		this.setApplicationStatus(0);
 
@@ -403,7 +410,11 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.showBrain3dViewButton2.setIcon(this.myShowBrain3dViewIcon);
 		this.showBrain3dViewButton2.setText("Show Brain in 3d (JOGL)");
 		this.showBrain3dViewButton2.addActionListener(this);
-	
+
+		this.showPictureButton.setIcon(this.myPictureIcon);
+		this.showPictureButton.setText("Show Picture");
+		this.showPictureButton.addActionListener(this);
+
 		myPanel.setBorder(BorderFactory.createTitledBorder("Status"));
 		
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -421,11 +432,15 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		myPanel.add(this.showBrain3dViewButton, gbc);
-		gbc.fill = GridBagConstraints.NONE;
+
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		myPanel.add(this.showBrain3dViewButton2, gbc);
-		
+
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		myPanel.add(this.showPictureButton, gbc);
+
 		return myPanel;
 		
 	}
@@ -489,7 +504,13 @@ public class MainWindow extends JFrame implements ActionListener {
 			int returnVal = myFileChooser.showOpenDialog(this);
 			        
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				selectedFile = myFileChooser.getSelectedFile();
+				this.selectedFile = myFileChooser.getSelectedFile();
+				try {
+					this.selectedFileUrl = this.selectedFile.toURL();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				System.out.println("FileChooser: a file was selected.");
 				this.selectFileBox.addItem(selectedFile);
 				//This is where a real application would open the file.
@@ -586,6 +607,11 @@ public class MainWindow extends JFrame implements ActionListener {
 		// show the Brain3dView (JOGL version)
 		else if (evt.getSource().equals(this.showBrain3dViewButton2)) {
 			Brain3dViewJogl myBrain3dViewJogl = new Brain3dViewJogl(this);
+			
+		}
+		// show the picture(s) browser
+		else if (evt.getSource().equals(this.showPictureButton)) {
+			PictureViewer myPictureViewer = new PictureViewer(this);
 			
 		}
 
@@ -736,6 +762,13 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	}
 
+	// get and set methods
+	public URL getSelectedFileUrl() {
+		return this.selectedFileUrl;
+	}
+	// ...
+	
+	// main method: This class is the entry point of the nci GUI
 	public static void main(String args[]) {
 		MainWindow myMainwindow = new MainWindow();
 	}
