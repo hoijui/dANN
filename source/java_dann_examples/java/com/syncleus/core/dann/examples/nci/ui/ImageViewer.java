@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
@@ -91,33 +92,31 @@ public class ImageViewer extends JFrame {
 		    	// pack the ImageIcon into a JLabel - that's the way with swing
 		    
 		    	myImageLabel = new JLabel(myImageIcon);
-			    myPanel.add(myImageLabel, BorderLayout.CENTER);
+
+		    	myPanel.add(myImageLabel, BorderLayout.CENTER);
+			    myPanel.setVisible(true);
+
+			    // add the panel containing the Image to the JFrame
+			    getContentPane().add(myPanel);
+
+			    setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
+			    setTitle("Image viewer");
+
+				setResizable(true);
+				
+				setLocationRelativeTo(myMainWindow); // will center the window according to the position of the MainWindow
+
+				// move the window a little
+//				setLocation(this.getX() - 100, this.getY() - 100);
+				
+			    setVisible(true);
 		    	
 		    } catch (Exception ex) {
 		    	System.err.println("Error loading Image.");
-		    	myPanel.removeAll();
-		    	myImageLabel = new JLabel();
-		    	myImageLabel.setText("No Image available - please select one.");
-			    myPanel.add(myImageLabel, BorderLayout.CENTER);
-
+		    	JOptionPane.showMessageDialog(this.myMainWindow, "No image to display - Please select one.");
+		    	
 		    }
 		    
-		    myPanel.setVisible(true);
-
-		    // add the panel containing the Image to the JFrame
-		    getContentPane().add(myPanel);
-
-		    setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
-		    setTitle("Image viewer");
-
-			setResizable(true);
-			
-			setLocationRelativeTo(myMainWindow); // will center the window according to the position of the MainWindow
-
-			// move the window a little
-//			setLocation(this.getX() - 100, this.getY() - 100);
-			
-		    setVisible(true);
 		  }  
 
 }
