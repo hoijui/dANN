@@ -34,6 +34,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.OverlayLayout;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 
@@ -59,8 +60,8 @@ public class ImageViewer extends JFrame {
 	// CONFIG START
 
 	// Size of the Window containing the Image
-	private final int JFRAME_WIDTH = 800;
-	private final int JFRAME_HEIGHT = 600;
+//	private final int JFRAME_WIDTH = 800;
+//	private final int JFRAME_HEIGHT = 600;
 
 	// CONFIG END
 	////////////////
@@ -74,32 +75,52 @@ public class ImageViewer extends JFrame {
 			
 			this.myMainWindow = myMainWindow;
 			
+//		    getContentPane().setLayout(null);
 
 			// Create a JPanel containing the Image
 		    myPanel = new JPanel();
 //		    myPanel.setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
-		    myPanel.setLocation(0, 0);
-			BorderLayout layout = new BorderLayout();
-			myPanel.setLayout(layout);
+//		    myPanel.setLocation(0, 0);
+//			BorderLayout layout = new BorderLayout();
+//		    myPanel.setLayout(layout);
+
+		    // the swing layout "OverlayLayout" allows to arrange
+		    // components over the top of each other with some 
+		    // nice management.
+		    OverlayLayout layout = new OverlayLayout(myPanel); 
+		    myPanel.setLayout(layout);
 
 //		    myPanel.setLayout(null);
 			
 		    // Try to get access to the file - pack it into a Swing component
 		    try {
+
+				// add some test markers
+				this.markArea(myPanel, 5, 5, "it1");
+				this.markArea(myPanel, 10, 10, "it2");
+				this.markArea(myPanel, 20, 20, "it3");
+
+		    	
 		    	System.out.println("Trying to get file from: "+this.myMainWindow.getSelectedFileUrl());
 		    	myImageIcon = new ImageIcon(this.myMainWindow.getSelectedFileUrl());
 
 		    	// pack the ImageIcon into a JLabel - that's the way with swing
 		    
 		    	myImageLabel = new JLabel(myImageIcon);
-
-		    	myPanel.add(myImageLabel, BorderLayout.CENTER);
+//		    	myPanel.setLayout(null);
+		    	myImageLabel.setLocation(100, 100);
+		    	myImageLabel.setVisible(true);
+		    	
+		    	myPanel.add(myImageLabel);
+		    	
+		    	
 			    myPanel.setVisible(true);
 
 			    // add the panel containing the Image to the JFrame
 			    getContentPane().add(myPanel);
 
-			    setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
+			    setSize(myImageIcon.getIconWidth(), myImageIcon.getIconHeight());
+//			    setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
 			    setTitle("Image viewer");
 
 				setResizable(true);
@@ -113,10 +134,19 @@ public class ImageViewer extends JFrame {
 		    	
 		    } catch (Exception ex) {
 		    	System.err.println("Error loading Image.");
-		    	JOptionPane.showMessageDialog(this.myMainWindow, "No image to display - Please select one.");
+		    	JOptionPane.showMessageDialog(this.myMainWindow, "No image to display - Please select some file(s).");
 		    	
 		    }
 		    
 		  }  
+
+	public void markArea(JPanel myPanel, int posX, int posY, String markerText) {
+		JLabel myArea = new JLabel();
+		myArea.setText(markerText);
+	
+		myArea.setLocation(posX, posY);
+
+		myPanel.add(myArea);
+	}
 
 }
