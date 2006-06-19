@@ -193,6 +193,7 @@ public class ImageViewer extends JFrame {
 				
 //			    setVisible(true);
 
+				this.setAlwaysOnTop(true);
 				this.setVisible(true);
 		    	
 		    } catch (Exception ex) {
