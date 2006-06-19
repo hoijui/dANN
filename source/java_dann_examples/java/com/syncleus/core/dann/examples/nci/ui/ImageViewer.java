@@ -72,10 +72,10 @@ public class ImageViewer extends JFrame {
 	// Size of the Window containing the Image
 //	private final int JFRAME_WIDTH = 800;
 //	private final int JFRAME_HEIGHT = 600;
-	private final int JFRAME_BORDER_SIZE = 20;
+	private final int JFRAME_BORDER_SIZE = 60;
 	
 	// refresh interval in ms to follow the nci brain iterations
-	private final int REFRESH_INTERVAL = 1000;
+//	private final int REFRESH_INTERVAL = 1000;
 
 	// CONFIG END
 	////////////////
@@ -85,6 +85,8 @@ public class ImageViewer extends JFrame {
 	private JLayeredPane myPanel;
 	private ImageIcon myImageIcon;
 	private JLabel myImageLabel;
+
+	private int lastLayer = 1;
 	
 	public ImageViewer(MainWindow myMainWindow) {
 			
@@ -145,20 +147,20 @@ public class ImageViewer extends JFrame {
 
 		    	myPanel.add(myImageLabel, new Integer(1));
 
-		    	Timer timer = new Timer(REFRESH_INTERVAL, new ActionListener() {
-		    		int i = 0;
-		    		int j = 2;
-		    		public void actionPerformed(ActionEvent evt) {
-						if (true) {
-							markArea(myPanel, i, i, 20, 20, j);
-							i += 5;
-							j++;
-							repaint();
-						}
-					}
-		    		
-		    	});
-		    	timer.start();
+//		    	Timer timer = new Timer(REFRESH_INTERVAL, new ActionListener() {
+//		    		int i = 0;
+//		    		int j = 2;
+//		    		public void actionPerformed(ActionEvent evt) {
+//						if (true) {
+//							markArea(myPanel, i, i, 20, 20, j);
+//							i += 5;
+//							j++;
+//							repaint();
+//						}
+//					}
+//		    		
+//		    	});
+//		    	timer.start();
 		    	
 		    	// pack the ImageIcon into a JLabel - that's the way with swing		    	
 		    	
@@ -172,7 +174,6 @@ public class ImageViewer extends JFrame {
 //		    	myImageLabel.setMaximumSize(new Dimension(JFRAME_WIDTH, JFRAME_HEIGHT));
 //		    	myImageLabel.setLocation(new Point(0, 0));
 
-			    getContentPane().add(myPanel, BorderLayout.CENTER);
 
 //			    setSize(JFRAME_WIDTH, JFRAME_HEIGHT);
 			    setTitle("Image viewer");
@@ -180,6 +181,8 @@ public class ImageViewer extends JFrame {
 		    	setSize(new Dimension(myPanel.getWidth() + JFRAME_BORDER_SIZE, myPanel.getHeight() + JFRAME_BORDER_SIZE));
 		    	setMinimumSize(new Dimension(myPanel.getWidth() + JFRAME_BORDER_SIZE, myPanel.getHeight() + JFRAME_BORDER_SIZE));
 		    	setMaximumSize(new Dimension(myPanel.getWidth() + JFRAME_BORDER_SIZE, myPanel.getHeight() + JFRAME_BORDER_SIZE));
+
+			    getContentPane().add(myPanel, BorderLayout.CENTER);
 
 				setResizable(false);
 				
@@ -200,7 +203,8 @@ public class ImageViewer extends JFrame {
 		    
 		  }  
 
-	public void markArea(JLayeredPane myPanel, int posX, int posY, int sizeX, int sizeY, int depth) {
+	public void drawChunkMask(int posX, int posY, int sizeX, int sizeY) {
+//	public void markArea(JLayeredPane myPanel, int posX, int posY, int sizeX, int sizeY, int depth) {
 //		JLabel myArea = new JLabel();
 //		myArea.setText(markerText);
 	
@@ -240,8 +244,19 @@ public class ImageViewer extends JFrame {
 		myMarkerLabel.setMaximumSize(new Dimension(sizeX+4, sizeY+4));
 		myMarkerLabel.setLocation(new Point(posX-2, posY-2));
 		
-		myPanel.add(myMarkerLabel, new Integer(depth));
+		lastLayer ++;
+		myPanel.add(myMarkerLabel, new Integer(lastLayer));
 		myMarkerLabel.setVisible(true);
+
+		repaint();
+		
+//		if (true) {
+//		markArea(myPanel, i, i, 20, 20, j);
+//		i += 5;
+//		j++;
+//		repaint();
+//	}
+
 	}
 
 }

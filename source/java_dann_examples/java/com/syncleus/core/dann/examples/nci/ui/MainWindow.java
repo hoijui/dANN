@@ -120,6 +120,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private final Random random = new Random();
 	private ImageIcon myImageIcon;
 	private URL selectedFileUrl;
+	private ImageViewer myImageViewer;
 	
 	public MainWindow() {
 
@@ -614,7 +615,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		}
 		// show the image(s)
 		else if (evt.getSource().equals(this.showImageButton)) {
-			ImageViewer myImageViewer = new ImageViewer(this);
+			myImageViewer = new ImageViewer(this);
 			
 		}
 
@@ -688,6 +689,11 @@ public class MainWindow extends JFrame implements ActionListener {
                 public void run() {
                         try {
                         	// simulate the first percents progress while creating the brain
+                        	
+                        	// Rem: we will have to skip the brain creation
+                        	// if a brain already exists (multiple trainings)
+                        	// -> not implemented yet
+                        	
                         	myProgressBar.setValue(1);
                         	brain = new NciBrain(compressionRate, imageChunkXSize, imageChunkYSize, true);
                         	brain.setLearning(true); // a brain wants to learn, this is the nature!
@@ -705,8 +711,16 @@ public class MainWindow extends JFrame implements ActionListener {
                         		
                     			// select a random subsection of the image of 
                         		// imageChunkXSize and imageChunkYSize dimension
-                    			currentTrainImage = currentTrainImage.getSubimage(random.nextInt(currentTrainImage.getWidth() - imageChunkXSize), random.nextInt(currentTrainImage.getHeight() - imageChunkYSize), imageChunkXSize, imageChunkYSize);
+                        		int randomChunkPosX = random.nextInt(currentTrainImage.getWidth() - imageChunkXSize);
+                        		int randomChunkPosY = random.nextInt(currentTrainImage.getHeight() - imageChunkYSize);
+                    			
+                        		currentTrainImage = currentTrainImage.getSubimage(randomChunkPosX, randomChunkPosY, imageChunkXSize, imageChunkYSize);
 
+                        		if (!(myImageViewer == null)) {
+                        			myImageViewer.drawChunkMask(randomChunkPosX, randomChunkPosY, imageChunkXSize, imageChunkYSize);
+                        			myImageViewer.requestFocus();
+                        		}
+                        		
                     			//now train the image
                     			brain.compress(currentTrainImage);
                     			
