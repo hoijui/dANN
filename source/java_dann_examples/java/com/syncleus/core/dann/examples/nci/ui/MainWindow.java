@@ -110,7 +110,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private ImageIcon myCancelIcon;
 	private double compressionRate;
 	private JButton showBrain3dViewButton;
-	private JButton showBrain3dViewButton2;
 	private JButton showImageButton;
 	private ImageIcon myShowBrain3dViewIcon;
 	private JSpinner imageChunkXSizeSpin;
@@ -397,7 +396,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.myShowBrain3dViewIcon = new ImageIcon(this.ICON_PATH+"view_multicolumn.png");
 		this.myImageIcon = new ImageIcon(this.ICON_PATH+"frame_image.png");
 		this.showBrain3dViewButton = new JButton();
-		this.showBrain3dViewButton2 = new JButton();
 		this.showImageButton = new JButton();
 		myPanel.setLayout(new GridBagLayout());
 		this.setApplicationStatus(0);
@@ -407,10 +405,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.showBrain3dViewButton.setIcon(this.myShowBrain3dViewIcon);
 		this.showBrain3dViewButton.setText("Show Brain in 3d (Java3D)");
 		this.showBrain3dViewButton.addActionListener(this);
-
-		this.showBrain3dViewButton2.setIcon(this.myShowBrain3dViewIcon);
-		this.showBrain3dViewButton2.setText("Show Brain in 3d (JOGL)");
-		this.showBrain3dViewButton2.addActionListener(this);
 
 		this.showImageButton.setIcon(this.myImageIcon);
 		this.showImageButton.setText("Show Picture");
@@ -438,10 +432,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		myPanel.add(this.showBrain3dViewButton, gbc);
 
 		gbc.gridx = 1;
-		gbc.gridy = 1;
-		myPanel.add(this.showBrain3dViewButton2, gbc);
-
-		gbc.gridx = 2;
 		gbc.gridy = 1;
 		myPanel.add(this.showImageButton, gbc);
 
@@ -608,11 +598,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			Brain3dView myBrain3dView = new Brain3dView(this);
 			
 		}
-		// show the Brain3dView (JOGL version)
-		else if (evt.getSource().equals(this.showBrain3dViewButton2)) {
-			Brain3dViewJogl myBrain3dViewJogl = new Brain3dViewJogl(this);
-			
-		}
+		
 		// show the image(s)
 		else if (evt.getSource().equals(this.showImageButton)) {
 			myImageViewer = new ImageViewer(this);
