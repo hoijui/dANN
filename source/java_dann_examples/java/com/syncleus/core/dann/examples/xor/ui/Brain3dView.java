@@ -121,12 +121,13 @@ public class Brain3dView extends JFrame {
 	    // Set the initial view position
 	    TransformGroup tgView = universe.getViewingPlatform().getViewPlatformTransform();
 	    Transform3D transformView = new Transform3D();
-	    transformView.set(1f, new Vector3f(0f, 0f, 30f));
+	    transformView.set(1f, new Vector3f(0f, 0f, 10f));
 	    tgView.setTransform(transformView);
 	     
 	    // add an orbital mouse control to the scene
 	    OrbitBehavior myOrbital = new OrbitBehavior(myCanvas3D);
-	    myOrbital.setRotationCenter(new Point3d(0f, 0f, -10f));
+	    myOrbital.setRotationCenter(new Point3d(0f, 0f, -2f));
+	    myOrbital.setReverseRotate(true);
 	    myOrbital.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), Double.POSITIVE_INFINITY));
 	    universe.getViewingPlatform().setViewPlatformBehavior(myOrbital);
 
@@ -192,39 +193,34 @@ public class Brain3dView extends JFrame {
 
 //	    Sphere myNeuron1 = new Sphere(1.0f);
 	    float positionsX[] = {
-	    		-10f,-9f,-8f,-7f,-6f,-5f,-4f,-3f,-2f,-1f,
-	    		0f,1f,2f,3f,4f,5f,6f,7f,8f,9f
+	    		-2f,-1f,
+	    		0f,1f,2f
 	    };
+
 	    float positionsY[] = {
-	    		-2f,0f,2f,0f,0f,0f,0f,0f,0f,0f,
-	    		0f,0f,0f,0f,0f,0f,0f,0f,0f,0f
+	    		-2f,0f,2f
 	    };
 	    float positionsZ[] = {
-	    		10f,9f,8f,7f,6f,5f,4f,3f,2f,1f,
-	    		0f,-1f,-2f,-3f,-4f,-5f,-6f,-7f,-8f,-9f
+	    		-1f, 0f,1f
 	    };
 
 //	    branchGroup.addChild(this.createSphere(-10f, 0.5f, 0.0f, 1f));
 
-	    for (int i = 5; i < 15; i++) {
-		    for (int j = 5; j < 15; j++) {
-		    	// add one sphere (a neuron) to the 3d scene
-		    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[0],positionsZ[j], 0.2f));
-		    }
+	    for (int i = 1; i < 4; i++) {
+	    	// add one sphere (a neuron) to the 3d scene
+	    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[0],positionsZ[1], 0.2f));
 	    }
 
-	    for (int i = 0; i < 20; i++) {
-		    for (int j = 0; j < 20; j++) {
-		    	// add one sphere (a neuron) to the 3d scene
-		    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[1],positionsZ[j], 0.2f));
-		    }
+	    for (int i = 0; i < 5; i++) {
+	    	for (int j = 0; j < 4; j+=2) {
+	    		// add one sphere (a neuron) to the 3d scene
+	    		branchGroup.addChild(this.createSphere(positionsX[i],positionsY[1],positionsZ[j], 0.2f));
+	    	}
 	    }
 
-	    for (int i = 5; i < 15; i++) {
-		    for (int j = 5; j < 15; j++) {
-		    	// add one sphere (a neuron) to the 3d scene
-		    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[2],positionsZ[j], 0.2f));
-		    }
+	    for (int i = 2; i < 3; i++) {
+	    	// 	add one sphere (a neuron) to the 3d scene
+	    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[2],positionsZ[1], 0.2f));
 	    }
 	    
 	    return branchGroup;
