@@ -66,10 +66,10 @@ import com.syncleus.core.dann.examples.xor.XorBrain;
  * The xor exemple of dANN is using three inputs,
  * and the brain has to learn the expected results:
  * (1,0,0) should give 1
- * (0,0,0) should give 0
- * (1,1,0) should give 0
+ * (0,0,0) should give -1
+ * (1,1,0) should give -1
  * etc..
- * 
+ * (outputs 0 and 1 are replaced by -1 and 1)
  * This class implements the main Window of the gui.
  * The structure of the gui is similar to the one
  * initially designed for the nci example of dANN.
@@ -219,8 +219,11 @@ public class MainWindow extends JFrame implements ActionListener {
 		welcomeText = "Welcome to the XOR demo - a neural network learining the XOR operation.\n";
 		welcomeText += "\n";
 		welcomeText += "XOR is a logical operation (exclusive OR).\n";
-		welcomeText += "Example: with 0 = false and 1 = true:\n";
-		welcomeText += "(1,0,0) gives 1, but (1,1,0) gives 0.\n";
+
+		// unclear, could the xor brain take 0 and 1 instead
+		// of -1 and 1 as setDesired() ? 
+//		welcomeText += "Example: with 0 = false and 1 = true:\n";
+//		welcomeText += "(1,0,0) gives 1, but (1,1,0) gives 0.\n";
 		welcomeText += "\n";
 		welcomeText += "This application is based on the dANN library (Dynamic Artificial Neural Network).\n";
  
@@ -250,13 +253,13 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		myPanel.setLayout(new GridBagLayout());
 
-		myText1 = "(0,0,0) should give 0";
+		myText1 = "(0,0,0) should give -1";
 		myLabel1.setText(myText1);
 
 		myText2 = "(1,0,0), (0,1,0) and (0,0,1) should give 1";
 		myLabel2.setText(myText2);
 
-		myText3 = "(1,1,1), (1,1,0), (1,0,1) and (0,1,1) should give 0";
+		myText3 = "(1,1,1), (1,1,0), (1,0,1) and (0,1,1) should give -1";
 		myLabel3.setText(myText3);
 
 		myPanel.setBorder(BorderFactory.createTitledBorder("Input values for training"));
