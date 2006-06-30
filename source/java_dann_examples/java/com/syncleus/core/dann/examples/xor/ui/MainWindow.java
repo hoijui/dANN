@@ -327,7 +327,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.myShowBrain3dViewIcon = new ImageIcon(this.ICON_PATH+"view_multicolumn.png");
 		this.myImageIcon = new ImageIcon(this.ICON_PATH+"frame_image.png");
 		this.showBrain3dViewButton = new JButton();
-		this.showImageButton = new JButton();
+//		this.showImageButton = new JButton();
 		myPanel.setLayout(new GridBagLayout());
 		this.setApplicationStatus(0);
 
@@ -337,9 +337,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.showBrain3dViewButton.setText("Show Brain in 3d (Java3D)");
 		this.showBrain3dViewButton.addActionListener(this);
 
-		this.showImageButton.setIcon(this.myImageIcon);
-		this.showImageButton.setText("Show Picture");
-		this.showImageButton.addActionListener(this);
+//		this.showImageButton.setIcon(this.myImageIcon);
+//		this.showImageButton.setText("Show Picture");
+//		this.showImageButton.addActionListener(this);
 
 		myPanel.setBorder(BorderFactory.createTitledBorder("Status"));
 		
@@ -362,9 +362,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridwidth = 1;
 		myPanel.add(this.showBrain3dViewButton, gbc);
 
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		myPanel.add(this.showImageButton, gbc);
+//		gbc.gridx = 1;
+//		gbc.gridy = 1;
+//		myPanel.add(this.showImageButton, gbc);
 
 		return myPanel;
 		
