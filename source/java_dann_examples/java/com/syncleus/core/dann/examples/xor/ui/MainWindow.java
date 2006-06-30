@@ -83,7 +83,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	////////////////
 	// CONFIG START
 
-	private final String JFRAME_TITLE = "dANN-xor - example application of the dANN API";
+	private final String JFRAME_TITLE = "dANN-XOR - example application of the dANN API";
 	private final String ICON_PATH = "./icons/";
 
 	// default options
@@ -203,9 +203,17 @@ public class MainWindow extends JFrame implements ActionListener {
 		String welcomeText = null;
 		
 		// introduce the software
-		welcomeText = "Welcome to Neural Compressed Image (nci), a software tool for image compression.\n\n";
-		welcomeText += "Nci is based on the dANN library (Dynamic Artificial Neural Network).\n";
-
+//		welcomeText = "Welcome to Neural Compressed Image (nci), a software tool for image compression.\n\n";
+//		welcomeText += "Nci is based on the dANN library (Dynamic Artificial Neural Network).\n";
+		welcomeText = "Welcome to the XOR demo - a neural network learining the XOR operation.\n";
+		welcomeText += "\n";
+		welcomeText += "XOR is a logical operation (exclusive OR).\n";
+		welcomeText += "Example: with 0 = false and 1 = true:\n";
+		welcomeText += "(1,0,0) gives 1, but (1,1,0) gives 0.\n";
+		welcomeText += "\n";
+		welcomeText += "This application is based on the dANN library (Dynamic Artificial Neural Network).\n";
+ 
+		
 		myTextArea.setText(welcomeText);
 		myTextArea.setBackground(new Color(235, 235, 235));
 		myTextArea.setEditable(false);
@@ -218,27 +226,28 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	private JPanel createInputSelector() {
 		JPanel myPanel = new JPanel();
-		JLabel myLabel = new JLabel();
-		String myText = null;
+		JLabel myLabel1 = new JLabel();
+		String myText1 = null;
+		JLabel myLabel2 = new JLabel();
+		String myText2 = null;
+		JLabel myLabel3 = new JLabel();
+		String myText3 = null;
+
 //		this.selectFileBox = new JComboBox();
 //		myFileOpenIcon = new ImageIcon(this.ICON_PATH+"fileopen.png");
 //		this.selectFileButton = new JButton();
 		
 		myPanel.setLayout(new GridBagLayout());
-		myText = "Input values and desired results: ";
 
-		myLabel.setText(myText);
+		myText1 = "(0,0,0) should give 0";
+		myLabel1.setText(myText1);
 
-//		String defaultEntry = "not set";
-//		this.selectFileBox.setPrototypeDisplayValue("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
-//		this.selectFileBox.setAutoscrolls(false);
-//		this.selectFileBox.setEditable(true);
-//		this.selectFileBox.setEnabled(false);
+		myText2 = "(1,0,0), (0,1,0) and (0,0,1) should give 1";
+		myLabel2.setText(myText2);
 
-//		this.selectFileButton.setText("Browse...");
-//		this.selectFileButton.setIcon(myFileOpenIcon);
-//		this.selectFileButton.addActionListener(this);
-		
+		myText3 = "(1,1,1), (1,1,0), (1,0,1) and (0,1,1) should give 0";
+		myLabel3.setText(myText3);
+
 		myPanel.setBorder(BorderFactory.createTitledBorder("Input values for training"));
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -251,17 +260,15 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.ipadx = 2;
-		myPanel.add(myLabel, gbc);
+		myPanel.add(myLabel1, gbc);
 
-//		gbc.gridx = 0;
-//		gbc.gridy = 1;
-//		gbc.ipadx = 1;
-//		myPanel.add(this.selectFileBox, gbc);
-//		
-//		gbc.gridx = 1;
-//		gbc.gridy = 1;
-//		gbc.ipadx = 1;
-//		myPanel.add(this.selectFileButton, gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		myPanel.add(myLabel2, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		myPanel.add(myLabel3, gbc);
 				
 		return myPanel;
 		
@@ -282,9 +289,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		nbCyclesSpinLabel.setText(nbCyclesSpinText);	
 		SpinnerModel nbCycelesSpinModel =
 	        new SpinnerNumberModel(nbCyclesInitVal, //initial value
-	                               10, //min
-	                               1000, //max
-	                               10); //step
+	                               100, //min
+	                               20000, //max
+	                               100); //step
 		this.nbCyclesSpin.setModel(nbCycelesSpinModel);
 		((JSpinner.DefaultEditor)this.nbCyclesSpin.getEditor())
 		.getTextField().setEditable(false);
@@ -499,12 +506,6 @@ public class MainWindow extends JFrame implements ActionListener {
 			
 		}
 		
-		// show the image(s)
-		else if (evt.getSource().equals(this.showImageButton)) {
-			myImageViewer = new ImageViewer(this);
-			
-		}
-
 		else {
 			// should not happen
 		}
@@ -544,9 +545,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		// start the training with the selected options
 		
 		this.nbCycles = (Integer) this.nbCyclesSpin.getValue();
-		this.imageChunkXSize = (Integer) this.imageChunkXSizeSpin.getValue();
-		this.imageChunkYSize = (Integer) this.imageChunkYSizeSpin.getValue();
-		this.compressionRate = (Double) this.compressionRateSpin.getValue();
+//		this.imageChunkXSize = (Integer) this.imageChunkXSizeSpin.getValue();
+//		this.imageChunkYSize = (Integer) this.imageChunkYSizeSpin.getValue();
+//		this.compressionRate = (Double) this.compressionRateSpin.getValue();
 
 		// start the training of the brain within a thread
 		// so the status can be reported in the gui
@@ -581,8 +582,8 @@ public class MainWindow extends JFrame implements ActionListener {
                         	// -> not implemented yet
                         	
                         	myProgressBar.setValue(1);
-                        	brain = new NciBrain(compressionRate, imageChunkXSize, imageChunkYSize, true);
-                        	brain.setLearning(true); // a brain wants to learn, this is the nature!
+//                        	brain = new NciBrain(compressionRate, imageChunkXSize, imageChunkYSize, true);
+//                        	brain.setLearning(true); // a brain wants to learn, this is the nature!
                         	
                         	// for nbCycles...
                         	// repeate training...
@@ -593,27 +594,27 @@ public class MainWindow extends JFrame implements ActionListener {
 //                        		currentTrainImage = ImageIO.read(trainingImages[random.nextInt(trainingImages.length)]);
                         		
                         		// only one input image for now.
-                        		BufferedImage currentTrainImage = ImageIO.read(selectedFile);
+//                        		BufferedImage currentTrainImage = ImageIO.read(selectedFile);
                         		
                     			// select a random subsection of the image of 
                         		// imageChunkXSize and imageChunkYSize dimension
-                        		int randomChunkPosX = random.nextInt(currentTrainImage.getWidth() - imageChunkXSize);
-                        		int randomChunkPosY = random.nextInt(currentTrainImage.getHeight() - imageChunkYSize);
+ //                       		int randomChunkPosX = random.nextInt(currentTrainImage.getWidth() - imageChunkXSize);
+ //                       		int randomChunkPosY = random.nextInt(currentTrainImage.getHeight() - imageChunkYSize);
                     			
-                        		currentTrainImage = currentTrainImage.getSubimage(randomChunkPosX, randomChunkPosY, imageChunkXSize, imageChunkYSize);
+//                        		currentTrainImage = currentTrainImage.getSubimage(randomChunkPosX, randomChunkPosY, imageChunkXSize, imageChunkYSize);
 
-                        		if (!(myImageViewer == null)) {
-                        			myImageViewer.drawChunkMask(randomChunkPosX, randomChunkPosY, imageChunkXSize, imageChunkYSize);
-                        			myImageViewer.requestFocus();
-                        		}
+//                      		if (!(myImageViewer == null)) {
+//                        			myImageViewer.drawChunkMask(randomChunkPosX, randomChunkPosY, imageChunkXSize, imageChunkYSize);
+//                        			myImageViewer.requestFocus();
+//                        		}
                         		
                     			//now train the image
-                    			brain.compress(currentTrainImage);
+//                    			brain.compress(currentTrainImage);
                     			
                         	}
                         	
                         	// end of training
-                        	brain.setLearning(false);
+//                        	brain.setLearning(false);
                         	
                         	// reset the command button for the next run
                         	trainButton.setIcon(myTrainIcon);
@@ -642,17 +643,17 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 	
 		// check if a file was selected
-		if (((statusToSet == 1) || (statusToSet == 3)) && (selectedFile == null)) {
-			statusToSet = 2; // error
-		}
+//		if (((statusToSet == 1) || (statusToSet == 3)) && (selectedFile == null)) {
+//			statusToSet = 2; // error
+//		}
 		
 		this.applicationStatus = statusToSet;
 
 		switch (statusToSet) {
 			case 0: this.myStatusText = "Ready. Wating for command."; break;
-			case 1: this.myStatusText = "Running... compressing file "+this.selectedFile.getName(); break;
+			case 1: this.myStatusText = "Running the brain to produce a xor"; break;
 			case 2: this.myStatusText = "Error! No file selected."; break;
-			case 3: this.myStatusText = "Running NN training on "+this.selectedFile.getName()+" for "+this.nbCyclesSpin.getValue()+" cycles."; break;
+			case 3: this.myStatusText = "Running NN training on to learn a xor"; break;
 			default: this.myStatusText = "Unknown.";
 		}
 //		myStatusPanel.remove(this.myStatusLabel);
@@ -670,11 +671,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	}
 
-	// get and set methods
-	public URL getSelectedFileUrl() {
-		return this.selectedFileUrl;
-	}
-	// ...
 	
 	// main method: This class is the entry point of the nci GUI
 	public static void main(String args[]) {
