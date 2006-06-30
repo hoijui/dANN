@@ -127,6 +127,7 @@ public class Brain3dView extends JFrame {
 	    // add an orbital mouse control to the scene
 	    OrbitBehavior myOrbital = new OrbitBehavior(myCanvas3D);
 	    myOrbital.setRotationCenter(new Point3d(0f, 0f, -10f));
+	    myOrbital.setReverseRotate(true);
 	    myOrbital.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), Double.POSITIVE_INFINITY));
 	    universe.getViewingPlatform().setViewPlatformBehavior(myOrbital);
 
