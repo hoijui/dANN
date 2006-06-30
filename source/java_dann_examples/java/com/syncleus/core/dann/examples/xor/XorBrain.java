@@ -180,7 +180,7 @@ public class XorBrain {
 		for(int lcv = 0; lcv < count; lcv++) {
 
 			double[] curInput = {0, 0, 0};
-            double curTrain = 0;
+            double curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
             output.setDesired(curTrain);
@@ -216,7 +216,7 @@ public class XorBrain {
             curInput[0] = 1;
             curInput[1] = 1;
             curInput[2] = 0;
-            curTrain = 0;
+            curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
             output.setDesired(curTrain);
@@ -225,7 +225,7 @@ public class XorBrain {
             curInput[0] = 0;
             curInput[1] = 1;
             curInput[2] = 1;
-            curTrain = 0;
+            curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
             output.setDesired(curTrain);
@@ -234,7 +234,7 @@ public class XorBrain {
             curInput[0] = 1;
             curInput[1] = 0;
             curInput[2] = 1;
-            curTrain = 0;
+            curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
             output.setDesired(curTrain);
@@ -243,7 +243,7 @@ public class XorBrain {
             curInput[0] = 1;
             curInput[1] = 1;
             curInput[2] = 1;
-            curTrain = 0;
+            curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
             output.setDesired(curTrain);
