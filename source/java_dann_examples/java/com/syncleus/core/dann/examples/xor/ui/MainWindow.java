@@ -303,9 +303,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		nbCyclesSpinLabel.setText(nbCyclesSpinText);	
 		SpinnerModel nbCycelesSpinModel =
 	        new SpinnerNumberModel(nbCyclesInitVal, //initial value
-	                               100, //min
-	                               20000, //max
-	                               100); //step
+	                               1000, //min
+	                               100000, //max
+	                               1000); //step
 		this.nbCyclesSpin.setModel(nbCycelesSpinModel);
 		((JSpinner.DefaultEditor)this.nbCyclesSpin.getEditor())
 		.getTextField().setEditable(false);
