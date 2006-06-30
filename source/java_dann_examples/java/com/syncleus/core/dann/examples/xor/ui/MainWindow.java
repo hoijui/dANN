@@ -52,7 +52,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
-import com.syncleus.core.dann.examples.nci.NciBrain;
+import com.syncleus.core.dann.examples.xor.XorBrain;
 
 /**
  * A graphical user interface based on java swing
@@ -109,7 +109,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private ImageIcon myTrainIcon;
 	private ImageIcon myQuitIcon;
 	
-	private NciBrain brain;
+	private XorBrain brain;
 	private JSpinner nbCyclesSpin;
 	private int nbCycles;
 	private ImageIcon myMatrixIcon;
@@ -125,6 +125,14 @@ public class MainWindow extends JFrame implements ActionListener {
 	
 	public MainWindow() {
 
+		////////////
+		// first, create the Xor Brain.
+		
+		brain = new XorBrain(); // com.syncleus.core.dann.examples.xor.Main
+
+		////////////
+		// initialize the gui
+		
 		// some basic JFrame settings
 		setTitle(JFRAME_TITLE);
 //		setSize(new Dimension(JFRAME_WIDTH, JFRAME_HEIGHT));
@@ -194,6 +202,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		setApplicationStatus(0); // application is ready
 		
 		setVisible(true);
+
+		// the gui is up and running
+
 	}
 
 
@@ -381,13 +392,12 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		myPanel.setLayout(new GridBagLayout());
 
-		this.runButton.setText(" Run Compression ");
+		this.runButton.setText(" Run the XOR ");
 		this.runButton.setIcon(myRunIcon);
 		this.runButton.addActionListener(this);
-		// run compression not available yet.
-		this.runButton.setEnabled(false);
+//		this.runButton.setEnabled(false);
 		
-		this.trainButton.setText(" Train Compression ");
+		this.trainButton.setText(" Train the XOR ");
 		this.trainButton.setIcon(myTrainIcon);
 		this.trainButton.addActionListener(this);
 
@@ -423,30 +433,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		// commands buttons
 		if (evt.getSource().equals(this.runButton)) {
-			// run or stop the compression
-
-			if (this.getApplicationStatus() == 0) { // application was ready
-				this.setApplicationStatus(1); // set to running
-				if (this.getApplicationStatus() == 1) {
-					this.runButton.setIcon(this.myCancelIcon);
-					this.runButton.setText("Abort compression");
-				}
-			}
-			else if (this.getApplicationStatus() == 1) { // application was running
-				this.setApplicationStatus(0); // ready
-				this.runButton.setIcon(this.myRunIcon);
-				this.runButton.setText(" Run compression ");
-			}
-			else if (this.getApplicationStatus() == 2) { // application was in error state - try to run anyway
-				this.setApplicationStatus(1); // set to running
-				if (this.getApplicationStatus() == 1) {
-					this.runButton.setIcon(this.myCancelIcon);					
-					this.runButton.setText("Abort compression");
-				}
-			}
-			else {
-				// not handled yet.
-			}
+			// run the xor computation (fast, so no button refresh)
+			this.run();
 		}
 		
 		else if (evt.getSource().equals(this.trainButton)) {
@@ -540,6 +528,17 @@ public class MainWindow extends JFrame implements ActionListener {
 //	}
 
 
+	private void run() {
+		
+		String myResultWindowTitle = "XOR results from the brain";
+		
+		String myResultsText = brain.testOutput();
+		
+		JOptionPane.showMessageDialog(this, myResultsText, myResultWindowTitle, JOptionPane.INFORMATION_MESSAGE);
+		
+	}
+
+
 	private void train() {
 		
 		// start the training with the selected options
@@ -575,41 +574,13 @@ public class MainWindow extends JFrame implements ActionListener {
 		Thread worker1 = new Thread() {
                 public void run() {
                         try {
-                        	// simulate the first percents progress while creating the brain
-                        	
-                        	// Rem: we will have to skip the brain creation
-                        	// if a brain already exists (multiple trainings)
-                        	// -> not implemented yet
-                        	
-                        	myProgressBar.setValue(1);
-//                        	brain = new NciBrain(compressionRate, imageChunkXSize, imageChunkYSize, true);
-//                        	brain.setLearning(true); // a brain wants to learn, this is the nature!
-                        	
+                        	                        	
                         	// for nbCycles...
                         	// repeate training...
                     			
                         	for (int i = 1; i <= nbCycles; i++) {
                         		myProgressBar.setValue(i); // update the progress bar
-                    			
-//                        		currentTrainImage = ImageIO.read(trainingImages[random.nextInt(trainingImages.length)]);
-                        		
-                        		// only one input image for now.
-//                        		BufferedImage currentTrainImage = ImageIO.read(selectedFile);
-                        		
-                    			// select a random subsection of the image of 
-                        		// imageChunkXSize and imageChunkYSize dimension
- //                       		int randomChunkPosX = random.nextInt(currentTrainImage.getWidth() - imageChunkXSize);
- //                       		int randomChunkPosY = random.nextInt(currentTrainImage.getHeight() - imageChunkYSize);
-                    			
-//                        		currentTrainImage = currentTrainImage.getSubimage(randomChunkPosX, randomChunkPosY, imageChunkXSize, imageChunkYSize);
-
-//                      		if (!(myImageViewer == null)) {
-//                        			myImageViewer.drawChunkMask(randomChunkPosX, randomChunkPosY, imageChunkXSize, imageChunkYSize);
-//                        			myImageViewer.requestFocus();
-//                        		}
-                        		
-                    			//now train the image
-//                    			brain.compress(currentTrainImage);
+                    			brain.train(1);
                     			
                         	}
                         	
@@ -651,9 +622,9 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		switch (statusToSet) {
 			case 0: this.myStatusText = "Ready. Wating for command."; break;
-			case 1: this.myStatusText = "Running the brain to produce a xor"; break;
+			case 1: this.myStatusText = "Running the brain to produce a XOR"; break;
 			case 2: this.myStatusText = "Error! No file selected."; break;
-			case 3: this.myStatusText = "Running NN training on to learn a xor"; break;
+			case 3: this.myStatusText = "Running NN training to learn a XOR"; break;
 			default: this.myStatusText = "Unknown.";
 		}
 //		myStatusPanel.remove(this.myStatusLabel);
