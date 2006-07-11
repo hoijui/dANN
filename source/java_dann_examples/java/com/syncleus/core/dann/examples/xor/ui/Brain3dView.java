@@ -21,12 +21,14 @@ package com.syncleus.core.dann.examples.xor.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
+import javax.media.j3d.Alpha;
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Background;
@@ -39,21 +41,26 @@ import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
 import javax.media.j3d.Node;
 import javax.media.j3d.PickRay;
+import javax.media.j3d.RotationInterpolator;
 import javax.media.j3d.SceneGraphPath;
 import javax.media.j3d.Texture;
 import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.View;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
 import com.sun.j3d.utils.behaviors.vp.OrbitBehavior;
 import com.sun.j3d.utils.geometry.ColorCube;
+import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
@@ -78,8 +85,8 @@ public class Brain3dView extends JFrame {
 	// CONFIG START
 
 	// Size of the Window containing the 3d visualization
-	private final int JFRAME_WIDTH = 500;
-	private final int JFRAME_HEIGHT = 400;
+	private final int JFRAME_WIDTH = 800;
+	private final int JFRAME_HEIGHT = 600;
 	private MainWindow myMainWindow;
 
     // Define colors
@@ -205,29 +212,32 @@ public class Brain3dView extends JFrame {
 	    };
 
 //	    branchGroup.addChild(this.createSphere(-10f, 0.5f, 0.0f, 1f));
-
+	    int k = 1;
+	    int l = 1;
 	    for (int i = 1; i < 4; i++) {
 	    	// add one sphere (a neuron) to the 3d scene
-	    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[0],positionsZ[1], 0.2f));
+	    	branchGroup.addChild(this.createNeuronSphere("Input", "neuron "+k, Color.BLUE, positionsX[i],positionsY[0],positionsZ[1], 0.4f));
+	    	k++;
 	    }
 
 	    for (int i = 0; i < 5; i++) {
 	    	for (int j = 0; j < 4; j+=2) {
 	    		// add one sphere (a neuron) to the 3d scene
-	    		branchGroup.addChild(this.createSphere(positionsX[i],positionsY[1],positionsZ[j], 0.2f));
+	    		branchGroup.addChild(this.createNeuronSphere("Processing", "neuron "+l, Color.RED, positionsX[i],positionsY[1],positionsZ[j], 0.4f));
+	    		l++;
 	    	}
 	    }
 
 	    for (int i = 2; i < 3; i++) {
 	    	// 	add one sphere (a neuron) to the 3d scene
-	    	branchGroup.addChild(this.createSphere(positionsX[i],positionsY[2],positionsZ[1], 0.2f));
+	    	branchGroup.addChild(this.createNeuronSphere("Output", "neuron", Color.GREEN, positionsX[i],positionsY[2],positionsZ[1], 0.4f));
 	    }
 	    
 	    return branchGroup;
 	    
 	  }
 	  
-	  public TransformGroup createSphere(float posX, float posY, float posZ, float radius) {
+	  public TransformGroup createNeuronSphere(String textLine1, String textLine2, Color myColor, float posX, float posY, float posZ, float radius) {
 		  
 	  	// Create the transform group node holding the sphere
 	    TransformGroup myTransformGroup = new TransformGroup();
@@ -237,17 +247,50 @@ public class Brain3dView extends JFrame {
 	    myTransform.set(1f, new Vector3f(posX, posY, posZ));
 	    myTransformGroup.setTransform(myTransform);
 	    
-	    Sphere myNeuron = new Sphere(radius);
-	    
 	    // Create a "metal" appearance
-	    Material metal = new Material(ambient, black, diffuse, specular,
-	        110.f);
-	    metal.setLightingEnable(true);
-	    Appearance metalAppearance = new Appearance();
-	    metalAppearance.setMaterial(metal);
-	    myNeuron.setAppearance(metalAppearance);
+//	    Material metal = new Material(ambient, black, diffuse, specular, 110.f);
+//	    metal.setLightingEnable(true);
+//	    Appearance metalAppearance = new Appearance();
+//	    metalAppearance.setMaterial(metal);
+//	    myNeuron.setAppearance(metalAppearance);
 	    
-	    myTransformGroup.addChild(myNeuron);
+	    // check the texture generation
+//	    JFrame myCheckFrame = new JFrame();
+//	    myCheckFrame.setSize(new Dimension(600,600));
+//	    BufferedImage myCheckImage = createNeuronTextureImage("test", Color.RED);
+//	    JLabel myCheckImLabel = new JLabel();
+//	    ImageIcon myCheckImIcon = new ImageIcon(myCheckImage);
+//	    myCheckImLabel.setIcon(myCheckImIcon);
+//	    myCheckFrame.add(myCheckImLabel);
+//	    myCheckFrame.setVisible(true);
+	    
+	    // create a nice texture image for the 3d sphere
+	    BufferedImage myTextureImage = createNeuronTextureImage(textLine1, textLine2, myColor);
+	    Appearance myAppearance = makeMappingFromImage(myTextureImage);
+//	    myNeuron.setAppearance(myAppearance);
+
+//	    Sphere myNeuron = new Sphere(radius);
+//	    Sphere myNeuron = new Sphere(radius, Primitive.GENERATE_TEXTURE_COORDS, 500, myAppearance); // very nice sphere with 500 shapes, but slow animation (CPU overload)
+	    Sphere myNeuron = new Sphere(radius, Primitive.GENERATE_TEXTURE_COORDS, 100, myAppearance); // animation ok on p4 2GHz and radeon X1600 GPU
+//	    Sphere myNeuron = new Sphere(radius, Primitive.GENERATE_TEXTURE_COORDS, 10, myAppearance); // ugly spheres! 
+
+	    Alpha myAlpha = new Alpha(-1, 5000);
+	    Transform3D yAxis = new Transform3D();
+	    TransformGroup myTgRot = new TransformGroup();
+	    myTgRot.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+	    myTgRot.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+	    
+//	    RotationInterpolator myRot = new RotationInterpolator(myAlpha, myTgRot, yAxis, 0.0f, (float)Math.PI * 2.0f);
+	    RotationInterpolator myRot = new RotationInterpolator(myAlpha, myTgRot, yAxis, (float)Math.PI * 2.0f, 0.0f);
+
+//	    RotationInterpolator myRot = new RotationInterpolator(myAlpha, myTgRot);
+
+	    BoundingSphere bounds = new BoundingSphere(new Point3d(0, 0, 0), 10000f);
+	    myRot.setSchedulingBounds(bounds);
+	    
+	    myTgRot.addChild(myRot);
+	    myTgRot.addChild(myNeuron);
+	    myTransformGroup.addChild(myTgRot);
 	  
 	    return myTransformGroup;
 	  }  
@@ -265,10 +308,10 @@ public class Brain3dView extends JFrame {
 //			 yDescription3, String myDescription4, Color myColor) {
 
 	  public BufferedImage createNeuronTextureImage(String
-				  myNeuronName, Color myColor) {
+				  textLine1, String textLine2, Color myColor) {
 
-		  int imSizeX = 512; // high quality for now
-		  int imSizeY = 512;
+		  int imSizeX = 256; // high quality for now - we will optimize later
+		  int imSizeY = 128;
 		  
 		  BufferedImage myNeuronTextureImage = new BufferedImage(imSizeX, imSizeY, BufferedImage.TYPE_INT_RGB);
 
@@ -276,17 +319,23 @@ public class Brain3dView extends JFrame {
 		  g2d.setBackground(myColor);
 		  g2d.clearRect(0, 0, myNeuronTextureImage.getWidth(), myNeuronTextureImage.getHeight());
 		  
-		  int tempFontSize = 128; // high quality for now
+		  int tempFontSize = 32; // high quality for now
 		  
-		  g2d.setFont(new Font("Courrier",Font.BOLD,tempFontSize));
+		  g2d.setFont(new Font("Arial",Font.BOLD,tempFontSize));
 		  g2d.setColor(Color.BLACK);
 		  FontMetrics fm = g2d.getFontMetrics();
 		  g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		  	
-		  int tempStringWidth = fm.stringWidth(myNeuronName);
-		  int tempTextPosX = Math.round(imSizeX/2 - tempStringWidth/2);
-		  g2d.drawString(myNeuronName, tempTextPosX, 200);
-		
+		  int tempStringWidth1 = fm.stringWidth(textLine1);
+		  int tempTextPosX1 = Math.round(imSizeX/2 - tempStringWidth1/2);
+//		  int tempTextPosX = 100;
+		  g2d.drawString(textLine1, tempTextPosX1, 60);
+
+		  int tempStringWidth2 = fm.stringWidth(textLine1);
+		  int tempTextPosX2 = Math.round(imSizeX/2 - tempStringWidth2/2);
+
+		  g2d.drawString(textLine2, tempTextPosX2, 90);
+		  
 		  g2d.drawImage(myNeuronTextureImage, null, 0, 0);
 		  return(myNeuronTextureImage);
 
@@ -316,7 +365,7 @@ public class Brain3dView extends JFrame {
     		  if (imageHeight > 1) imageHeight /= 2;
     		  image = loader.getScaledImage(imageWidth, imageHeight);
     		  texture.setImage(imageLevel, image);
-    		  System.out.println("From mipmapping in Container: image: Auto-generated image - width:"+imageWidth);
+    		  System.out.println("From mipmapping in Brain3dView: image: Auto-generated image - width:"+imageWidth);
     	  }
 
     	  // Texture quality
