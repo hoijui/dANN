@@ -475,7 +475,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		else if (evt.getSource().equals(this.quitButton)) {
 			// quit? ask for confirmation
 			Object[] options = { "Yes", "No" };
-			int selectedValue = JOptionPane.showOptionDialog(null, "Do you really want to quit?", "Warning",
+			int selectedValue = JOptionPane.showOptionDialog(this, "Do you really want to quit?", "Warning",
 			             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
 			             null, options, options[1]);
 			if (selectedValue ==  0) {
