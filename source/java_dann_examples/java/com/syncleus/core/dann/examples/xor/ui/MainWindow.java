@@ -646,7 +646,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	}
 
 	
-	// main method: This class is the entry point of the nci GUI
+	// main method: This class is the entry point of the XOR example GUI
 	public static void main(String args[]) {
 		MainWindow myMainwindow = new MainWindow();
 	}
