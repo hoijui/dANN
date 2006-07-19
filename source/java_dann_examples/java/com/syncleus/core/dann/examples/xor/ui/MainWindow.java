@@ -124,6 +124,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private ImageIcon myShowBrain3dViewIcon;
 	private final Random random = new Random();
 	private ImageIcon myImageIcon;
+	private int sumOfTrainingCycles;
 	
 	public MainWindow() {
 
@@ -131,7 +132,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		// first, create the Xor Brain.
 		
 		brain = new XorBrain(); // com.syncleus.core.dann.examples.xor.Main
-
+		
+		this.sumOfTrainingCycles = 0;
+		
 		////////////
 		// initialize the gui
 		
@@ -545,7 +548,7 @@ public class MainWindow extends JFrame implements ActionListener {
 //		JLabel headerText = new JLabel();
 		JTable resultsTable = new JTable(10, 4);  // !! (ysize,  xsize)
 		
-		resultsFrame.setTitle("Brain XOR runs results");
+		resultsFrame.setTitle("Brain XOR run results (after "+this.sumOfTrainingCycles+" training cycles)");
 		
 		resultsFrame.setLayout(new GridBagLayout());
 		
@@ -595,6 +598,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		// start the training with the selected options
 		
 		this.nbCycles = (Integer) this.nbCyclesSpin.getValue();
+		this.sumOfTrainingCycles +=  this.nbCycles;
 //		this.imageChunkXSize = (Integer) this.imageChunkXSizeSpin.getValue();
 //		this.imageChunkYSize = (Integer) this.imageChunkYSizeSpin.getValue();
 //		this.compressionRate = (Double) this.compressionRateSpin.getValue();
