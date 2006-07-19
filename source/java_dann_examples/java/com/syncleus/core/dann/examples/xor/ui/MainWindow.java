@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -47,6 +48,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -535,9 +537,55 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		String myResultWindowTitle = "XOR results from the brain";
 		
-		String myResultsText = brain.testOutput();
+		ArrayList<Double> myResultsList = brain.testOutput();
 		
-		JOptionPane.showMessageDialog(this, myResultsText, myResultWindowTitle, JOptionPane.INFORMATION_MESSAGE);
+//		JOptionPane.showMessageDialog(this, myResultsText, myResultWindowTitle, JOptionPane.INFORMATION_MESSAGE);
+
+		JFrame resultsFrame = new JFrame();
+//		JLabel headerText = new JLabel();
+		JTable resultsTable = new JTable(10, 4);  // !! (ysize,  xsize)
+		
+		resultsFrame.setTitle("Brain XOR runs results");
+		
+		resultsFrame.setLayout(new GridBagLayout());
+		
+//		headerText.setText("Results:");
+
+		resultsTable.setPreferredSize(new Dimension(600,150));
+
+		// table header
+		resultsTable.setValueAt("First Input", 0, 0);
+		resultsTable.setValueAt("Second Input", 0, 1);
+		resultsTable.setValueAt("Third Input", 0, 2);
+		
+		resultsTable.setValueAt("Ouput of the Brain", 0, 3);
+
+		// table data
+		int col = 0;
+		int row = 1;
+		for (double value : myResultsList) {
+			resultsTable.setValueAt(value, row, col);
+			col++;
+			if (col >= 4) { // new row
+				row++;
+				col = 0;
+			}
+		}
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10,10,10,10);
+		
+//		gbc.gridx = 0;
+//		gbc.gridy = 0;
+//		resultsFrame.add(headerText);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		resultsFrame.add(resultsTable);
+		
+		resultsFrame.pack();
+		resultsFrame.setLocationRelativeTo(null); // center the window
+		resultsFrame.setVisible(true);
 		
 	}
 

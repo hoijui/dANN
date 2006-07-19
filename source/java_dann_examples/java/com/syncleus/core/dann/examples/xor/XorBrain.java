@@ -19,6 +19,8 @@
 package com.syncleus.core.dann.examples.xor;
 
 import java.io.*;
+import java.util.ArrayList;
+
 import com.syncleus.dann.*;
 
 
@@ -97,82 +99,92 @@ public class XorBrain {
 		inputC.setInput(inputToSet[2]);
 	}
 	
-	public String testOutput() {
+	public ArrayList<Double> testOutput() {
 		
-		String results = "";
+		ArrayList<Double> resultsList = new ArrayList<Double>();  
+//		String results = "";
 		
         double[] curInput = {0, 0, 0};
         setCurrentInput(curInput);
         propogateOutput();
         double[] curOutput;
-//        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-        results += curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ": " + output.getOutput();
-        results += "\n";
+        resultsList.add(curInput[0]);
+        resultsList.add(curInput[1]);
+        resultsList.add(curInput[2]);
+        resultsList.add(output.getOutput());
+        
         
         curInput[0] = 1;
         curInput[1] = 0;
         curInput[2] = 0;
         setCurrentInput(curInput);
         propogateOutput();
-//        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-        results += curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ": " + output.getOutput();
-        results += "\n";
+        resultsList.add(curInput[0]);
+        resultsList.add(curInput[1]);
+        resultsList.add(curInput[2]);
+        resultsList.add(output.getOutput());
 		  
         curInput[0] = 0;
         curInput[1] = 1;
         curInput[2] = 0;
         setCurrentInput(curInput);
         propogateOutput();
-//        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-        results += curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ": " + output.getOutput();
-        results += "\n";
+        resultsList.add(curInput[0]);
+        resultsList.add(curInput[1]);
+        resultsList.add(curInput[2]);
+        resultsList.add(output.getOutput());
 		  
         curInput[0] = 0;
         curInput[1] = 0;
         curInput[2] = 1;
         setCurrentInput(curInput);
         propogateOutput();
-//        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-        results += curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ": " + output.getOutput();
-        results += "\n";
+        resultsList.add(curInput[0]);
+        resultsList.add(curInput[1]);
+        resultsList.add(curInput[2]);
+        resultsList.add(output.getOutput());
 		  
         curInput[0] = 1;
         curInput[1] = 1;
         curInput[2] = 0;
         setCurrentInput(curInput);
         propogateOutput();
-//        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-        results += curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ": " + output.getOutput();
-        results += "\n";
+        resultsList.add(curInput[0]);
+        resultsList.add(curInput[1]);
+        resultsList.add(curInput[2]);
+        resultsList.add(output.getOutput());
 		  
         curInput[0] = 0;
         curInput[1] = 1;
         curInput[2] = 1;
         setCurrentInput(curInput);
         propogateOutput();
-//        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-        results += curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ": " + output.getOutput();
-        results += "\n";
+        resultsList.add(curInput[0]);
+        resultsList.add(curInput[1]);
+        resultsList.add(curInput[2]);
+        resultsList.add(output.getOutput());
 		  
         curInput[0] = 1;
         curInput[1] = 0;
         curInput[2] = 1;
         setCurrentInput(curInput);
         propogateOutput();
-//        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-        results += curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ": " + output.getOutput();
-        results += "\n";
+        resultsList.add(curInput[0]);
+        resultsList.add(curInput[1]);
+        resultsList.add(curInput[2]);
+        resultsList.add(output.getOutput());
 		  
         curInput[0] = 1;
         curInput[1] = 1;
         curInput[2] = 1;
         setCurrentInput(curInput);
         propogateOutput();
-//        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-        results += curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ": " + output.getOutput();
-        results += "\n";
+        resultsList.add(curInput[0]);
+        resultsList.add(curInput[1]);
+        resultsList.add(curInput[2]);
+        resultsList.add(output.getOutput());
 
-        return results;
+        return resultsList;
 	}
 	
 	public void train(int count) {
