@@ -18,10 +18,14 @@
 ******************************************************************************/
 package com.syncleus.core.dann.examples.xor;
 
-import java.io.*;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 
-import com.syncleus.dann.*;
+import com.syncleus.dann.DNA;
+import com.syncleus.dann.InputNeuronProcessingUnit;
+import com.syncleus.dann.LayerProcessingUnit;
+import com.syncleus.dann.NeuronProcessingUnit;
+import com.syncleus.dann.OutputNeuronProcessingUnit;
 
 
 /**
@@ -35,15 +39,15 @@ import com.syncleus.dann.*;
 
 public class XorBrain {
 	
-	private static DNA myDNA = new DNA();
-	private static BufferedReader inReader = null;
-	private static InputNeuronProcessingUnit inputA = null;
-	private static InputNeuronProcessingUnit inputB = null;
-	private static InputNeuronProcessingUnit inputC = null;
-	private static LayerProcessingUnit firstLayer = null;
-	private static LayerProcessingUnit secondLayer = null;
-	private static OutputNeuronProcessingUnit output = null;
-	private static String saveLocation = "default.dann";
+	private DNA myDNA = new DNA();
+	private BufferedReader inReader = null;
+	private InputNeuronProcessingUnit inputA = null;
+	private InputNeuronProcessingUnit inputB = null;
+	private InputNeuronProcessingUnit inputC = null;
+	private LayerProcessingUnit firstLayer = null;
+	private LayerProcessingUnit secondLayer = null;
+	private OutputNeuronProcessingUnit output = null;
+	private String saveLocation = "default.dann";
 
 	/**
 	 * XorBrain is a modified com.syncleus.core.dann.examples.xor.Main
@@ -262,4 +266,10 @@ public class XorBrain {
             backPropogateTraining();
         }
 	}
+	
+	public LayerProcessingUnit getSecondLayer() {
+		return this.secondLayer;
+	}
 }
+
+

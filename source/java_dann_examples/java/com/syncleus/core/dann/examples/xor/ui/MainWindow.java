@@ -55,6 +55,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import com.syncleus.core.dann.examples.xor.XorBrain;
+import com.syncleus.dann.NeuronProcessingUnit;
 
 /**
  * A graphical user interface based on java swing
@@ -106,7 +107,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private String myStatusText;
 	private JLabel myStatusLabel;
 	private int applicationStatus;
-	private ImageIcon myFileOpenIcon;
 	private ImageIcon myRunIcon;
 	private ImageIcon myTrainIcon;
 	private ImageIcon myQuitIcon;
@@ -114,17 +114,12 @@ public class MainWindow extends JFrame implements ActionListener {
 	private XorBrain brain;
 	private JSpinner nbCyclesSpin;
 	private int nbCycles;
-	private ImageIcon myMatrixIcon;
-	private ImageIcon myCompressIcon;
-	private JSpinner compressionRateSpin;
 	private ImageIcon myCancelIcon;
-	private double compressionRate;
 	private JButton showBrain3dViewButton;
-	private JButton showImageButton;
-	private ImageIcon myShowBrain3dViewIcon;
-	private final Random random = new Random();
-	private ImageIcon myImageIcon;
 	private int sumOfTrainingCycles;
+	private ImageIcon showBrain3dViewIcon;
+	private ImageIcon showBrainStateIcon;
+	private JButton showBrainStateButton;
 	
 	public MainWindow() {
 
@@ -343,18 +338,24 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.myStatusText = null;
 		// The button opening the 3d visualization of the brain
 		// is set here, as it shows the "status" of the brain
-		this.myShowBrain3dViewIcon = new ImageIcon(this.ICON_PATH+"view_multicolumn.png");
-		this.myImageIcon = new ImageIcon(this.ICON_PATH+"frame_image.png");
 		this.showBrain3dViewButton = new JButton();
+		this.showBrain3dViewIcon = new ImageIcon(this.ICON_PATH+"view_multicolumn.png");
+		this.showBrainStateButton = new JButton();
+		this.showBrainStateIcon = new ImageIcon(this.ICON_PATH+"math_matrix.png");
+
 //		this.showImageButton = new JButton();
 		myPanel.setLayout(new GridBagLayout());
 		this.setApplicationStatus(0);
 
 //		myStatusLabel.setText(myStatusText);
 		
-		this.showBrain3dViewButton.setIcon(this.myShowBrain3dViewIcon);
+		this.showBrain3dViewButton.setIcon(this.showBrain3dViewIcon);
 		this.showBrain3dViewButton.setText("Show Brain in 3d (Java3D)");
 		this.showBrain3dViewButton.addActionListener(this);
+
+		this.showBrainStateButton.setIcon(this.showBrainStateIcon);
+		this.showBrainStateButton.setText("Show Brain State (Values)");
+		this.showBrainStateButton.addActionListener(this);
 
 //		this.showImageButton.setIcon(this.myImageIcon);
 //		this.showImageButton.setText("Show Picture");
@@ -380,6 +381,12 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.gridy = 1;
 		gbc.gridwidth = 1;
 		myPanel.add(this.showBrain3dViewButton, gbc);
+		
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.gridwidth = 1;
+		myPanel.add(this.showBrainStateButton, gbc);
 
 //		gbc.gridx = 1;
 //		gbc.gridy = 1;
@@ -434,6 +441,78 @@ public class MainWindow extends JFrame implements ActionListener {
 		myPanel.add(this.quitButton, gbc);
 
 		return myPanel;
+	}
+
+	private void showBrainState() {
+		JFrame stateFrame = new JFrame();
+//		  JLabel headerText = new JLabel();
+		JTable stateTable = new JTable(11, 8);  // !! (ysize,  xsize)
+	
+		stateFrame.setTitle("Brain state (after "+this.sumOfTrainingCycles+" training cycles)");
+	
+		stateFrame.setLayout(new GridBagLayout());
+	
+//		  headerText.setText("Results:");
+
+		stateFrame.setPreferredSize(new Dimension(1000,400));
+
+		stateTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+		stateTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+		stateTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+		stateTable.getColumnModel().getColumn(3).setPreferredWidth(150);
+		stateTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+		stateTable.getColumnModel().getColumn(5).setPreferredWidth(100);
+		stateTable.getColumnModel().getColumn(6).setPreferredWidth(100);
+		stateTable.getColumnModel().getColumn(7).setPreferredWidth(100);
+		
+        
+		stateTable.getColumnModel().setColumnMargin(6);
+
+		// table header
+		stateTable.setValueAt("Neuron", 0, 0);
+		stateTable.setValueAt("Neuron DeltaTrain", 0, 1);
+		stateTable.setValueAt("Neuron BiasWeight", 0, 2);
+		stateTable.setValueAt("Synapse to x - DeltaTrain", 0, 3);
+		stateTable.setValueAt("Synapse to x - Weight", 0, 4);
+		stateTable.setValueAt("Synapse to y - DeltaTrain", 0, 5);
+		stateTable.setValueAt("Synapse to y - Weight", 0, 6);
+		// etc.. for all synapses of this neuron
+		
+		// table data
+//		int col = 0;
+		int row = 1;
+
+		// One table line per neuron -> 10 lines
+		// WARNING: cast problem with brain.getSecondLayer().children -> ArrayList of ProcessingUnit instead of NeuronProcessingUnit
+//		  for (NeuronProcessingUnit myNeuron : (NeuronProcessingUnit)this.brain.getSecondLayer().children) {
+		for (int i = 0; i < this.brain.getSecondLayer().children.size(); i++) {
+			double neuronDeltaTrain = ((NeuronProcessingUnit)this.brain.getSecondLayer().children.get(i)).deltaTrain;
+			//double neuronBiasWeight = xxx;
+			//...for each synapse...
+			//double synapseDeltaTrain = xxx;
+			//double synapseWeight = xxx;
+			
+			stateTable.setValueAt("Neuron"+String.valueOf(i+1), row, 0); // just give a number as name
+			stateTable.setValueAt(String.valueOf(neuronDeltaTrain), row, 1);
+//			stateTable.setValueAt(neuronBiasWeight, row, 2);
+//			stateTable.setValueAt(synapseDeltaTrain, row, 3);
+//			stateTable.setValueAt(synapseWeight, row, 4);
+			// etc..
+			
+			row++;
+		}
+	
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10,10,10,10);
+	
+		gbc.anchor = GridBagConstraints.BOTH;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		stateFrame.add(stateTable);
+	
+		stateFrame.pack();
+		stateFrame.setLocationRelativeTo(null); // center the window
+		stateFrame.setVisible(true);
 	}
 	
 	public void actionPerformed(ActionEvent evt) {
@@ -500,6 +579,11 @@ public class MainWindow extends JFrame implements ActionListener {
 		else if (evt.getSource().equals(this.showBrain3dViewButton)) {
 			Brain3dView myBrain3dView = new Brain3dView(this);
 			
+		}
+		// show the brain state (values at synapses etc...)
+		else if (evt.getSource().equals(this.showBrainStateButton)) {
+			// display a window with all the current brain parameters
+			this.showBrainState();
 		}
 		
 		else {
@@ -606,8 +690,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		// start the training of the brain within a thread
 		// so the status can be reported in the gui
 		
-		if (this.myStatusReporter.getComponentCount() == 5) { // remove the last progress bar if any
-			this.myStatusReporter.remove(4);
+		if (this.myStatusReporter.getComponentCount() == 4) { // remove the last progress bar if any
+			this.myStatusReporter.remove(3);
 		}
 		final JProgressBar myProgressBar = new JProgressBar();
 		myProgressBar.setMaximum(this.nbCycles); // we will report the progress for each training iteration
@@ -620,10 +704,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
 		gbc.gridwidth = 3;
         this.myStatusReporter.add(myProgressBar, gbc);
- //		pack();
+ 		pack();
  		
 		// start the thread
 		Thread worker1 = new Thread() {
