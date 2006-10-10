@@ -533,7 +533,7 @@ public class MainWindow extends JFrame implements ActionListener {
 					this.trainButton.setIcon(this.myCancelIcon);
 					this.trainButton.setText("Abort training");
 					
-					// show the train dialog and strat the training
+					// show the train dialog and start the training
 					this.train();
 				}
 			}
