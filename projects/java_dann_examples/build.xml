@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="dANN Examples" default="all" basedir=".">
+    <path id="classpath">
+        <fileset dir="lib" includes="**/*.jar"/>
+        <fileset dir="../java_dann/build/jar" includes="**/*.jar"/>
+    </path>
+    
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+    
+    <target name="javadoc">
+        <mkdir dir="build/javadoc"/>
+        <delete includeemptydirs="true">
+            <fileset dir="build/javadoc" includes="**/*"/>
+        </delete>
+        <javadoc destdir="build/javadoc/" classpathref="classpath">
+            <fileset dir="src/" includes="**/*.java"/>
+        </javadoc>
+    </target>
+    
+    <target name="compile">
+        <delete dir="build/classes"/>
+        
+        <mkdir dir="build/classes"/>
+        <javac destdir="build/classes" classpathref="classpath" debug="true">
+            <src path="src/com"/>
+        </javac>
+        
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.xor.Main"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="all">
+        <antcall target="clean"/>
+        <antcall target="javadoc"/>
+        <antcall target="compile"/>
+    </target>
+    
+    <target name="run">
+        <java fork="true" classname="com.syncleus.core.dann.examples.xor.Main">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="build/jar/dann_examples.jar"/>
+            </classpath>
+        </java>
+    </target>
+</project>

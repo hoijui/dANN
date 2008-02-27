@@ -53,7 +53,6 @@ public class XorBrain {
 	 * XorBrain is a modified com.syncleus.core.dann.examples.xor.Main
 	 * which is not static -> to use in GUIs
 	 * <!-- Author: chickenf -->
-	 * @author chickenf
 	 */
 
 	public XorBrain() {
