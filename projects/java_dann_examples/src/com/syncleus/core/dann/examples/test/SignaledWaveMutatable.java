@@ -4,5 +4,5 @@ public interface SignaledWaveMutatable<E> extends SignalMutatable<E>
 {
     public E mutate();
     public E mutate(Signal newSignal);
-    public E mutate(Signal newSignal, DistributedFormedWaveMathFunction newWave);
+    public E mutate(Signal newSignal, WaveMultidimensionalMathFunction newWave);
 }

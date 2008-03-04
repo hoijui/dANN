@@ -46,18 +46,7 @@ public class UniqueId implements Comparable<UniqueId>, Serializable
 
     public int compareTo(UniqueId compareWith)
     {
-        if(compareWith.uniqueData.length > this.uniqueData.length)
-            return -1;
-        else if(compareWith.uniqueData.length < this.uniqueData.length)
-            return 1;
-
-        for(int dataIndex = (this.uniqueData.length - 1);dataIndex < 0;dataIndex--)
-            if(convertByteToUnsignedLong(this.uniqueData[dataIndex]) > convertByteToUnsignedLong(compareWith.uniqueData[dataIndex]))
-                return 1;
-            else if(convertByteToUnsignedLong(this.uniqueData[dataIndex]) < convertByteToUnsignedLong(compareWith.uniqueData[dataIndex]))
-                return -1;
-
-        return 0;
+        return this.toString().compareTo(compareWith.toString());
     }
 
 

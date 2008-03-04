@@ -4,11 +4,11 @@ package com.syncleus.core.dann.examples.test;
 public class WaveDimension
 {
     private String dimension;
-    private DistributedFormedWaveMathFunction wave;
+    private WaveMultidimensionalMathFunction wave;
 
 
 
-    public WaveDimension(String dimension, DistributedFormedWaveMathFunction wave)
+    public WaveDimension(String dimension, WaveMultidimensionalMathFunction wave)
     {
         this.dimension = dimension;
         this.wave = wave;
@@ -23,7 +23,7 @@ public class WaveDimension
 
 
 
-    public DistributedFormedWaveMathFunction getWave()
+    public WaveMultidimensionalMathFunction getWave()
     {
         return wave;
     }

@@ -37,7 +37,7 @@ public class Test3d extends JFrame
         Signal signalZ = new Signal();
         SignalProcessingWavelet processor = new SignalProcessingWavelet(signalX, signalZ);
         Random random = new Random();
-        for(int index = 0;index < 50;index++)
+        for(int index = 0;index < 10;index++)
         {
             //if(random.nextDouble() < 0.5555556)
             //{
@@ -99,7 +99,7 @@ public class Test3d extends JFrame
             {
                 public void run()
                 {
-                    for(int index = 0; index < 5; index++)
+                    for(int index = 0; index < 1; index++)
                         new Test3d().setVisible(true);
                 }
             });

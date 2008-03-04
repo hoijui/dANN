@@ -14,12 +14,12 @@ public class WaveMathFunction extends MathFunction
         );
     }
     
-    public void setX(double x)
+    protected void setX(double x)
     {
         this.setParameter(this.getParameterNameIndex("x"), x);
     }
     
-    public double getX()
+    protected double getX()
     {
         return this.getParameter(this.getParameterNameIndex("x"));
     }

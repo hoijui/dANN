@@ -35,6 +35,6 @@ public class Signal implements Comparable<Signal>
     
     public int compareTo(Signal compareWith)
     {
-        return this.getId().compareTo(compareWith.getId());
+        return this.getId().toString().compareTo(compareWith.getId().toString());
     }
 }
