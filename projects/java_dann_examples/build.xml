@@ -24,6 +24,7 @@
         
         <mkdir dir="build/classes"/>
         <javac destdir="build/classes" classpathref="classpath" debug="true">
+            <compilerarg value="-Xlint:deprecation"/>
             <src path="src/com"/>
         </javac>
         
@@ -42,7 +43,7 @@
     </target>
     
     <target name="run">
-        <java fork="true" classname="com.syncleus.core.dann.examples.Main">
+        <java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d">
             <classpath>
                 <path refid="classpath"/>
                 <path location="build/jar/dann_examples.jar"/>
