@@ -167,7 +167,8 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
         if(this.waveDimensions.size() > 0)
         {
             //there is a chance a signal will be used to create a new wave
-            if(random.nextDouble() < 0.5)
+            //if(random.nextDouble() < 0.5)
+            if(true)
             {
                 //Signal newSignal = this.getRandomSignal();
                 //return this.mutate(newSignal);
@@ -203,6 +204,35 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
 
     public SignalProcessingWavelet mutate(Signal newSignal)
     {
+        SignalProcessingWavelet copy = this.clone();
+        copy.dimensions.add(newSignal);
+        if( copy.dimensions.size() > this.dimensions.size())
+        {
+            copy.waveDimensions.clear();
+            for(WaveMultidimensionalMathFunction wave : this.waveDimensions)
+            {
+                String[] names = new String[wave.getDimensionNames().length + 1];
+                int index = 0;
+                for(String dimensionName : wave.getDimensionNames())
+                    names[index++] = dimensionName;
+                names[index++] = newSignal.getId().toString();
+                WaveMultidimensionalMathFunction newWave = new WaveMultidimensionalMathFunction(names);
+                newWave.setAmplitude(wave.getAmplitude());
+                newWave.setDistribution(wave.getDistribution());
+                newWave.setForm(wave.getForm());
+                newWave.setFrequency(wave.getFrequency());
+                newWave.setPhase(wave.getPhase());
+                for(String dimension : wave.getDimensionNames())
+                {
+                    newWave.setCenter(dimension, wave.getCenter(dimension));
+                    newWave.setDimension(dimension, wave.getDimension(dimension));
+                }
+                
+                copy.waveDimensions.add(newWave);
+            }
+        }
+        return copy;
+        /*
         //if(this.inputs.size() > 0)
         //{
         //there is a chance the wave used will be new
@@ -227,10 +257,10 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
         SignalProcessingWavelet copy = this.clone();
         copy.inputs.put(randomWave, newSignal);
         return copy;
-        }*/
+        }
         //}
 
-        return this;
+        return this;*/
     }
 
 
@@ -327,10 +357,10 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
             dimensionNames[index++] = dimension.getId().toString();
         WaveMultidimensionalMathFunction newWave = new WaveMultidimensionalMathFunction(dimensionNames);
 
-        newWave.setFrequency(random.nextGaussian() * 10);
+        newWave.setFrequency(random.nextGaussian());
         newWave.setPhase(random.nextGaussian() * 10);
         newWave.setAmplitude(random.nextGaussian());
-        newWave.setForm(random.nextGaussian() * 10);
+        newWave.setForm(random.nextGaussian());
         if(newWave.getForm() <= 0.0)
         {
             newWave.setForm(newWave.getForm() + ((1 + random.nextGaussian()) * 10));
@@ -359,7 +389,7 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
 
             if(random.nextDouble() <= 1.0)
             {
-                newWave.setFrequency(newWave.getFrequency() + ((random.nextFloat() * 2 - 1) * 10));
+                newWave.setFrequency(newWave.getFrequency() + ((random.nextFloat() * 2 - 1) * 1));
             }
             if(random.nextDouble() <= 1.0)
             {
@@ -371,7 +401,7 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
             }
             if(random.nextDouble() <= 1.0)
             {
-                newWave.setForm(newWave.getForm() + (random.nextFloat() * 10.0));
+                newWave.setForm(newWave.getForm() + (random.nextFloat() * 1.0));
             }
             if(random.nextDouble() <= 1.0)
             {
@@ -382,7 +412,7 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
                 String[] dimensionNames = newWave.getDimensionNames();
                 for(String dimensionName:dimensionNames)
                 {
-                    newWave.setCenter(dimensionName, newWave.getCenter(dimensionName) + ((random.nextFloat() * 2 - 1) * 10));
+                    newWave.setCenter(dimensionName, newWave.getCenter(dimensionName) + ((random.nextFloat() * 2 - 1) * 100));
                 }
             }
 

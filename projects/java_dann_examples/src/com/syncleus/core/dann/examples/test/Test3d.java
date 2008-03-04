@@ -99,7 +99,7 @@ public class Test3d extends JFrame
             {
                 public void run()
                 {
-                    for(int index = 0; index < 1; index++)
+                    for(int index = 0; index < 5; index++)
                         new Test3d().setVisible(true);
                 }
             });
