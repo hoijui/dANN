@@ -16,103 +16,106 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-
 package com.syncleus.core.dann.examples;
 
 import java.io.*;
 
+
 public class Main
-{	
-	public static void main(String args[])
-	{
-		try
-		{
-			BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
-			
-			String[] newArgs = null;
-			if( args.length > 1 )
-			{
-				newArgs = new String[args.length - 1];
-				for( int index = 1; index < args.length; index++ )
-				{
-					newArgs[index-1] = args[index];
-				}
-			}
-			else
-				newArgs = new String[0];
-			
-			String selectorArg = null;
-			if( args.length > 0 )
-				selectorArg = args[0];
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
 
-			if( selectorArg != null )
-			{
-				if( selectorArg.compareTo("--xor") == 0 )
-					com.syncleus.core.dann.examples.xor.Main.main(newArgs);
-				else if( selectorArg.compareTo("--nci") == 0 )
-					com.syncleus.core.dann.examples.nci.Main.main(newArgs);
-				
-				return;
-			}
-			
-			System.out.println("dANN Example Sets");
+            String[] newArgs = null;
+            if (args.length > 1)
+            {
+                newArgs = new String[args.length - 1];
+                for (int index = 1; index < args.length; index++)
+                    newArgs[index - 1] = args[index];
+            }
+            else
+                newArgs = new String[0];
 
-			int currentCommand = 'q';
-			do
-			{
-				boolean received = false;
-				while( received == false )
-				{
-					System.out.println();
-					System.out.println("X) XOR Example");
-					System.out.println("I) Image Compression Example");
-					System.out.println("G) Image Compression Example w/GUI");
-					System.out.println("H) Command Line Help");
-					System.out.println("Q) quit");
-					System.out.print("\tEnter command: ");
-				
-					received = true;
-					try
-					{
-						currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
-					}
-					catch(ArrayIndexOutOfBoundsException caughtException)
-					{
-						received = false;
-					}
-				}
-				
-				System.out.println();
+            String selectorArg = null;
+            if (args.length > 0)
+                selectorArg = args[0];
 
-				switch( currentCommand )
-				{
-					case 'x':
-						com.syncleus.core.dann.examples.xor.Main.main(newArgs);
-						break;
-					case 'i':
-						com.syncleus.core.dann.examples.nci.Main.main(newArgs);
-						break;
-					case 'g':
-						com.syncleus.core.dann.examples.nci.ui.MainWindow.main(newArgs);
-						break;
-					case 'h':
-						System.out.println("The command line differs for each of the example files.");
-						System.out.println();
-						System.out.println("XOR Exmaple:");
-						System.out.println("java -jar bin dANN-examples.jar --xor [save-location]");
-						break;
-					case 'q':
-						break;
-					default:
-						System.out.println("Invalid command");
-				}
-			} while( (currentCommand != 'q')&&(currentCommand >= 0) );
-		}
-		catch(Exception caughtException)
-		{
-			caughtException.printStackTrace();
-			System.out.println();
-			throw new InternalError("CaughtException: " + caughtException);
-		}
-	}
+            if (selectorArg != null)
+            {
+                if (selectorArg.compareTo("--xor") == 0)
+                    com.syncleus.core.dann.examples.xor.Main.main(newArgs);
+                else if (selectorArg.compareTo("--nci") == 0)
+                    com.syncleus.core.dann.examples.nci.Main.main(newArgs);
+
+                return;
+            }
+
+            System.out.println("dANN Example Sets");
+
+            int currentCommand = 'q';
+            do
+            {
+                boolean received = false;
+                while (received == false)
+                {
+                    System.out.println();
+                    System.out.println("X) XOR Example");
+                    System.out.println("Y) XOR Example w/GUI");
+                    System.out.println("I) Image Compression Example");
+                    System.out.println("G) Image Compression Example w/GUI");
+                    System.out.println("H) Command Line Help");
+                    System.out.println("Q) quit");
+                    System.out.print("\tEnter command: ");
+
+                    received = true;
+                    try
+                    {
+                        currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
+                    }
+                    catch (ArrayIndexOutOfBoundsException caughtException)
+                    {
+                        received = false;
+                    }
+                }
+
+                System.out.println();
+
+                switch (currentCommand)
+                {
+                case 'x':
+                    com.syncleus.core.dann.examples.xor.Main.main(newArgs);
+                    break;
+                case 'y':
+                    com.syncleus.core.dann.examples.xor.ui.MainWindow.main(newArgs);
+                    break;
+                case 'i':
+                    com.syncleus.core.dann.examples.nci.Main.main(newArgs);
+                    break;
+                case 'g':
+                    com.syncleus.core.dann.examples.nci.ui.NciDemo.main(newArgs);
+                    break;
+                case 'h':
+                    System.out.println("The command line differs for each of the example files.");
+                    System.out.println();
+                    System.out.println("XOR Exmaple:");
+                    System.out.println("java -jar bin dANN-examples.jar --xor [save-location]");
+                    break;
+                case 'q':
+                    break;
+                default:
+                    System.out.println("Invalid command");
+                }
+            }
+            while ((currentCommand != 'q') && (currentCommand >= 0));
+        }
+        catch (Exception caughtException)
+        {
+            caughtException.printStackTrace();
+            System.out.println();
+            throw new InternalError("CaughtException: " + caughtException);
+        }
+    }
 }

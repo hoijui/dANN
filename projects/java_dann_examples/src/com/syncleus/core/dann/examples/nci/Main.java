@@ -60,6 +60,7 @@ public class Main
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 0.1
 	 */
+        
 	private static File compressIn = null;
 	private static File compressOut = null;
 	private static File uncompressIn = null;

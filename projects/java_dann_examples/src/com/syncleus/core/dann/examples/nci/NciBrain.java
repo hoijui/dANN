@@ -69,13 +69,13 @@ public class NciBrain implements java.io.Serializable
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 0.1
 	 */
-	private NeuronProcessingUnit[][][] inputHiddenNeurons = null;
+//	private NeuronProcessingUnit[][][] inputHiddenNeurons = null;
 	
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 0.1
 	 */
-	private LayerProcessingUnit inputHiddenLayer = new LayerProcessingUnit(sharedDna);
+//	private LayerProcessingUnit inputHiddenLayer = new LayerProcessingUnit(sharedDna);
 	
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
@@ -93,13 +93,13 @@ public class NciBrain implements java.io.Serializable
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 0.1
 	 */
-	private NeuronProcessingUnit[][][] outputHiddenNeurons = null;
+//	private NeuronProcessingUnit[][][] outputHiddenNeurons = null;
 	
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 0.1
 	 */
-	private LayerProcessingUnit outputHiddenLayer = new LayerProcessingUnit(sharedDna);
+//	private LayerProcessingUnit outputHiddenLayer = new LayerProcessingUnit(sharedDna);
 	
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
@@ -130,9 +130,9 @@ public class NciBrain implements java.io.Serializable
 		this.xSize = xSize;
 		this.ySize = ySize;
 		this.inputNeurons = new InputNeuronProcessingUnit[xSize][ySize][4];
-		this.inputHiddenNeurons = new NeuronProcessingUnit[xSize][ySize][4];
+//		this.inputHiddenNeurons = new NeuronProcessingUnit[xSize][ySize][4];
 		this.compressedNeurons = new CompressionNeuron[ ((int) Math.ceil(  (((double)xSize) * ((double)ySize) * 4.0) * (1.0 - compression)  )) ];
-		this.outputHiddenNeurons = new NeuronProcessingUnit[xSize][ySize][4];
+//		this.outputHiddenNeurons = new NeuronProcessingUnit[xSize][ySize][4];
 		this.outputNeurons = new OutputNeuronProcessingUnit[xSize][ySize][4];
 		this.actualCompression = 1.0 - ((double)this.compressedNeurons.length) / ( ((double)xSize) * ((double)ySize) *4.0 );
 		
@@ -146,11 +146,11 @@ public class NciBrain implements java.io.Serializable
 					this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuronProcessingUnit(sharedDna);
 					this.inputLayer.add(this.inputNeurons[xIndex][yIndex][rgbIndex]);
 					
-					this.inputHiddenNeurons[xIndex][yIndex][rgbIndex] = new NeuronProcessingUnit(sharedDna);
-					this.inputHiddenLayer.add(this.inputHiddenNeurons[xIndex][yIndex][rgbIndex]);
+//					this.inputHiddenNeurons[xIndex][yIndex][rgbIndex] = new NeuronProcessingUnit(sharedDna);
+//					this.inputHiddenLayer.add(this.inputHiddenNeurons[xIndex][yIndex][rgbIndex]);
 					
-					this.outputHiddenNeurons[xIndex][yIndex][rgbIndex] = new NeuronProcessingUnit(sharedDna);
-					this.outputHiddenLayer.add(this.outputHiddenNeurons[xIndex][yIndex][rgbIndex]);
+//					this.outputHiddenNeurons[xIndex][yIndex][rgbIndex] = new NeuronProcessingUnit(sharedDna);
+//					this.outputHiddenLayer.add(this.outputHiddenNeurons[xIndex][yIndex][rgbIndex]);
 					
 					this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuronProcessingUnit(sharedDna);
 					this.outputLayer.add(this.outputNeurons[xIndex][yIndex][rgbIndex]);
@@ -166,16 +166,22 @@ public class NciBrain implements java.io.Serializable
 		}
 		
 		//connect the neurons together
+		this.inputLayer.connectAllTo(this.compressedLayer);
+		this.compressedLayer.connectAllTo(this.outputLayer);
+		
+                /*
 		this.inputLayer.connectAllTo(this.inputHiddenLayer);
 		this.inputHiddenLayer.connectAllTo(this.compressedLayer);
 		this.compressedLayer.connectAllTo(this.outputHiddenLayer);
 		this.outputHiddenLayer.connectAllTo(this.outputLayer);
-		
+                 * */
+
+                
 		//if you want to add an extra level of connectivity.
 		if( extraConnectivity == true )
 		{
-			this.inputLayer.connectAllTo(this.compressedLayer);
-			this.compressedLayer.connectAllTo(this.outputLayer);
+//			this.inputLayer.connectAllTo(this.compressedLayer);
+//			this.compressedLayer.connectAllTo(this.outputLayer);
 		}
 	}
 	
@@ -213,9 +219,9 @@ public class NciBrain implements java.io.Serializable
 	private void propogate()
 	{
 		this.inputLayer.propogate();
-		this.inputHiddenLayer.propogate();
+//		this.inputHiddenLayer.propogate();
 		this.compressedLayer.propogate();
-		this.outputHiddenLayer.propogate();
+//		this.outputHiddenLayer.propogate();
 		this.outputLayer.propogate();
 	}
 	
@@ -226,9 +232,9 @@ public class NciBrain implements java.io.Serializable
 	private void backPropogate()
 	{
 		this.outputLayer.backPropogate();
-		this.outputHiddenLayer.backPropogate();
+//		this.outputHiddenLayer.backPropogate();
 		this.compressedLayer.backPropogate();
-		this.inputHiddenLayer.backPropogate();
+//		this.inputHiddenLayer.backPropogate();
 		this.inputLayer.backPropogate();
 	}
 	

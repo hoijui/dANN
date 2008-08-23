@@ -43,7 +43,9 @@
     </target>
     
     <target name="run">
-        <java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d">
+        <!--java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d"-->
+        <java fork="true" classname="com.syncleus.core.dann.examples.Main">
+            <!--jvmarg value="-Xmx512m" /-->
             <classpath>
                 <path refid="classpath"/>
                 <path location="build/jar/dann_examples.jar"/>
