@@ -10,7 +10,7 @@ public class BrainThread extends Thread
     private boolean busy = true;
     private BufferedImage originalImage = null;
     private BufferedImage finalImage = null;
-    private int[] compressedImage = null;
+    private byte[] compressedImage = null;
     private int width = 0;
     private int height = 0;
     private double compression;
@@ -65,7 +65,7 @@ public class BrainThread extends Thread
 
 
 
-    public int[] getLastCompressedImage()
+    public byte[] getLastCompressedImage()
     {
         return this.compressedImage;
     }

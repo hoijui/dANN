@@ -16,10 +16,10 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-
 package com.syncleus.core.dann.examples.nci;
 
 import com.syncleus.dann.*;
+
 
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
@@ -28,18 +28,19 @@ import com.syncleus.dann.*;
  */
 public class CompressionNeuron extends NeuronProcessingUnit implements java.io.Serializable
 {
-	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
-	 * @since 0.1
-	 */
-	protected int input = 0;
+    /**
+     * <!-- Author: Jeffrey Phillips Freeman -->
+     * @since 0.1
+     */
+    protected byte input = 0;
+    /**
+     * <!-- Author: Jeffrey Phillips Freeman -->
+     * @since 0.1
+     */
+    protected boolean inputSet = false;
 
-	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
-	 * @since 0.1
-	 */
-	protected boolean inputSet = false;
-    
+
+
     /**
      * Creates a new instance of InputNeuronProcessingUnit<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
@@ -51,69 +52,73 @@ public class CompressionNeuron extends NeuronProcessingUnit implements java.io.S
     {
         super(OwnedDNAToSet);
     }
-    
+
+
+
     /**
-	  * This method sets the current input on the neuron.<BR>
-	  * <!-- Author: Jeffrey Phillips Freeman -->
-	  * @since 0.1
-	  * @param inputToSet The value to set the current input to.
-	  */
-    public void setInput(int inputToSet)
+     * This method sets the current input on the neuron.<BR>
+     * <!-- Author: Jeffrey Phillips Freeman -->
+     * @since 0.1
+     * @param inputToSet The value to set the current input to.
+     */
+    public void setInput(byte inputToSet)
     {
-		 if( (inputToSet > 255)||(inputToSet < 0) )
-			 throw new IllegalArgumentException("the input to set but be a value between 0 (inclusive) and 256 (exclusive)");
-		 
+//		 if( (inputToSet > 255)||(inputToSet < 0) )
+//			 throw new IllegalArgumentException("the input to set but be a value between 0 (inclusive) and 256 (exclusive)");
+
         this.input = inputToSet;
-		  this.inputSet = true;
+        this.inputSet = true;
     }
-	 
-	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
-	 * @since 0.1
-	 */
-	 public void unsetInput()
-	 {
-		 this.inputSet = false;
-	 }
-	 
-	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
-	 * @since 0.1
-	 */
-	 public int getChannelOutput()
-	 {
-		 int newChannel = (int) Math.ceil(super.getOutput() * 256.0);
-		 if( newChannel >= 256 )
-			 newChannel = 255;
-		 
-		 return newChannel;
-	 }
-	 
-	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
-	 * @since 0.1
-	 */
-	 private double getDoubleInput()
-	 {
-		 return ((double)this.input) / 255.0;
-	 }
-	 
-	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
-	 * @since 0.1
-	 */
-	 protected void setOutput(double newOutput)
-	 {
-		 if( this.inputSet == false )
-			super.setOutput(newOutput);
-		 else
-		 {
-			 super.output = this.getDoubleInput();
-			 
-			 for( Synapse current : this.destinations )
-			 {
-				 current.setInput(newOutput);
-			 }
-		 }
-	 }
+
+
+
+    /**
+     * <!-- Author: Jeffrey Phillips Freeman -->
+     * @since 0.1
+     */
+    public void unsetInput()
+    {
+        this.inputSet = false;
+    }
+
+
+
+    /**
+     * <!-- Author: Jeffrey Phillips Freeman -->
+     * @since 0.1
+     */
+    public byte getChannelOutput()
+    {
+        return (byte) Math.ceil(super.getOutput() * 127.0);
+    }
+
+
+
+    /**
+     * <!-- Author: Jeffrey Phillips Freeman -->
+     * @since 0.1
+     */
+    private double getDoubleInput()
+    {
+        return ((double) this.input) / 128.0;
+    }
+
+
+
+    /**
+     * <!-- Author: Jeffrey Phillips Freeman -->
+     * @since 0.1
+     */
+    protected void setOutput(double newOutput)
+    {
+        if (this.inputSet == false)
+            super.setOutput(newOutput);
+        else
+        {
+            super.output = this.getDoubleInput();
+
+            for (Synapse current : this.destinations)
+                current.setInput(newOutput);
+        }
+    }
 }

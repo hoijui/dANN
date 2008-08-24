@@ -200,16 +200,16 @@ public class Main
 	
 	private static void propogateOutput()
 	{
-		firstLayer.propogate();
-		secondLayer.propogate();
-		output.propogate();
+		firstLayer.propagate();
+		secondLayer.propagate();
+		output.propagate();
 	}
 	
 	private static void backPropogateTraining()
 	{
-		output.backPropogate();
-		secondLayer.backPropogate();
-		firstLayer.backPropogate();
+		output.backPropagate();
+		secondLayer.backPropagate();
+		firstLayer.backPropagate();
 	}
 	
 	private static void setCurrentInput(double[] inputToSet)

@@ -66,54 +66,46 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="statusLabel" alignment="1" pref="244" max="32767" attributes="1"/>
+                  <Component id="progress" alignment="0" min="-2" pref="243" max="-2" attributes="1"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jLabel6" max="32767" attributes="1"/>
+                          <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="1"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="originalImageText" pref="340" max="32767" attributes="1"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="originalImageSelect" min="-2" pref="22" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="trainingDirectoryText" pref="339" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="trainingDirectorySelect" min="-2" pref="23" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jLabel6" max="32767" attributes="1"/>
-                                  <Component id="trainButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel5" alignment="1" max="32767" attributes="1"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="trainingCylcesInput" max="32767" attributes="1"/>
-                                  <Component id="learningRateInput" alignment="1" pref="57" max="32767" attributes="1"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                                      <Component id="processButton" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace pref="135" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                              <Component id="progress" min="-2" pref="231" max="-2" attributes="1"/>
-                          </Group>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="trainingCylcesInput" max="32767" attributes="1"/>
+                          <Component id="learningRateInput" alignment="1" pref="57" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
-                      <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="1">
+                      <Component id="trainButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="processButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="27" max="32767" attributes="0"/>
+                      <Component id="stopButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="trainingDirectoryText" alignment="1" pref="215" max="32767" attributes="0"/>
+                          <Component id="originalImageText" alignment="1" pref="215" max="32767" attributes="1"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="originalImageSelect" alignment="1" min="-2" pref="22" max="-2" attributes="0"/>
+                          <Component id="trainingDirectorySelect" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
               <Component id="separator" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="577" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="847" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -122,10 +114,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="separator" pref="674" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="separator" alignment="1" pref="674" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -140,11 +129,11 @@
                           <Component id="originalImageSelect" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="originalImageText" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="448" max="32767" attributes="0"/>
+                      <EmptySpace pref="464" max="32767" attributes="0"/>
                       <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="progress" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="trainingCylcesInput" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -156,12 +145,13 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="processButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="trainButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="processButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="stopButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -170,7 +160,7 @@
     <Component class="javax.swing.JTextField" name="trainingDirectoryText">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" value="C:\nci\training\"/>
+        <Property name="text" type="java.lang.String" value="C:\Documents and Settings\All Users\Documents\My Pictures\Sample Pictures\"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="trainingDirectorySelect">
@@ -202,7 +192,7 @@
     <Component class="javax.swing.JTextField" name="originalImageText">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" value="C:\nci\sample\original.bmp"/>
+        <Property name="text" type="java.lang.String" value="C:\Documents and Settings\All Users\Documents\My Pictures\Sample Pictures\Sunset.PNG"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="trainButton">
@@ -217,6 +207,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Process"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="processButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="trainingCylcesInput">
       <Properties>
@@ -256,6 +249,14 @@
       <Properties>
         <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="stopButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stop"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

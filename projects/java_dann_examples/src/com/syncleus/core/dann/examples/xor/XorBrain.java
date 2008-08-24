@@ -84,16 +84,16 @@ public class XorBrain {
 		secondLayer.connectAllTo(output);
 	}
 	
-	private void propogateOutput() {
-		firstLayer.propogate();
-		secondLayer.propogate();
-		output.propogate();
+	private void propagateOutput() {
+		firstLayer.propagate();
+		secondLayer.propagate();
+		output.propagate();
 	}
 	
-	private void backPropogateTraining() {
-		output.backPropogate();
-		secondLayer.backPropogate();
-		firstLayer.backPropogate();
+	private void backPropagateTraining() {
+		output.backPropagate();
+		secondLayer.backPropagate();
+		firstLayer.backPropagate();
 	}
 	
 	private void setCurrentInput(double[] inputToSet) {
@@ -109,7 +109,7 @@ public class XorBrain {
 		
         double[] curInput = {0, 0, 0};
         setCurrentInput(curInput);
-        propogateOutput();
+        propagateOutput();
         double[] curOutput;
         resultsList.add(curInput[0]);
         resultsList.add(curInput[1]);
@@ -121,7 +121,7 @@ public class XorBrain {
         curInput[1] = 0;
         curInput[2] = 0;
         setCurrentInput(curInput);
-        propogateOutput();
+        propagateOutput();
         resultsList.add(curInput[0]);
         resultsList.add(curInput[1]);
         resultsList.add(curInput[2]);
@@ -131,7 +131,7 @@ public class XorBrain {
         curInput[1] = 1;
         curInput[2] = 0;
         setCurrentInput(curInput);
-        propogateOutput();
+        propagateOutput();
         resultsList.add(curInput[0]);
         resultsList.add(curInput[1]);
         resultsList.add(curInput[2]);
@@ -141,7 +141,7 @@ public class XorBrain {
         curInput[1] = 0;
         curInput[2] = 1;
         setCurrentInput(curInput);
-        propogateOutput();
+        propagateOutput();
         resultsList.add(curInput[0]);
         resultsList.add(curInput[1]);
         resultsList.add(curInput[2]);
@@ -151,7 +151,7 @@ public class XorBrain {
         curInput[1] = 1;
         curInput[2] = 0;
         setCurrentInput(curInput);
-        propogateOutput();
+        propagateOutput();
         resultsList.add(curInput[0]);
         resultsList.add(curInput[1]);
         resultsList.add(curInput[2]);
@@ -161,7 +161,7 @@ public class XorBrain {
         curInput[1] = 1;
         curInput[2] = 1;
         setCurrentInput(curInput);
-        propogateOutput();
+        propagateOutput();
         resultsList.add(curInput[0]);
         resultsList.add(curInput[1]);
         resultsList.add(curInput[2]);
@@ -171,7 +171,7 @@ public class XorBrain {
         curInput[1] = 0;
         curInput[2] = 1;
         setCurrentInput(curInput);
-        propogateOutput();
+        propagateOutput();
         resultsList.add(curInput[0]);
         resultsList.add(curInput[1]);
         resultsList.add(curInput[2]);
@@ -181,7 +181,7 @@ public class XorBrain {
         curInput[1] = 1;
         curInput[2] = 1;
         setCurrentInput(curInput);
-        propogateOutput();
+        propagateOutput();
         resultsList.add(curInput[0]);
         resultsList.add(curInput[1]);
         resultsList.add(curInput[2]);
@@ -197,72 +197,72 @@ public class XorBrain {
 			double[] curInput = {0, 0, 0};
             double curTrain = -1;
             setCurrentInput(curInput);
-            propogateOutput();
+            propagateOutput();
             output.setDesired(curTrain);
-            backPropogateTraining();
+            backPropagateTraining();
 				
             curInput[0] = 1;
             curInput[1] = 0;
             curInput[2] = 0;
             curTrain = 1;
             setCurrentInput(curInput);
-            propogateOutput();
+            propagateOutput();
             output.setDesired(curTrain);
-            backPropogateTraining();
+            backPropagateTraining();
 				
             curInput[0] = 0;
             curInput[1] = 1;
             curInput[2] = 0;
             curTrain = 1;
             setCurrentInput(curInput);
-            propogateOutput();
+            propagateOutput();
             output.setDesired(curTrain);
-            backPropogateTraining();
+            backPropagateTraining();
 				
             curInput[0] = 0;
             curInput[1] = 0;
             curInput[2] = 1;
             curTrain = 1;
             setCurrentInput(curInput);
-            propogateOutput();
+            propagateOutput();
             output.setDesired(curTrain);
-            backPropogateTraining();
+            backPropagateTraining();
 				
             curInput[0] = 1;
             curInput[1] = 1;
             curInput[2] = 0;
             curTrain = -1;
             setCurrentInput(curInput);
-            propogateOutput();
+            propagateOutput();
             output.setDesired(curTrain);
-            backPropogateTraining();
+            backPropagateTraining();
 				
             curInput[0] = 0;
             curInput[1] = 1;
             curInput[2] = 1;
             curTrain = -1;
             setCurrentInput(curInput);
-            propogateOutput();
+            propagateOutput();
             output.setDesired(curTrain);
-            backPropogateTraining();
+            backPropagateTraining();
 				
             curInput[0] = 1;
             curInput[1] = 0;
             curInput[2] = 1;
             curTrain = -1;
             setCurrentInput(curInput);
-            propogateOutput();
+            propagateOutput();
             output.setDesired(curTrain);
-            backPropogateTraining();
+            backPropagateTraining();
 				
             curInput[0] = 1;
             curInput[1] = 1;
             curInput[2] = 1;
             curTrain = -1;
             setCurrentInput(curInput);
-            propogateOutput();
+            propagateOutput();
             output.setDesired(curTrain);
-            backPropogateTraining();
+            backPropagateTraining();
         }
 	}
 	
