@@ -1,11 +1,9 @@
 package com.syncleus.core.dann.examples.nci.ui;
 
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
+import java.awt.image.Raster;
 import java.io.File;
 import java.util.Random;
 import javax.imageio.ImageIO;
@@ -16,12 +14,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class NciDemo extends javax.swing.JFrame implements ActionListener
 {
-    private final static int BLOCK_WIDTH = 10;
-    private final static int BLOCK_HEIGHT = 10;
-    private BrainThread brainThread = new BrainThread(0.0, BLOCK_WIDTH, BLOCK_HEIGHT, false);
+    private final static int BLOCK_WIDTH = 16;
+    private final static int BLOCK_HEIGHT = 16;
+    private BrainThread brainThread = new BrainThread(0.8, BLOCK_WIDTH, BLOCK_HEIGHT, false);
     private static Random random = new Random();
-    private File trainingDirectory = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
-    private File originalImageLocation = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\Water lilies.PNG");
+    private File trainingDirectory;
+    private BufferedImage[] trainingImages;
+    private File originalImageLocation;
     private BufferedImage originalImage;
     private ImagePanel originalImagePanel = new ImagePanel();
     private BufferedImage finalImage;
@@ -53,13 +52,10 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener
         this.finalImagePanel.setSize(800,600);
         this.finalImagePanel.setVisible(true);
         
-        
-        this.refreshOriginalImage();
-        
 
 
         this.brainThread.start();
-        new Timer(10, this).start();
+        new Timer(1, this).start();
     }
 
 
@@ -93,8 +89,6 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener
                         int writeHeight = (finalChunk.getHeight() < (this.finalImage.getHeight() - this.finalLastY) ? finalChunk.getHeight() : this.finalImage.getHeight() - this.finalLastY);
                         int[] chunkArray = new int[writeHeight * writeWidth];
                         finalChunk.getRGB(0, 0, writeWidth, writeHeight, chunkArray, 0, writeWidth);
-//                        for(int lcv = 0; lcv < chunkArray.length; lcv++)
-//                            chunkArray[lcv] = random.nextInt();
                         this.finalImage.setRGB(this.finalLastX, this.finalLastY, writeWidth, writeHeight, chunkArray, 0, writeWidth);
 
                         //display new image
@@ -104,32 +98,10 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener
 
                         this.statusLabel.setText("Busy... " + this.finalLastX + ", " + this.finalLastY + " of " + this.finalImage.getWidth() + ", " + this.finalImage.getHeight());
                     }
-                    //obtain a chunk of the image for processing
-                    PixelGrabber grabber = new PixelGrabber(this.originalImage, this.finalWriteX, this.finalWriteY, BLOCK_WIDTH, BLOCK_HEIGHT, true);
-                    try
-                    {
-                        grabber.grabPixels();
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println("Danger will robinson, Danger: " + e);
-                        e.printStackTrace();
-                        this.processing = false;
-                        return;
-                    }
-
-                    int[] originalPixels = (int[]) grabber.getPixels();
-                    int originalPixelsIndex = 0;
-
-
-                    //add data to temporary buffered image accounting for actual dimensions
-                    BufferedImage originalImageSegment = new BufferedImage(BLOCK_WIDTH, BLOCK_HEIGHT, BufferedImage.TYPE_INT_RGB);
-                    for (int y = 0; y < BLOCK_HEIGHT; y++)
-                        for (int x = 0; x < BLOCK_WIDTH; x++)
-                            if ((x < grabber.getWidth()) && (y < grabber.getHeight()))
-                                originalImageSegment.setRGB(x, y, originalPixels[originalPixelsIndex++]);
-                            else
-                                originalImageSegment.setRGB(x, y, 0);
+                    
+                    int blockWidth = this.originalImage.getWidth() - this.finalWriteX < BLOCK_WIDTH ? this.originalImage.getWidth() - this.finalWriteX : BLOCK_WIDTH;
+                    int blockHeight = this.originalImage.getHeight() - this.finalWriteY < BLOCK_HEIGHT ? this.originalImage.getHeight() - this.finalWriteY : BLOCK_HEIGHT;
+                    BufferedImage originalImageSegment = this.originalImage.getSubimage(this.finalWriteX, this.finalWriteY, blockWidth, blockHeight);
 
                     //feed buffered image to brain
                     try
@@ -193,41 +165,16 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener
     {
         BufferedImage randomImage = this.getRandomTrainingImage();
 
-        BufferedImage imageBlock = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-/*
-        while ((randomImage.getWidth(null) < 0) || (randomImage.getHeight(null) < 0))
-            try
-            {
-                Thread.sleep(10);
-            }
-            catch (Exception e)
-            {
-            }
- */
-
         int randomX = this.random.nextInt(randomImage.getWidth() - width);
         int randomY = this.random.nextInt(randomImage.getHeight() - height);
-
-        PixelGrabber grabber = new PixelGrabber(randomImage, randomX, randomY, width, height, true);
-        grabber.grabPixels();
-        int[] pixels = (int[]) grabber.getPixels();
-
-        for (int currentX = 0; currentX < width; currentX++)
-            for (int currentY = 0; currentY < height; currentY++)
-                imageBlock.setRGB(currentX, currentY, pixels[currentX + (currentY * width)]);
-
-        return imageBlock;
-
+        return randomImage.getSubimage(randomX, randomY, width, height);
     }
 
 
 
     private BufferedImage getRandomTrainingImage() throws Exception
     {
-        File[] files = this.getTrainingImages();
-        File randomFile = files[this.random.nextInt(files.length)];
-        //return Toolkit.getDefaultToolkit().getImage(randomFile.getAbsolutePath());
-        return ImageIO.read(randomFile);
+        return this.trainingImages[this.random.nextInt(this.trainingImages.length)];
     }
 
 
@@ -475,7 +422,6 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 
     JFileChooser chooser = new JFileChooser();
     FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
-    chooser.setCurrentDirectory(new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures"));
     chooser.setFileFilter(filter);
     chooser.setFileSelectionMode(chooser.FILES_ONLY);
     chooser.setMultiSelectionEnabled(false);
@@ -491,7 +437,6 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 
 private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainingDirectorySelectActionPerformed
     JFileChooser chooser = new JFileChooser();
-    chooser.setCurrentDirectory(new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures"));
     chooser.setFileSelectionMode(chooser.DIRECTORIES_ONLY);
     chooser.setMultiSelectionEnabled(false);
     chooser.setVisible(true);
@@ -499,6 +444,22 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
     {
         this.trainingDirectoryText.setText(chooser.getSelectedFile().getAbsolutePath());
         this.trainingDirectory = chooser.getSelectedFile();
+        
+        try
+        {
+            File[] trainingFiles = this.getTrainingImages();
+            this.trainingImages = new BufferedImage[trainingFiles.length];
+            for(int trainingFilesIndex = 0; trainingFilesIndex < trainingFiles.length; trainingFilesIndex++)
+            {
+                this.trainingImages[trainingFilesIndex] = ImageIO.read(trainingFiles[trainingFilesIndex]);
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Danger will robinson, Danger: " + e);
+            e.printStackTrace();
+            return;
+        }
     }
 }//GEN-LAST:event_trainingDirectorySelectActionPerformed
 

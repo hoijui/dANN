@@ -100,7 +100,7 @@ public class CompressionNeuron extends NeuronProcessingUnit implements java.io.S
      */
     private double getDoubleInput()
     {
-        return ((double) this.input) / 128.0;
+        return ((double) this.input) / 127.0;
     }
 
 

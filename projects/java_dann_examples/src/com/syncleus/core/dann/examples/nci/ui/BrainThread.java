@@ -6,11 +6,11 @@ import java.awt.image.BufferedImage;
 
 public class BrainThread extends Thread
 {
-    private NciBrain brain = null;
-    private boolean busy = true;
-    private BufferedImage originalImage = null;
-    private BufferedImage finalImage = null;
-    private byte[] compressedImage = null;
+    private volatile NciBrain brain = null;
+    private volatile boolean busy = true;
+    private volatile BufferedImage originalImage = null;
+    private volatile BufferedImage finalImage = null;
+    private volatile byte[] compressedImage = null;
     private int width = 0;
     private int height = 0;
     private double compression;
@@ -49,8 +49,8 @@ public class BrainThread extends Thread
         if (originalImage == null)
             return;
 
-        if ((originalImage.getWidth() < width) || (originalImage.getHeight() < height))
-            throw new Exception("Image is too small");
+//        if ((originalImage.getWidth() < width) || (originalImage.getHeight() < height))
+//            throw new Exception("Image is too small");
 
         this.busy = true;
         this.originalImage = originalImage;
@@ -96,8 +96,25 @@ public class BrainThread extends Thread
 
                 synchronized (this.brain)
                 {
+                    /*
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println("about to compress...");
+//                    Thread.sleep(1000);
                     this.compressedImage = this.brain.compress(this.originalImage);
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println("about to decompress...");
+//                    Thread.sleep(1000);
                     this.finalImage = this.brain.uncompress(this.compressedImage);
+                     */
+//                    System.out.println();
+//                    System.out.println();
+//                    System.out.println();
+//                    System.out.println("about to test...");
+                    this.finalImage = this.brain.test(this.originalImage);
                     this.originalImage = null;
                 }
 
