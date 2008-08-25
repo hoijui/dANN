@@ -83,157 +83,157 @@ namespace dANNtest
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			this.OutText = new System.Windows.Forms.TextBox();
-			this.TestButton = new System.Windows.Forms.Button();
-			this.TrainButton = new System.Windows.Forms.Button();
-			this.ClsButton = new System.Windows.Forms.Button();
-			this.TestSimpleButton = new System.Windows.Forms.Button();
-			this.TrainingTimer = new System.Windows.Forms.Timer(this.components);
-			this.TrainProgress = new System.Windows.Forms.ProgressBar();
-			this.TrainPercentLabel = new System.Windows.Forms.Label();
-			this.StopTrainingButton = new System.Windows.Forms.Button();
-			this.LoadButton = new System.Windows.Forms.Button();
-			this.SaveButton = new System.Windows.Forms.Button();
-			this.StructButton = new System.Windows.Forms.Button();
-			this.WeightStatButton = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// OutText
-			// 
-			this.OutText.Location = new System.Drawing.Point(24, 24);
-			this.OutText.Multiline = true;
-			this.OutText.Name = "OutText";
-			this.OutText.ReadOnly = true;
-			this.OutText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.OutText.Size = new System.Drawing.Size(456, 376);
-			this.OutText.TabIndex = 0;
-			this.OutText.Text = "OutText";
-			// 
-			// TestButton
-			// 
-			this.TestButton.Location = new System.Drawing.Point(16, 424);
-			this.TestButton.Name = "TestButton";
-			this.TestButton.Size = new System.Drawing.Size(80, 24);
-			this.TestButton.TabIndex = 1;
-			this.TestButton.Text = "Test";
-			this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
-			// 
-			// TrainButton
-			// 
-			this.TrainButton.Location = new System.Drawing.Point(248, 424);
-			this.TrainButton.Name = "TrainButton";
-			this.TrainButton.Size = new System.Drawing.Size(64, 24);
-			this.TrainButton.TabIndex = 2;
-			this.TrainButton.Text = "Train";
-			this.TrainButton.Click += new System.EventHandler(this.TrainButton_Click);
-			// 
-			// ClsButton
-			// 
-			this.ClsButton.Location = new System.Drawing.Point(136, 424);
-			this.ClsButton.Name = "ClsButton";
-			this.ClsButton.Size = new System.Drawing.Size(64, 24);
-			this.ClsButton.TabIndex = 3;
-			this.ClsButton.Text = "CLS";
-			this.ClsButton.Click += new System.EventHandler(this.ClsButton_Click);
-			// 
-			// TestSimpleButton
-			// 
-			this.TestSimpleButton.Location = new System.Drawing.Point(16, 464);
-			this.TestSimpleButton.Name = "TestSimpleButton";
-			this.TestSimpleButton.Size = new System.Drawing.Size(80, 24);
-			this.TestSimpleButton.TabIndex = 4;
-			this.TestSimpleButton.Text = "Test Simple";
-			this.TestSimpleButton.Click += new System.EventHandler(this.TestSimpleButton_Click);
-			// 
-			// TrainingTimer
-			// 
-			this.TrainingTimer.Interval = 1;
-			this.TrainingTimer.Tick += new System.EventHandler(this.TrainingTimer_Tick);
-			// 
-			// TrainProgress
-			// 
-			this.TrainProgress.Location = new System.Drawing.Point(8, 544);
-			this.TrainProgress.Name = "TrainProgress";
-			this.TrainProgress.Size = new System.Drawing.Size(472, 16);
-			this.TrainProgress.Step = 1;
-			this.TrainProgress.TabIndex = 5;
-			// 
-			// TrainPercentLabel
-			// 
-			this.TrainPercentLabel.Location = new System.Drawing.Point(8, 568);
-			this.TrainPercentLabel.Name = "TrainPercentLabel";
-			this.TrainPercentLabel.Size = new System.Drawing.Size(472, 16);
-			this.TrainPercentLabel.TabIndex = 6;
-			this.TrainPercentLabel.Text = "0 %";
-			this.TrainPercentLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-			// 
-			// StopTrainingButton
-			// 
-			this.StopTrainingButton.Location = new System.Drawing.Point(240, 464);
-			this.StopTrainingButton.Name = "StopTrainingButton";
-			this.StopTrainingButton.Size = new System.Drawing.Size(80, 24);
-			this.StopTrainingButton.TabIndex = 7;
-			this.StopTrainingButton.Text = "Stop Training";
-			this.StopTrainingButton.Click += new System.EventHandler(this.StopTrainingButton_Click);
-			// 
-			// LoadButton
-			// 
-			this.LoadButton.Location = new System.Drawing.Point(360, 424);
-			this.LoadButton.Name = "LoadButton";
-			this.LoadButton.Size = new System.Drawing.Size(96, 24);
-			this.LoadButton.TabIndex = 8;
-			this.LoadButton.Text = "Load Network";
-			this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
-			// 
-			// SaveButton
-			// 
-			this.SaveButton.Location = new System.Drawing.Point(360, 464);
-			this.SaveButton.Name = "SaveButton";
-			this.SaveButton.Size = new System.Drawing.Size(96, 24);
-			this.SaveButton.TabIndex = 9;
-			this.SaveButton.Text = "Save Network";
-			this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-			// 
-			// StructButton
-			// 
-			this.StructButton.Location = new System.Drawing.Point(128, 464);
-			this.StructButton.Name = "StructButton";
-			this.StructButton.Size = new System.Drawing.Size(80, 24);
-			this.StructButton.TabIndex = 10;
-			this.StructButton.Text = "Toggle Struct";
-			this.StructButton.Click += new System.EventHandler(this.StructButton_Click);
-			// 
-			// WeightStatButton
-			// 
-			this.WeightStatButton.Location = new System.Drawing.Point(16, 504);
-			this.WeightStatButton.Name = "WeightStatButton";
-			this.WeightStatButton.Size = new System.Drawing.Size(80, 24);
-			this.WeightStatButton.TabIndex = 11;
-			this.WeightStatButton.Text = "Weight Stats";
-			this.WeightStatButton.Click += new System.EventHandler(this.WeightStatButton_Click);
-			// 
-			// Form1
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(504, 597);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.WeightStatButton,
-																		  this.StructButton,
-																		  this.SaveButton,
-																		  this.LoadButton,
-																		  this.StopTrainingButton,
-																		  this.TrainPercentLabel,
-																		  this.TrainProgress,
-																		  this.TestSimpleButton,
-																		  this.ClsButton,
-																		  this.TrainButton,
-																		  this.TestButton,
-																		  this.OutText});
-			this.Name = "Form1";
-			this.Text = "Form1";
-			this.Load += new System.EventHandler(this.Form1_Load);
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            this.OutText = new System.Windows.Forms.TextBox();
+            this.TestButton = new System.Windows.Forms.Button();
+            this.TrainButton = new System.Windows.Forms.Button();
+            this.ClsButton = new System.Windows.Forms.Button();
+            this.TestSimpleButton = new System.Windows.Forms.Button();
+            this.TrainingTimer = new System.Windows.Forms.Timer(this.components);
+            this.TrainProgress = new System.Windows.Forms.ProgressBar();
+            this.TrainPercentLabel = new System.Windows.Forms.Label();
+            this.StopTrainingButton = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.StructButton = new System.Windows.Forms.Button();
+            this.WeightStatButton = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // OutText
+            // 
+            this.OutText.Location = new System.Drawing.Point(24, 24);
+            this.OutText.Multiline = true;
+            this.OutText.Name = "OutText";
+            this.OutText.ReadOnly = true;
+            this.OutText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.OutText.Size = new System.Drawing.Size(456, 376);
+            this.OutText.TabIndex = 0;
+            this.OutText.Text = "OutText";
+            // 
+            // TestButton
+            // 
+            this.TestButton.Location = new System.Drawing.Point(16, 424);
+            this.TestButton.Name = "TestButton";
+            this.TestButton.Size = new System.Drawing.Size(80, 24);
+            this.TestButton.TabIndex = 1;
+            this.TestButton.Text = "Test";
+            this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
+            // 
+            // TrainButton
+            // 
+            this.TrainButton.Location = new System.Drawing.Point(248, 424);
+            this.TrainButton.Name = "TrainButton";
+            this.TrainButton.Size = new System.Drawing.Size(64, 24);
+            this.TrainButton.TabIndex = 2;
+            this.TrainButton.Text = "Train";
+            this.TrainButton.Click += new System.EventHandler(this.TrainButton_Click);
+            // 
+            // ClsButton
+            // 
+            this.ClsButton.Location = new System.Drawing.Point(136, 424);
+            this.ClsButton.Name = "ClsButton";
+            this.ClsButton.Size = new System.Drawing.Size(64, 24);
+            this.ClsButton.TabIndex = 3;
+            this.ClsButton.Text = "CLS";
+            this.ClsButton.Click += new System.EventHandler(this.ClsButton_Click);
+            // 
+            // TestSimpleButton
+            // 
+            this.TestSimpleButton.Location = new System.Drawing.Point(16, 464);
+            this.TestSimpleButton.Name = "TestSimpleButton";
+            this.TestSimpleButton.Size = new System.Drawing.Size(80, 24);
+            this.TestSimpleButton.TabIndex = 4;
+            this.TestSimpleButton.Text = "Test Simple";
+            this.TestSimpleButton.Click += new System.EventHandler(this.TestSimpleButton_Click);
+            // 
+            // TrainingTimer
+            // 
+            this.TrainingTimer.Interval = 1;
+            this.TrainingTimer.Tick += new System.EventHandler(this.TrainingTimer_Tick);
+            // 
+            // TrainProgress
+            // 
+            this.TrainProgress.Location = new System.Drawing.Point(8, 544);
+            this.TrainProgress.Name = "TrainProgress";
+            this.TrainProgress.Size = new System.Drawing.Size(472, 16);
+            this.TrainProgress.Step = 1;
+            this.TrainProgress.TabIndex = 5;
+            // 
+            // TrainPercentLabel
+            // 
+            this.TrainPercentLabel.Location = new System.Drawing.Point(8, 568);
+            this.TrainPercentLabel.Name = "TrainPercentLabel";
+            this.TrainPercentLabel.Size = new System.Drawing.Size(472, 16);
+            this.TrainPercentLabel.TabIndex = 6;
+            this.TrainPercentLabel.Text = "0 %";
+            this.TrainPercentLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // StopTrainingButton
+            // 
+            this.StopTrainingButton.Location = new System.Drawing.Point(240, 464);
+            this.StopTrainingButton.Name = "StopTrainingButton";
+            this.StopTrainingButton.Size = new System.Drawing.Size(80, 24);
+            this.StopTrainingButton.TabIndex = 7;
+            this.StopTrainingButton.Text = "Stop Training";
+            this.StopTrainingButton.Click += new System.EventHandler(this.StopTrainingButton_Click);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.Location = new System.Drawing.Point(360, 424);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(96, 24);
+            this.LoadButton.TabIndex = 8;
+            this.LoadButton.Text = "Load Network";
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(360, 464);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(96, 24);
+            this.SaveButton.TabIndex = 9;
+            this.SaveButton.Text = "Save Network";
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // StructButton
+            // 
+            this.StructButton.Location = new System.Drawing.Point(128, 464);
+            this.StructButton.Name = "StructButton";
+            this.StructButton.Size = new System.Drawing.Size(80, 24);
+            this.StructButton.TabIndex = 10;
+            this.StructButton.Text = "Toggle Struct";
+            this.StructButton.Click += new System.EventHandler(this.StructButton_Click);
+            // 
+            // WeightStatButton
+            // 
+            this.WeightStatButton.Location = new System.Drawing.Point(16, 504);
+            this.WeightStatButton.Name = "WeightStatButton";
+            this.WeightStatButton.Size = new System.Drawing.Size(80, 24);
+            this.WeightStatButton.TabIndex = 11;
+            this.WeightStatButton.Text = "Weight Stats";
+            this.WeightStatButton.Click += new System.EventHandler(this.WeightStatButton_Click);
+            // 
+            // Form1
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(504, 597);
+            this.Controls.Add(this.WeightStatButton);
+            this.Controls.Add(this.StructButton);
+            this.Controls.Add(this.SaveButton);
+            this.Controls.Add(this.LoadButton);
+            this.Controls.Add(this.StopTrainingButton);
+            this.Controls.Add(this.TrainPercentLabel);
+            this.Controls.Add(this.TrainProgress);
+            this.Controls.Add(this.TestSimpleButton);
+            this.Controls.Add(this.ClsButton);
+            this.Controls.Add(this.TrainButton);
+            this.Controls.Add(this.TestButton);
+            this.Controls.Add(this.OutText);
+            this.Name = "Form1";
+            this.Text = "NCI C# Demo";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -445,16 +445,17 @@ namespace dANNtest
 
 		private void Form1_Load(object sender, System.EventArgs e)
 		{
-			this.OutText.Text = "XOR Test\r\n";
+			this.OutText.Text = "NCI Test\r\n";
 
-			this.TestImages[0] = new Bitmap("I:\\Test\\In1.bmp");
-			this.TestImages[1] = new Bitmap("I:\\Test\\In2.bmp");
-			this.TestImages[2] = new Bitmap("I:\\Test\\In3.bmp");
+			this.TestImages[0] = new Bitmap("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In1.BMP");
+            this.TestImages[1] = new Bitmap("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In2.BMP");
+            this.TestImages[2] = new Bitmap("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.BMP");
+//            this.TestImages[2] = new Bitmap("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In4.bmp");
 
 			//MyBrain.AddLayerAfterInput(48, false); //.ConnectAllToForwardLayers(null);
-			MyBrain.AddLayerAfterInput(100, false);//.ConnectAllToForwardLayers(null);
+//			MyBrain.AddLayerAfterInput(256, false);//.ConnectAllToForwardLayers(null);
 			this.CompressionLayer = MyBrain.AddLayerAfterInput(CompressionSize, true); 
-			MyBrain.AddLayerAfterInput(100, false);//.ConnectAllToForwardLayers(this.CompressionLayer);
+//			MyBrain.AddLayerAfterInput(256, false);//.ConnectAllToForwardLayers(this.CompressionLayer);
 			//MyBrain.AddLayerAfterInput(48, false); //.ConnectAllToForwardLayers(this.CompressionLayer);
 
 
@@ -533,12 +534,12 @@ namespace dANNtest
 				Bitmap ResultImage = this.RecombineImage(SegmentedImage, SegmentWidth, SegmentHeight, TotalWidthSegments, TotalHeightSegments);
 
 				FileStream CompressFileStream = null;
-				CompressFileStream = File.Create("I:\\Test\\CompressOut" + Lcv + ".bmp");
+				CompressFileStream = File.Create("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\Compressed" + Lcv + ".bmp");
 				IFormatter Serializer = new BinaryFormatter();
 				Serializer.Serialize(CompressFileStream, CompressedImageObj);
 				CompressFileStream.Flush();
 				CompressFileStream.Close();
-				ResultImage.Save("I:\\Test\\Out" + Lcv + ".bmp");
+                ResultImage.Save("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\Out" + Lcv + ".bmp");
 			}
 			this.OutText.Text += "Image saved\r\n";
 		}
@@ -583,9 +584,9 @@ namespace dANNtest
 
 				int EndTick = Environment.TickCount;
 				int ElapsedTick = EndTick - this.TrainingStartTick;
-				int ElapsedMinutes = (int) Math.Floor((ElapsedTick / 1000)/60);
+				int ElapsedMinutes = (int) Math.Floor((ElapsedTick / 1000.0)/60.0);
 				int ElapsedSeconds = (ElapsedTick/1000) - (ElapsedMinutes * 60);
-				int ElapsedSecondsFraction = ElapsedTick - (((int)Math.Floor(ElapsedTick/1000)) * 1000);
+				int ElapsedSecondsFraction = ElapsedTick - (((int)Math.Floor(ElapsedTick/1000.0)) * 1000);
 
 				this.OutText.Text += "Finished Training, Time: " + ElapsedMinutes + ":" + ElapsedSeconds + "." + ElapsedSecondsFraction + " Error: " + this.TestError(10000) + "\r\n";
 			}
