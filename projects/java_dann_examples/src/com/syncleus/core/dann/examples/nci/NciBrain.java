@@ -105,7 +105,7 @@ public class NciBrain implements java.io.Serializable
      */
     private boolean learning = true;
     
-    private static final int CHANNELS = 3;
+    private static final int CHANNELS = 1;
 
 
 

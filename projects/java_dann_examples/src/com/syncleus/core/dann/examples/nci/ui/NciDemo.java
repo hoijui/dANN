@@ -3,7 +3,6 @@ package com.syncleus.core.dann.examples.nci.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 import java.io.File;
 import java.util.Random;
 import javax.imageio.ImageIO;
@@ -12,14 +11,14 @@ import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
-public class NciDemo extends javax.swing.JFrame implements ActionListener
+public class NciDemo extends javax.swing.JFrame implements ActionListener, BrainListener
 {
     private final static int BLOCK_WIDTH = 16;
     private final static int BLOCK_HEIGHT = 16;
-    private BrainThread brainThread = new BrainThread(0.8, BLOCK_WIDTH, BLOCK_HEIGHT, false);
+    private BrainRunner brainRunner;
+    private Thread brainRunnerThread;
     private static Random random = new Random();
     private File trainingDirectory;
-    private BufferedImage[] trainingImages;
     private File originalImageLocation;
     private BufferedImage originalImage;
     private ImagePanel originalImagePanel = new ImagePanel();
@@ -49,142 +48,24 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener
 
         this.add(this.finalImagePanel);
         this.finalImagePanel.setLocation(currentX, currentY);
-        this.finalImagePanel.setSize(800,600);
+        this.finalImagePanel.setSize(800, 600);
         this.finalImagePanel.setVisible(true);
-        
 
-
-        this.brainThread.start();
-        new Timer(1, this).start();
+        new Timer(100, this).start();
     }
 
 
 
     public void actionPerformed(ActionEvent evt)
     {
-        if (this.brainThread.isBusy())
+        if (this.trainingRemaining > 0)
         {
-            if (this.statusLabel.getText().startsWith("Busy...") == false)
-                this.statusLabel.setText("Busy...");
-            this.trainButton.setEnabled(false);
-            this.processButton.setEnabled(false);
+            this.trainingRemaining = this.brainRunner.getTrainingCycles();
+            int progressPercent = ((this.currentTrainingCycles - this.trainingRemaining) * 100) / (this.currentTrainingCycles);
+            this.progress.setValue(progressPercent);
         }
-        else
-        {
-            this.statusLabel.setText("");
-
-            if (this.trainingRemaining <= 0)
-            {
-                this.trainButton.setEnabled(true);
-                this.processButton.setEnabled(true);
-
-                if (this.processing)
-                {
-                    if ((this.finalWriteX != 0) || (this.finalWriteY != 0))
-                    {
-                        //take buffered image off of brain
-                        BufferedImage finalChunk = this.brainThread.getLastFinalImage();
-                        //add buffered image to appropriate location on final image
-                        int writeWidth = (finalChunk.getWidth() < (this.finalImage.getWidth() - this.finalLastX) ? finalChunk.getWidth() : this.finalImage.getWidth() - this.finalLastX);
-                        int writeHeight = (finalChunk.getHeight() < (this.finalImage.getHeight() - this.finalLastY) ? finalChunk.getHeight() : this.finalImage.getHeight() - this.finalLastY);
-                        int[] chunkArray = new int[writeHeight * writeWidth];
-                        finalChunk.getRGB(0, 0, writeWidth, writeHeight, chunkArray, 0, writeWidth);
-                        this.finalImage.setRGB(this.finalLastX, this.finalLastY, writeWidth, writeHeight, chunkArray, 0, writeWidth);
-
-                        //display new image
-                        this.finalImagePanel.setImage(this.finalImage);
-                        //this.finalImagePanel.setImage(finalChunk);
-                        this.finalImagePanel.repaint();
-
-                        this.statusLabel.setText("Busy... " + this.finalLastX + ", " + this.finalLastY + " of " + this.finalImage.getWidth() + ", " + this.finalImage.getHeight());
-                    }
-                    
-                    int blockWidth = this.originalImage.getWidth() - this.finalWriteX < BLOCK_WIDTH ? this.originalImage.getWidth() - this.finalWriteX : BLOCK_WIDTH;
-                    int blockHeight = this.originalImage.getHeight() - this.finalWriteY < BLOCK_HEIGHT ? this.originalImage.getHeight() - this.finalWriteY : BLOCK_HEIGHT;
-                    BufferedImage originalImageSegment = this.originalImage.getSubimage(this.finalWriteX, this.finalWriteY, blockWidth, blockHeight);
-
-                    //feed buffered image to brain
-                    try
-                    {
-                        this.brainThread.setLearning(false);
-                        this.brainThread.processImage(originalImageSegment);
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println("Danger will robinson, Danger: " + e);
-                        e.printStackTrace();
-                        this.processing = false;
-                        return;
-                    }
-
-                    //update finalWriteX & finalWriteY to new position and account for end of row.
-                    this.finalLastX = this.finalWriteX;
-                    this.finalLastY = this.finalWriteY;
-                    if ((this.finalWriteX + BLOCK_WIDTH) >= this.finalImage.getWidth())
-                    {
-                        this.finalWriteX = 0;
-                        if ((this.finalWriteY + BLOCK_HEIGHT) >= this.finalImage.getHeight())
-                        {
-                            this.finalWriteY = 0;
-                            this.processing = false;
-                        }
-                        else
-                            this.finalWriteY += BLOCK_HEIGHT;
-                    }
-                    else
-                        this.finalWriteX += BLOCK_WIDTH;
-                }
-            }
-            else
-            {
-                this.trainingRemaining--;
-                BufferedImage trainImage = null;
-                try
-                {
-                    trainImage = this.getRandomTrainingBlock(BLOCK_WIDTH, BLOCK_HEIGHT);
-                    this.brainThread.setLearning(true);
-                    this.brainThread.processImage(trainImage);
-                }
-                catch (Exception e)
-                {
-                    System.out.println("Danger will robinson, Danger: " + e);
-                    e.printStackTrace();
-                    this.trainingRemaining = 0;
-                    return;
-                }
-
-                int progressPercent = ((this.currentTrainingCycles - this.trainingRemaining) * 100) / (this.currentTrainingCycles);
-                this.progress.setValue(progressPercent);
-            }
-        }
-    }
-
-
-
-    private BufferedImage getRandomTrainingBlock(int width, int height) throws Exception
-    {
-        BufferedImage randomImage = this.getRandomTrainingImage();
-
-        int randomX = this.random.nextInt(randomImage.getWidth() - width);
-        int randomY = this.random.nextInt(randomImage.getHeight() - height);
-        return randomImage.getSubimage(randomX, randomY, width, height);
-    }
-
-
-
-    private BufferedImage getRandomTrainingImage() throws Exception
-    {
-        return this.trainingImages[this.random.nextInt(this.trainingImages.length)];
-    }
-
-
-
-    private File[] getTrainingImages() throws Exception
-    {
-        if (this.trainingDirectory == null)
-            throw new Exception("Training Directory Not Set");
-
-        return trainingDirectory.listFiles(new PngFileFilter());
+        else if (this.processing == true)
+            this.progress.setValue(this.brainRunner.getSampleProgress());
     }
 
 
@@ -403,10 +284,14 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener
         }// </editor-fold>//GEN-END:initComponents
 
 private void quitMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quitMenuItemMouseReleased
+    if (this.brainRunner != null)
+        this.brainRunner.shutdown();
     System.exit(0);
 }//GEN-LAST:event_quitMenuItemMouseReleased
 
 private void quitMenuItemMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_quitMenuItemMenuKeyPressed
+    if (this.brainRunner != null)
+        this.brainRunner.shutdown();
     System.exit(0);
 }//GEN-LAST:event_quitMenuItemMenuKeyPressed
 
@@ -419,6 +304,13 @@ private void aboutMenuItemMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//
 }//GEN-LAST:event_aboutMenuItemMenuKeyPressed
 
 private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalImageSelectActionPerformed
+    this.originalImageText.setText("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.PNG");
+    this.originalImageLocation = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.PNG");
+
+    this.refreshOriginalImage();
+
+    if (true)
+        return;
 
     JFileChooser chooser = new JFileChooser();
     FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
@@ -436,31 +328,34 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 }//GEN-LAST:event_originalImageSelectActionPerformed
 
 private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainingDirectorySelectActionPerformed
+    this.trainingDirectoryText.setText("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
+    this.trainingDirectory = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
+    /*
     JFileChooser chooser = new JFileChooser();
     chooser.setFileSelectionMode(chooser.DIRECTORIES_ONLY);
     chooser.setMultiSelectionEnabled(false);
     chooser.setVisible(true);
     if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
     {
-        this.trainingDirectoryText.setText(chooser.getSelectedFile().getAbsolutePath());
-        this.trainingDirectory = chooser.getSelectedFile();
-        
-        try
-        {
-            File[] trainingFiles = this.getTrainingImages();
-            this.trainingImages = new BufferedImage[trainingFiles.length];
-            for(int trainingFilesIndex = 0; trainingFilesIndex < trainingFiles.length; trainingFilesIndex++)
-            {
-                this.trainingImages[trainingFilesIndex] = ImageIO.read(trainingFiles[trainingFilesIndex]);
-            }
-        }
-        catch(Exception e)
-        {
-            System.out.println("Danger will robinson, Danger: " + e);
-            e.printStackTrace();
-            return;
-        }
+    this.trainingDirectoryText.setText(chooser.getSelectedFile().getAbsolutePath());
+    this.trainingDirectory = chooser.getSelectedFile();
+     */
+
+    try
+    {
+
+        File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
+        this.brainRunner = new BrainRunner(this, trainingFiles, 0.8, BLOCK_WIDTH, BLOCK_HEIGHT, true);
+        this.brainRunnerThread = new Thread(this.brainRunner);
+        this.brainRunnerThread.start();
     }
+    catch (Exception e)
+    {
+        System.out.println("Danger will robinson, Danger: " + e);
+        e.printStackTrace();
+        return;
+    }
+//    }
 }//GEN-LAST:event_trainingDirectorySelectActionPerformed
 
 private void trainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainButtonActionPerformed
@@ -469,6 +364,8 @@ private void trainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     this.currentTrainingCycles = ((Integer) this.trainingCylcesInput.getValue()).intValue();
     this.trainingRemaining = this.currentTrainingCycles;
+
+    this.brainRunner.setTrainingCycles(this.currentTrainingCycles);
 }//GEN-LAST:event_trainButtonActionPerformed
 
 private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processButtonActionPerformed
@@ -476,6 +373,8 @@ private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         return;
 
     this.processing = true;
+
+    this.brainRunner.setSampleImage(this.originalImageLocation);
 }//GEN-LAST:event_processButtonActionPerformed
 
 private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
@@ -504,8 +403,6 @@ private void refreshOriginalImage()
         return;
     }
     this.originalImagePanel.setImage(this.originalImage);
-//    while((originalImage.getWidth(null) < 0)||(originalImage.getHeight(null)<0))
-//        try{Thread.sleep(10);}catch(Exception e){}
     this.finalImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_RGB);
 }
 
@@ -513,6 +410,27 @@ private void refreshOriginalImage()
     {
         AboutDialog about = new AboutDialog(this, true);
         about.setVisible(true);
+    }
+    
+    public void brainFinishedBuffering()
+    {
+    }
+    
+    public void brainSampleProcessed(BufferedImage finalImage)
+    {
+        this.processing = false;
+        this.progress.setValue(100);
+        this.finalImage = finalImage;
+        this.finalImagePanel.setImage(this.finalImage);
+        this.finalImagePanel.repaint();
+    }
+    
+    public void brainTrainingComplete()
+    {
+        this.trainingRemaining = 0;
+        this.progress.setValue(100);
+        this.processButton.setEnabled(true);
+        this.trainButton.setEnabled(true);
     }
 
 
