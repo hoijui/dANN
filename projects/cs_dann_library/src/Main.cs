@@ -57,6 +57,8 @@ namespace dANNtest
 		private System.Windows.Forms.Button WeightStatButton;
 		private System.Windows.Forms.Timer TrainingTimer;
 
+        private int TrainCount = 0;
+
 		public Form1()
 		{
 			MyBrain = new Brain(MyDNA, SegmentTotal, SegmentTotal);
@@ -399,6 +401,7 @@ namespace dANNtest
 
 		public void TrainOnce()
 		{
+            this.TrainCount++;
 			double[][] NeuralInput = this.GetRandomImageSection(SegmentWidth, SegmentHeight);
 			int RandomColorIndex = (int) Math.Round(this.MyDNA.RandomGenerator.NextDouble() * 2);
 			MyBrain.SetCurrentInput(NeuralInput[RandomColorIndex]);
@@ -559,7 +562,7 @@ namespace dANNtest
 
 		private void ClsButton_Click(object sender, System.EventArgs e)
 		{
-			this.OutText.Text = "XOR Test\r\n";
+			this.OutText.Text = "NCI Test\r\n";
 		}
 
 		private void TestSimpleButton_Click(object sender, System.EventArgs e)
@@ -588,7 +591,7 @@ namespace dANNtest
 				int ElapsedSeconds = (ElapsedTick/1000) - (ElapsedMinutes * 60);
 				int ElapsedSecondsFraction = ElapsedTick - (((int)Math.Floor(ElapsedTick/1000.0)) * 1000);
 
-				this.OutText.Text += "Finished Training, Time: " + ElapsedMinutes + ":" + ElapsedSeconds + "." + ElapsedSecondsFraction + " Error: " + this.TestError(10000) + "\r\n";
+				this.OutText.Text += "Finished Training, Cycles: " + this.TrainCount + " Time: " + ElapsedMinutes + ":" + ElapsedSeconds + "." + ElapsedSecondsFraction + " Error: " + this.TestError(10000) + "\r\n";
 			}
 		}
 
