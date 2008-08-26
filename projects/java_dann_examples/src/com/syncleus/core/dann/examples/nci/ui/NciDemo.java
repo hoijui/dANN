@@ -304,13 +304,13 @@ private void aboutMenuItemMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//
 }//GEN-LAST:event_aboutMenuItemMenuKeyPressed
 
 private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalImageSelectActionPerformed
-//    this.originalImageText.setText("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.PNG");
-//    this.originalImageLocation = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.PNG");
+    this.originalImageText.setText("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.PNG");
+    this.originalImageLocation = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.PNG");
 
-//    this.refreshOriginalImage();
+    this.refreshOriginalImage();
 
-//    if (true)
-//        return;
+    if (true)
+        return;
 
     JFileChooser chooser = new JFileChooser();
     FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
@@ -328,9 +328,10 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 }//GEN-LAST:event_originalImageSelectActionPerformed
 
 private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainingDirectorySelectActionPerformed
-    //this.trainingDirectoryText.setText("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
-    //this.trainingDirectory = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
+    this.trainingDirectoryText.setText("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
+    this.trainingDirectory = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
 
+    /*
     JFileChooser chooser = new JFileChooser();
     chooser.setFileSelectionMode(chooser.DIRECTORIES_ONLY);
     chooser.setMultiSelectionEnabled(false);
@@ -339,7 +340,7 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
     {
         this.trainingDirectoryText.setText(chooser.getSelectedFile().getAbsolutePath());
         this.trainingDirectory = chooser.getSelectedFile();
-
+*/
 
         try
         {
@@ -355,7 +356,7 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
             e.printStackTrace();
             return;
         }
-    }
+//    }
 }//GEN-LAST:event_trainingDirectorySelectActionPerformed
 
 private void trainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainButtonActionPerformed

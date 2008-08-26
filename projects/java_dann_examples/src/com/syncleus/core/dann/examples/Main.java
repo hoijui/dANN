@@ -73,6 +73,8 @@ public class Main
                     received = true;
                     try
                     {
+                        while( inReader.ready() != true )
+                            Thread.sleep(100);
                         currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
                     }
                     catch (ArrayIndexOutOfBoundsException caughtException)

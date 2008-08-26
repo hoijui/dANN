@@ -183,7 +183,9 @@ public class BrainRunner implements Runnable
                     {
                         if (trainingSegments.remainingCapacity() <= 0)
                         {
-                            trainingSegments.take().get();
+                            FutureTask currentTask = trainingSegments.take();
+                            if(currentTask.isDone() == false)
+                                Thread.sleep(100);
                             this.trainingRemaining--;
                             if (this.trainingRemaining < 0)
                                 this.trainingRemaining = 0;
@@ -198,7 +200,9 @@ public class BrainRunner implements Runnable
 
                     while (trainingSegments.isEmpty() == false)
                     {
-                        trainingSegments.take().get();
+                        FutureTask currentTask = trainingSegments.take();
+                        if(currentTask.isDone() == false)
+                            Thread.sleep(100);
                         this.trainingRemaining--;
                         if (this.trainingRemaining < 0)
                             this.trainingRemaining = 0;
