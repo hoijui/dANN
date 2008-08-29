@@ -134,8 +134,8 @@ public class NciBrain implements java.io.Serializable
         this.actualCompression = 1.0 - ((double) this.compressedNeurons.length) / (((double) xSize) * ((double) ySize) * ((double) CHANNELS));
 
         //create the input and output neurons and add it to the input layer
-        for (int xIndex = 0; xIndex < xSize; xIndex++)
-            for (int yIndex = 0; yIndex < ySize; yIndex++)
+        for (int yIndex = 0; yIndex < ySize; yIndex++)
+            for (int xIndex = 0; xIndex < xSize; xIndex++)
                 for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
                 {
                     this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuronProcessingUnit(sharedDna);
