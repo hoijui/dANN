@@ -66,6 +66,7 @@ public class CompressionNeuron extends NeuronProcessingUnit implements java.io.S
 //		 if( (inputToSet > 255)||(inputToSet < 0) )
 //			 throw new IllegalArgumentException("the input to set but be a value between 0 (inclusive) and 256 (exclusive)");
 
+        System.out.println("input shouldnt be set!");
         this.input = inputToSet;
         this.inputSet = true;
     }
@@ -115,6 +116,7 @@ public class CompressionNeuron extends NeuronProcessingUnit implements java.io.S
             super.setOutput(newOutput);
         else
         {
+            System.out.println("uh oh! setOutput uses input on compression neuron. shouldnt happen yet!");
             super.output = this.getDoubleInput();
 
             for (Synapse current : this.destinations)

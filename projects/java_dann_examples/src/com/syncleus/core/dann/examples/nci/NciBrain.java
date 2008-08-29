@@ -104,7 +104,6 @@ public class NciBrain implements java.io.Serializable
      * @since 0.1
      */
     private boolean learning = true;
-    
     private static final int CHANNELS = 1;
 
 
@@ -118,12 +117,13 @@ public class NciBrain implements java.io.Serializable
     public NciBrain(double compression, int xSize, int ySize, boolean extraConnectivity)
     {
         this.sharedDna.learningRate = 0.001;
-        
+
 
         this.xSize = xSize;
         this.ySize = ySize;
-        int compressedNeuronCount = ((int) Math.ceil((((double) xSize) * ((double) ySize) * ((double)CHANNELS)) * (1.0 - compression)));
-        int hiddenNeuronCount = ((xSize*ySize*3 - compressedNeuronCount)/2)+compressedNeuronCount;
+        int compressedNeuronCount = ((int) Math.ceil((((double) xSize) * ((double) ySize) * ((double) CHANNELS)) * (1.0 - compression)));
+        System.out.println("Network: " + (xSize * ySize) + " ->" + compressedNeuronCount + "->" + (xSize * ySize));
+//        int hiddenNeuronCount = ((xSize * ySize * 3 - compressedNeuronCount) / 2) + compressedNeuronCount;
 //        this.inputNeurons = new InputNeuronProcessingUnit[xSize][ySize][3];
         this.inputNeurons = new InputNeuronProcessingUnit[xSize][ySize][CHANNELS];
 //        this.inputHiddenNeurons = new NeuronProcessingUnit[hiddenNeuronCount];
@@ -131,7 +131,7 @@ public class NciBrain implements java.io.Serializable
 //        this.outputHiddenNeurons = new NeuronProcessingUnit[hiddenNeuronCount];
 //        this.outputNeurons = new OutputNeuronProcessingUnit[xSize][ySize][3];
         this.outputNeurons = new OutputNeuronProcessingUnit[xSize][ySize][CHANNELS];
-        this.actualCompression = 1.0 - ((double) this.compressedNeurons.length) / (((double) xSize) * ((double) ySize) * ((double)CHANNELS) );
+        this.actualCompression = 1.0 - ((double) this.compressedNeurons.length) / (((double) xSize) * ((double) ySize) * ((double) CHANNELS));
 
         //create the input and output neurons and add it to the input layer
         for (int xIndex = 0; xIndex < xSize; xIndex++)
@@ -148,14 +148,14 @@ public class NciBrain implements java.io.Serializable
         /*
         for (int hiddenIndex = 0; hiddenIndex < this.inputHiddenNeurons.length; hiddenIndex++)
         {
-            this.inputHiddenNeurons[hiddenIndex] = new NeuronProcessingUnit(sharedDna);
-            this.inputHiddenLayer.add(this.inputHiddenNeurons[hiddenIndex]);
+        this.inputHiddenNeurons[hiddenIndex] = new NeuronProcessingUnit(sharedDna);
+        this.inputHiddenLayer.add(this.inputHiddenNeurons[hiddenIndex]);
         }
-
+        
         for (int hiddenIndex = 0; hiddenIndex < this.outputHiddenNeurons.length; hiddenIndex++)
         {
-            this.outputHiddenNeurons[hiddenIndex] = new NeuronProcessingUnit(sharedDna);
-            this.outputHiddenLayer.add(this.outputHiddenNeurons[hiddenIndex]);
+        this.outputHiddenNeurons[hiddenIndex] = new NeuronProcessingUnit(sharedDna);
+        this.outputHiddenLayer.add(this.outputHiddenNeurons[hiddenIndex]);
         }
          */
 
@@ -169,7 +169,8 @@ public class NciBrain implements java.io.Serializable
         //connect the neurons together
         this.inputLayer.connectAllTo(this.compressedLayer);
         this.compressedLayer.connectAllTo(this.outputLayer);
-         
+//        this.inputLayer.connectAllTo(this.outputLayer);
+
         /*
         this.inputLayer.connectAllTo(this.inputHiddenLayer);
         this.inputHiddenLayer.connectAllTo(this.compressedLayer);
@@ -248,70 +249,121 @@ public class NciBrain implements java.io.Serializable
 //        this.inputHiddenLayer.backPropagate();
         this.inputLayer.backPropagate();
     }
-    
-    
+
+
+
     public BufferedImage test(BufferedImage originalImage)
     {
-        int[] originalRgbArray = new int[xSize*ySize];
+        int[] originalRgbArray = new int[xSize * ySize];
         originalImage.getRGB(0, 0, (originalImage.getWidth() < xSize ? originalImage.getWidth() : xSize), (originalImage.getHeight() < ySize ? originalImage.getHeight() : ySize), originalRgbArray, 0, xSize);
-        
-        
+
+        boolean DEBUG = false;
+        if (this.learning == false)
+            DEBUG = false;
+
+
         //set the image onto the inputs
-        for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
-            for (int yIndex = 0; (yIndex < ySize) && (yIndex < originalImage.getHeight()); yIndex++)
+        for (int yIndex = 0; (yIndex < ySize) && (yIndex < originalImage.getHeight()); yIndex++)
+            for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
             {
-//                int rgbCurrent = originalImage.getRGB(xIndex, yIndex);
-                int rgbCurrent = originalRgbArray[yIndex*xSize + xIndex];
+                int rgbCurrent = originalRgbArray[yIndex * xSize + xIndex];
                 for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
                 {
-                    byte channel = (byte) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF) - 127);
 
-                    this.inputNeurons[xIndex][yIndex][rgbIndex].setInput(channel);
+
+                    int channel = (int) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
+                    double input = (((double) channel) / 127.5) - 1.0;
+
+                    if ((yIndex == 0) && (xIndex == 0) && (DEBUG))
+                    {
+                        System.out.println("applying inputs...");
+                        System.out.println("rgbCurrent: " + rgbCurrent + " : " + Integer.toHexString(rgbCurrent));
+                        System.out.println("channel: " + channel + " : " + Integer.toHexString(channel));
+                        System.out.println("input: " + input + " : " + Double.toHexString(input));
+                        System.out.println();
+                    }
+
+                    this.inputNeurons[xIndex][yIndex][rgbIndex].setInput(input);
+                    this.outputNeurons[xIndex][yIndex][rgbIndex].setDesired(input);
                 }
             }
-         
+
 
         //propogate the output
         this.propagate();
-        
-        
-        int[] finalRgbArray = new int[xSize*ySize];
+
+
+        int[] finalRgbArray = new int[xSize * ySize];
         BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);
-        for (int xIndex = 0; (xIndex < xSize) && (xIndex < uncompressedImage.getWidth()); xIndex++)
-            for (int yIndex = 0; (yIndex < ySize) && (yIndex < uncompressedImage.getHeight()); yIndex++)
+        for (int yIndex = 0; (yIndex < ySize) && (yIndex < uncompressedImage.getHeight()); yIndex++)
+            for (int xIndex = 0; (xIndex < xSize) && (xIndex < uncompressedImage.getWidth()); xIndex++)
             {
                 //int rgbCurrent = imageToCompress.getRGB(xIndex, yIndex);
                 int rgbCurrent = 0;
-                for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
+                for (int rgbIndex = 0; rgbIndex < 4; rgbIndex++)
                 {
-                    double output = this.outputNeurons[xIndex][yIndex][rgbIndex].getOutput();
-                    int channel = (int) (Math.ceil((output + 1.0) * 128.0) - 1.0);
+                    double output;
+                      
+                    if (rgbIndex >= CHANNELS)
+                        output = this.outputNeurons[xIndex][yIndex][0].getOutput();
+                    else
+                        output = this.outputNeurons[xIndex][yIndex][rgbIndex].getOutput();
 
-                    rgbCurrent |= (channel & 0x000000FF) << (rgbIndex * 8);
+                    int channel = (new Double((output + 1.0) * 127.5)).intValue();
+
+//                    int channel = (int) (Math.ceil((output + 1.0) * 128.0) - 1.0);
+                    rgbCurrent |= (((int) channel) & 0x000000FF) << (rgbIndex * 8);
+
+                    if ((yIndex == 0) && (xIndex == 0) && (DEBUG))
+                    {
+                        System.out.println("getting outputs...");
+                        System.out.println("output: " + output + " : " + Double.toHexString(output));
+                        System.out.println("channel: " + channel + " : " + Integer.toHexString(channel));
+                        System.out.println("rgbCurrent: " + rgbCurrent + " : " + Integer.toHexString(rgbCurrent));
+                        System.out.println();
+                    }
                 }
+
                 //uncompressedImage.setRGB(xIndex, yIndex, rgbCurrent);
-                finalRgbArray[xSize*yIndex + (xIndex)] = rgbCurrent;
+                finalRgbArray[xSize * yIndex + (xIndex)] = rgbCurrent;
             }
         uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
-        
-        
+
+
         if (this.learning == false)
             return uncompressedImage;
 
         //since we are learning set the original image as the training data
-        for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
-            for (int yIndex = 0; (yIndex < ySize) && (yIndex < originalImage.getHeight()); yIndex++)
+        /*
+        for (int yIndex = 0; (yIndex < ySize) && (yIndex < originalImage.getHeight()); yIndex++)
+            for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
             {
 //                int rgbCurrent = originalImage.getRGB(xIndex, yIndex);
-                int rgbCurrent = originalRgbArray[yIndex*xSize + xIndex];
+                int rgbCurrent = originalRgbArray[yIndex * xSize + xIndex];
                 for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
                 {
-                    int channel = ((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF);
-                    double input = ((((double) channel) * 2) / 255.0) - 1;
+//                    int channel = ((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF);
+//                    double input = ((((double) channel) * 2) / 255.0) - 1;
+
+//                    byte channel = (byte) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
+
+//                    double input = ((double) channel) / 128.0;
+
+                    int channel = (int) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
+                    double input = (((double) channel) / 127.5) - 1.0;
 
                     this.outputNeurons[xIndex][yIndex][rgbIndex].setDesired(input);
+
+                    if ((yIndex == 0) && (xIndex == 0) && (DEBUG))
+                    {
+                        System.out.println("applying training...");
+                        System.out.println("rgbCurrent: " + rgbCurrent + " : " + Integer.toHexString(rgbCurrent));
+                        System.out.println("channel: " + channel + " : " + Integer.toHexString(channel));
+                        System.out.println("input: " + input + " : " + Double.toHexString(input));
+                        System.out.println();
+                    }
                 }
-            }
+            }*/
 
         //now back propogate
         this.backPropagate();
@@ -328,6 +380,7 @@ public class NciBrain implements java.io.Serializable
      */
     public BufferedImage uncompress(byte[] compressedData)
     {
+        System.out.println("Oh no! uncompressing");
         BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);
 
         //set the comrpessed data on the compressed layer
@@ -381,6 +434,7 @@ public class NciBrain implements java.io.Serializable
      */
     public byte[] compress(BufferedImage imageToCompress)
     {
+        System.out.println("Oh no! compressing");
         //set the image onto the inputs
         for (int xIndex = 0; (xIndex < xSize) && (xIndex < imageToCompress.getWidth()); xIndex++)
             for (int yIndex = 0; (yIndex < ySize) && (yIndex < imageToCompress.getHeight()); yIndex++)
