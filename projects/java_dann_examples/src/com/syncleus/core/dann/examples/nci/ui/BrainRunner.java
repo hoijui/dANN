@@ -98,6 +98,12 @@ public class BrainRunner implements Runnable
     {
         this.shutdown = true;
     }
+    
+    public void stop()
+    {
+        this.trainingRemaining = 0;
+        this.sampleFile = null;
+    }
 
 
 
@@ -113,9 +119,11 @@ public class BrainRunner implements Runnable
 
             this.listener.brainFinishedBuffering();
             while (this.shutdown == false)
+            {
+                File sampleFile = this.sampleFile;
                 if (this.sampleFile != null)
                 {
-                    this.sampleImage = ImageIO.read(this.sampleFile);
+                    this.sampleImage = ImageIO.read(sampleFile);
 
                     ArrayBlockingQueue<FutureTask<BufferedImage>> processingSampleSegments = new ArrayBlockingQueue<FutureTask<BufferedImage>>(10000, true);
 
@@ -175,17 +183,19 @@ public class BrainRunner implements Runnable
                 }
                 else if (this.trainingRemaining > 0)
                 {
-                    ArrayBlockingQueue<FutureTask> trainingSegments = new ArrayBlockingQueue<FutureTask>(1000, true);
+                    ArrayBlockingQueue<FutureTask> trainingSegments = new ArrayBlockingQueue<FutureTask>(50, true);
 
-                    int cycles = trainingRemaining;
+                    //int cycles = trainingRemaining;
                     
-                    for (int currentTraining = 0; currentTraining < cycles; currentTraining++)
+                    //for (int currentTraining = 0; currentTraining < trainingRemaining; currentTraining++)
+                    while(this.trainingRemaining > 0)
                     {
                         if (trainingSegments.remainingCapacity() <= 0)
                         {
                             FutureTask currentTask = trainingSegments.take();
-                            if(currentTask.isDone() == false)
-                                Thread.sleep(100);
+//                            if(currentTask.isDone() == false)
+//                                Thread.sleep(100);
+                            currentTask.get();
                             this.trainingRemaining--;
                             if (this.trainingRemaining < 0)
                                 this.trainingRemaining = 0;
@@ -201,8 +211,9 @@ public class BrainRunner implements Runnable
                     while (trainingSegments.isEmpty() == false)
                     {
                         FutureTask currentTask = trainingSegments.take();
-                        if(currentTask.isDone() == false)
-                            Thread.sleep(100);
+//                        if(currentTask.isDone() == false)
+//                            Thread.sleep(100);
+                        currentTask.get();
                         this.trainingRemaining--;
                         if (this.trainingRemaining < 0)
                             this.trainingRemaining = 0;
@@ -218,6 +229,7 @@ public class BrainRunner implements Runnable
                     catch (Exception e)
                     {
                     }
+            }
 
 
         }

@@ -20,6 +20,11 @@ package com.syncleus.core.dann.examples.nci;
 
 import com.syncleus.dann.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 
 /**
@@ -105,6 +110,7 @@ public class NciBrain implements java.io.Serializable
      */
     private boolean learning = true;
     private static final int CHANNELS = 1;
+    private ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
 
 
 
@@ -122,12 +128,13 @@ public class NciBrain implements java.io.Serializable
         this.xSize = xSize;
         this.ySize = ySize;
         int compressedNeuronCount = ((int) Math.ceil((((double) xSize) * ((double) ySize) * ((double) CHANNELS)) * (1.0 - compression)));
-        System.out.println("Network: " + (xSize * ySize) + " ->" + compressedNeuronCount + "->" + (xSize * ySize));
+//        System.out.println("Network: " + (xSize * ySize) + " ->" + compressedNeuronCount + "->" + (xSize * ySize));
 //        int hiddenNeuronCount = ((xSize * ySize * 3 - compressedNeuronCount) / 2) + compressedNeuronCount;
 //        this.inputNeurons = new InputNeuronProcessingUnit[xSize][ySize][3];
         this.inputNeurons = new InputNeuronProcessingUnit[xSize][ySize][CHANNELS];
 //        this.inputHiddenNeurons = new NeuronProcessingUnit[hiddenNeuronCount];
         this.compressedNeurons = new CompressionNeuron[compressedNeuronCount];
+//        this.compressedNeurons = new CompressionNeuron[xSize*ySize*CHANNELS];
 //        this.outputHiddenNeurons = new NeuronProcessingUnit[hiddenNeuronCount];
 //        this.outputNeurons = new OutputNeuronProcessingUnit[xSize][ySize][3];
         this.outputNeurons = new OutputNeuronProcessingUnit[xSize][ySize][CHANNELS];
@@ -141,9 +148,61 @@ public class NciBrain implements java.io.Serializable
                     this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuronProcessingUnit(sharedDna);
                     this.inputLayer.add(this.inputNeurons[xIndex][yIndex][rgbIndex]);
 
+//                    this.compressedNeurons[yIndex*xSize + xIndex] = new CompressionNeuron(sharedDna);
+//                    this.compressedLayer.add(this.compressedNeurons[yIndex*xSize + xIndex]);
+
                     this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuronProcessingUnit(sharedDna);
                     this.outputLayer.add(this.outputNeurons[xIndex][yIndex][rgbIndex]);
+
+//                    this.inputNeurons[xIndex][yIndex][rgbIndex].connectTo(this.compressedNeurons[yIndex*xSize + xIndex]);
+//                    this.compressedNeurons[yIndex*xSize + xIndex].connectTo(this.outputNeurons[xIndex][yIndex][rgbIndex]);
+                    /*
+                for (int yIndexOld = 0; yIndexOld < yIndex; yIndexOld++)
+                for (int xIndexOld = 0; xIndexOld < ((yIndexOld+1) >= ySize? xIndex : xSize); xIndexOld++)
+                for (int rgbIndexOld = 0; rgbIndexOld < ((yIndexOld+1) >= ySize? ((xIndexOld+1) >= xSize? rgbIndex : CHANNELS) : CHANNELS); rgbIndexOld++)
+                {
+                //                              if(yIndexOld < 6)
+                //                              {
+                this.inputNeurons[xIndex][yIndex][rgbIndex].connectTo(this.compressedNeurons[yIndexOld*xSize + xIndexOld]);
+                this.compressedNeurons[yIndex*xSize + xIndex].connectTo(this.outputNeurons[xIndexOld][yIndexOld][rgbIndexOld]);
+                //                              }
+                }*/
+
+//                    this.inputNeurons[xIndex][yIndex][rgbIndex].connectTo(this.outputNeurons[xIndex][yIndex][rgbIndex]);
                 }
+
+
+
+
+
+
+
+
+
+        /*
+        //create the input and output neurons and add it to the input layer
+        for (int yIndex = 0; yIndex < ySize; yIndex++)
+        for (int xIndex = 0; xIndex < xSize; xIndex++)
+        for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
+        {
+        this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuronProcessingUnit(sharedDna);
+        this.outputLayer.add(this.outputNeurons[xIndex][yIndex][rgbIndex]);
+        
+        for (int yIndexIn = 0; yIndexIn < ySize; yIndexIn++)
+        for (int xIndexIn = 0; xIndexIn < xSize; xIndexIn++)
+        for (int rgbIndexIn = 0; rgbIndexIn < CHANNELS; rgbIndexIn++)
+        {
+        this.inputNeurons[xIndexIn][yIndexIn][rgbIndexIn].connectTo(this.outputNeurons[xIndex][yIndex][rgbIndex]);
+        }
+        }
+         */
+
+
+
+
+
+
+
 
         /*
         for (int hiddenIndex = 0; hiddenIndex < this.inputHiddenNeurons.length; hiddenIndex++)
@@ -219,6 +278,75 @@ public class NciBrain implements java.io.Serializable
     {
         this.learning = learningToSet;
     }
+    
+    
+    private void propagateLayer(LayerProcessingUnit layer)
+    {
+        ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
+
+        ArrayList<ProcessingUnit> units = layer.getChildrenRecursivly();
+        for (ProcessingUnit unit : units)
+        {
+            PropagateRun propagateRun = new PropagateRun(unit);
+            FutureTask futurePropagateRun = new FutureTask(propagateRun, null);
+
+            processing.add(futurePropagateRun);
+            executor.execute(futurePropagateRun);
+        }
+        
+        while (processing.peek() != null)
+        {
+            try
+            {
+                FutureTask currentRun = processing.take();
+                currentRun.get();
+
+//                while(currentRun.isDone() == false)
+//                    Thread.sleep(1);
+            }
+            catch(Exception e)
+            {
+                System.out.println("Danger Will Robinson, Danger! : " + e);
+                e.printStackTrace();
+                return;
+            }
+        }
+    }
+    
+    
+    
+    private void backPropagateLayer(LayerProcessingUnit layer)
+    {
+        ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
+
+        ArrayList<ProcessingUnit> units = layer.getChildrenRecursivly();
+        for (ProcessingUnit unit : units)
+        {
+            BackPropagateRun backPropagateRun = new BackPropagateRun(unit);
+            FutureTask futureBackPropagateRun = new FutureTask(backPropagateRun, null);
+
+            processing.add(futureBackPropagateRun);
+            executor.execute(futureBackPropagateRun);
+        }
+        
+        while (processing.peek() != null)
+        {
+            try
+            {
+                FutureTask currentRun = processing.take();
+                currentRun.get();
+
+//                while(currentRun.isDone() == false)
+//                    Thread.sleep(1);
+            }
+            catch(Exception e)
+            {
+                System.out.println("Danger Will Robinson, Danger! : " + e);
+                e.printStackTrace();
+                return;
+            }
+        }
+    }
 
 
 
@@ -228,11 +356,17 @@ public class NciBrain implements java.io.Serializable
      */
     private void propagate()
     {
-        this.inputLayer.propagate();
-//        this.inputHiddenLayer.propagate();
-        this.compressedLayer.propagate();
-//        this.outputHiddenLayer.propagate();
-        this.outputLayer.propagate();
+        this.propagateLayer(this.inputLayer);
+        this.propagateLayer(this.compressedLayer);
+        this.propagateLayer(this.outputLayer);
+
+    /*
+    this.inputLayer.propagate();
+    //        this.inputHiddenLayer.propagate();
+    this.compressedLayer.propagate();
+    //        this.outputHiddenLayer.propagate();
+    this.outputLayer.propagate();
+     */
     }
 
 
@@ -243,11 +377,17 @@ public class NciBrain implements java.io.Serializable
      */
     private void backPropagate()
     {
+        this.backPropagateLayer(this.outputLayer);
+        this.backPropagateLayer(this.compressedLayer);
+        this.backPropagateLayer(this.inputLayer);
+        
+        /*
         this.outputLayer.backPropagate();
 //        this.outputHiddenLayer.backPropagate();
         this.compressedLayer.backPropagate();
 //        this.inputHiddenLayer.backPropagate();
         this.inputLayer.backPropagate();
+         */
     }
 
 
@@ -303,7 +443,7 @@ public class NciBrain implements java.io.Serializable
                 for (int rgbIndex = 0; rgbIndex < 4; rgbIndex++)
                 {
                     double output;
-                      
+
                     if (rgbIndex >= CHANNELS)
                         output = this.outputNeurons[xIndex][yIndex][0].getOutput();
                     else
@@ -336,34 +476,34 @@ public class NciBrain implements java.io.Serializable
         //since we are learning set the original image as the training data
         /*
         for (int yIndex = 0; (yIndex < ySize) && (yIndex < originalImage.getHeight()); yIndex++)
-            for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
-            {
-//                int rgbCurrent = originalImage.getRGB(xIndex, yIndex);
-                int rgbCurrent = originalRgbArray[yIndex * xSize + xIndex];
-                for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
-                {
-//                    int channel = ((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF);
-//                    double input = ((((double) channel) * 2) / 255.0) - 1;
-
-//                    byte channel = (byte) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
-
-//                    double input = ((double) channel) / 128.0;
-
-                    int channel = (int) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
-                    double input = (((double) channel) / 127.5) - 1.0;
-
-                    this.outputNeurons[xIndex][yIndex][rgbIndex].setDesired(input);
-
-                    if ((yIndex == 0) && (xIndex == 0) && (DEBUG))
-                    {
-                        System.out.println("applying training...");
-                        System.out.println("rgbCurrent: " + rgbCurrent + " : " + Integer.toHexString(rgbCurrent));
-                        System.out.println("channel: " + channel + " : " + Integer.toHexString(channel));
-                        System.out.println("input: " + input + " : " + Double.toHexString(input));
-                        System.out.println();
-                    }
-                }
-            }*/
+        for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
+        {
+        //                int rgbCurrent = originalImage.getRGB(xIndex, yIndex);
+        int rgbCurrent = originalRgbArray[yIndex * xSize + xIndex];
+        for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
+        {
+        //                    int channel = ((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF);
+        //                    double input = ((((double) channel) * 2) / 255.0) - 1;
+        
+        //                    byte channel = (byte) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
+        
+        //                    double input = ((double) channel) / 128.0;
+        
+        int channel = (int) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
+        double input = (((double) channel) / 127.5) - 1.0;
+        
+        this.outputNeurons[xIndex][yIndex][rgbIndex].setDesired(input);
+        
+        if ((yIndex == 0) && (xIndex == 0) && (DEBUG))
+        {
+        System.out.println("applying training...");
+        System.out.println("rgbCurrent: " + rgbCurrent + " : " + Integer.toHexString(rgbCurrent));
+        System.out.println("channel: " + channel + " : " + Integer.toHexString(channel));
+        System.out.println("input: " + input + " : " + Double.toHexString(input));
+        System.out.println();
+        }
+        }
+        }*/
 
         //now back propogate
         this.backPropagate();
