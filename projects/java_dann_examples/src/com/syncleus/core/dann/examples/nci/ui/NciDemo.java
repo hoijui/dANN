@@ -55,8 +55,11 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
         this.finalImagePanel.setLocation(currentX, currentY);
         this.finalImagePanel.setSize(800, 600);
         this.finalImagePanel.setVisible(true);
-        
-        this.setSize(600, this.getHeight());
+
+
+        this.setSize(600, 350);
+        this.setExtendedState(MAXIMIZED_BOTH);
+
 
         new Timer(250, this).start();
     }
@@ -102,11 +105,11 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
         quitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        quitMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        fileMenu1 = new javax.swing.JMenu();
+        quitMenuItem1 = new javax.swing.JMenuItem();
+        helpMenu1 = new javax.swing.JMenu();
+        aboutMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NCI Demo");
@@ -142,7 +145,7 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
             }
         });
 
-        trainingCylcesInput.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(100000), Integer.valueOf(1), null, Integer.valueOf(10000)));
+        trainingCylcesInput.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(10000), Integer.valueOf(1), null, Integer.valueOf(1000)));
 
         processButton.setText("Process");
         processButton.setEnabled(false);
@@ -214,17 +217,15 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
 
         jMenuBar1.add(helpMenu);
 
-        setJMenuBar(jMenuBar1);
+        fileMenu1.setText("File");
 
-        fileMenu.setText("File");
-
-        quitMenuItem.setText("Quit");
-        quitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+        quitMenuItem1.setText("Quit");
+        quitMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 quitMenuItemMouseReleased(evt);
             }
         });
-        quitMenuItem.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+        quitMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
                 quitMenuItemMenuKeyPressed(evt);
             }
@@ -233,19 +234,19 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
             public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
             }
         });
-        fileMenu.add(quitMenuItem);
+        fileMenu1.add(quitMenuItem1);
 
-        jMenuBar1.add(fileMenu);
+        jMenuBar2.add(fileMenu1);
 
-        helpMenu.setText("Help");
+        helpMenu1.setText("Help");
 
-        aboutMenuItem.setText("About");
-        aboutMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+        aboutMenuItem1.setText("About");
+        aboutMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 aboutMenuItemMouseReleased(evt);
             }
         });
-        aboutMenuItem.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+        aboutMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
                 aboutMenuItemMenuKeyPressed(evt);
             }
@@ -254,11 +255,11 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
             public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
             }
         });
-        helpMenu.add(aboutMenuItem);
+        helpMenu1.add(aboutMenuItem1);
 
-        jMenuBar1.add(helpMenu);
+        jMenuBar2.add(helpMenu1);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -539,19 +540,24 @@ private void refreshOriginalImage()
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JMenuItem aboutMenuItem1;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu fileMenu1;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenu helpMenu1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JSpinner learningRateInput;
     private javax.swing.JButton originalImageSelect;
     private javax.swing.JTextField originalImageText;
     private javax.swing.JButton processButton;
     private javax.swing.JProgressBar progress;
     private javax.swing.JMenuItem quitMenuItem;
+    private javax.swing.JMenuItem quitMenuItem1;
     private javax.swing.JSeparator separator;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JButton stopButton;

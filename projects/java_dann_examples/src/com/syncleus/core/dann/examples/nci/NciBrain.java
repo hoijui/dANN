@@ -533,8 +533,7 @@ public class NciBrain implements java.io.Serializable
                 //uncompressedImage.setRGB(xIndex, yIndex, rgbCurrent);
                 finalRgbArray[xSize * yIndex + (xIndex)] = rgbCurrent;
             }
-        //uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
-        uncompressedImage.setRGB(0, 0, xSize, ySize, originalRgbArray, 0, xSize);
+        uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
         
 
 
