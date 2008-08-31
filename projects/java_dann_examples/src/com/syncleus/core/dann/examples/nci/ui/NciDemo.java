@@ -400,7 +400,7 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
         {
 
             File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
-            this.brainRunner = new BrainRunner(this, trainingFiles, 0.8, BLOCK_WIDTH, BLOCK_HEIGHT, true);
+            this.brainRunner = new BrainRunner(this, trainingFiles, 0.875, BLOCK_WIDTH, BLOCK_HEIGHT, true);
             this.brainRunnerThread = new Thread(this.brainRunner);
             this.brainRunnerThread.start();
 

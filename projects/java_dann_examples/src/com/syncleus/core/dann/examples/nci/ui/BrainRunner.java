@@ -23,7 +23,6 @@ public class BrainRunner implements Runnable
     private File[] trainingFiles;
     private BufferedImage sampleImage;
     private volatile File sampleFile;
-//    private BufferedImage finalImage;
     private BrainListener listener;
     private static Random random = new Random();
     private volatile boolean shutdown = false;
