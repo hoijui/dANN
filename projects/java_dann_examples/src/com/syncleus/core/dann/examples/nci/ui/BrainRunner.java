@@ -201,16 +201,11 @@ public class BrainRunner implements Runnable
                     
                     ArrayBlockingQueue<FutureTask> trainingSegments = new ArrayBlockingQueue<FutureTask>(50, true);
 
-                    //int cycles = trainingRemaining;
-                    
-                    //for (int currentTraining = 0; currentTraining < trainingRemaining; currentTraining++)
                     while(this.trainingRemaining > 0)
                     {
                         if (trainingSegments.remainingCapacity() <= 0)
                         {
                             FutureTask currentTask = trainingSegments.take();
-//                            if(currentTask.isDone() == false)
-//                                Thread.sleep(100);
                             currentTask.get();
                             this.trainingRemaining--;
                             if (this.trainingRemaining < 0)
@@ -227,8 +222,6 @@ public class BrainRunner implements Runnable
                     while (trainingSegments.isEmpty() == false)
                     {
                         FutureTask currentTask = trainingSegments.take();
-//                        if(currentTask.isDone() == false)
-//                            Thread.sleep(100);
                         currentTask.get();
                         this.trainingRemaining--;
                         if (this.trainingRemaining < 0)

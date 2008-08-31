@@ -364,14 +364,6 @@ private void aboutMenuItemMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//
 }//GEN-LAST:event_aboutMenuItemMenuKeyPressed
 
 private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalImageSelectActionPerformed
-//    this.originalImageText.setText("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.PNG");
-//    this.originalImageLocation = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures\\In3.PNG");
-
-//    this.refreshOriginalImage();
-
-//    if (true)
-//        return;
-
     JFileChooser chooser = new JFileChooser();
     FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
     chooser.setFileFilter(filter);
@@ -394,10 +386,6 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 }//GEN-LAST:event_originalImageSelectActionPerformed
 
 private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainingDirectorySelectActionPerformed
-//    this.trainingDirectoryText.setText("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
-//    this.trainingDirectory = new File("C:\\Documents and Settings\\All Users\\Documents\\My Pictures\\Sample Pictures");
-
-
     JFileChooser chooser = new JFileChooser();
     chooser.setFileSelectionMode(chooser.DIRECTORIES_ONLY);
     chooser.setMultiSelectionEnabled(false);
@@ -456,13 +444,7 @@ private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 }//GEN-LAST:event_processButtonActionPerformed
 
 private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-
-//    this.processing = false;
-//    this.finalWriteX = 0;
-//    this.finalWriteY = 0;
-
     this.brainRunner.stop();
-//    this.trainingRemaining = 0;
 }//GEN-LAST:event_stopButtonActionPerformed
 
 private void refreshOriginalImage()
@@ -506,10 +488,6 @@ private void refreshOriginalImage()
         this.processButton.setEnabled(true);
         this.trainButton.setEnabled(true);
         this.stopButton.setEnabled(false);
-        
-        System.out.println();
-        System.out.println("processed, average absolute weights: " + this.brainRunner.getAverageAbsoluteWeights());
-        System.out.println("processed, average weights: " + this.brainRunner.getAverageWeights());
     }
     
     public void brainTrainingComplete()
