@@ -505,6 +505,10 @@ private void refreshOriginalImage()
         this.processButton.setEnabled(true);
         this.trainButton.setEnabled(true);
         this.stopButton.setEnabled(false);
+        
+        System.out.println();
+        System.out.println("processed, average absolute weights: " + this.brainRunner.getAverageAbsoluteWeights());
+        System.out.println("processed, average weights: " + this.brainRunner.getAverageWeights());
     }
     
     public void brainTrainingComplete()

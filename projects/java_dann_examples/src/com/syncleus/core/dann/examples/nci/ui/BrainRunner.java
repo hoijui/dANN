@@ -42,6 +42,18 @@ public class BrainRunner implements Runnable
         this.ySize = ySize;
         this.extraConnectivity = extraConnectivity;
     }
+    
+    
+    
+    public double getAverageAbsoluteWeights()
+    {
+        return this.brain.getAverageAbsoluteWeight();
+    }
+    
+    public double getAverageWeights()
+    {
+        return this.brain.getAverageWeight();
+    }
 
 
 
@@ -123,6 +135,8 @@ public class BrainRunner implements Runnable
                 File sampleFile = this.sampleFile;
                 if (this.sampleFile != null)
                 {
+                    this.brain.setLearning(false);
+                    
                     this.sampleImage = ImageIO.read(sampleFile);
 
                     ArrayBlockingQueue<FutureTask<BufferedImage>> processingSampleSegments = new ArrayBlockingQueue<FutureTask<BufferedImage>>(10000, true);
@@ -183,6 +197,8 @@ public class BrainRunner implements Runnable
                 }
                 else if (this.trainingRemaining > 0)
                 {
+                    this.brain.setLearning(true);
+                    
                     ArrayBlockingQueue<FutureTask> trainingSegments = new ArrayBlockingQueue<FutureTask>(50, true);
 
                     //int cycles = trainingRemaining;

@@ -279,6 +279,72 @@ public class NciBrain implements java.io.Serializable
         this.learning = learningToSet;
     }
     
+    public double getAverageWeight()
+    {
+            double weightSum = 0.0;
+            double weightCount = 0.0;
+            
+            LayerProcessingUnit currentLayer = this.inputLayer;
+            while(currentLayer != null)
+            {
+                ArrayList<ProcessingUnit> children = currentLayer.getChildrenRecursivly();
+                for(ProcessingUnit child : children)
+                {
+                    if(child instanceof NeuronProcessingUnit)
+                    {
+                        NeuronProcessingUnit childNeuron = (NeuronProcessingUnit) child;
+                        Synapse[] childSynapses = childNeuron.getDestinations();
+                        
+                        for(Synapse childSynapse : childSynapses)
+                        {
+                            weightSum += childSynapse.getWeight();
+                            weightCount++;
+                        }
+                    }
+                }
+                
+                if(currentLayer == this.inputLayer)
+                    currentLayer = this.compressedLayer;
+                else
+                    currentLayer = null;
+            }
+            
+            return weightSum / weightCount;
+    }
+    
+    public double getAverageAbsoluteWeight()
+    {
+            double weightSum = 0.0;
+            double weightCount = 0.0;
+            
+            LayerProcessingUnit currentLayer = this.inputLayer;
+            while(currentLayer != null)
+            {
+                ArrayList<ProcessingUnit> children = currentLayer.getChildrenRecursivly();
+                for(ProcessingUnit child : children)
+                {
+                    if(child instanceof NeuronProcessingUnit)
+                    {
+                        NeuronProcessingUnit childNeuron = (NeuronProcessingUnit) child;
+                        Synapse[] childSynapses = childNeuron.getDestinations();
+                        
+                        for(Synapse childSynapse : childSynapses)
+                        {
+                            weightSum += Math.abs(childSynapse.getWeight());
+                            weightCount++;
+                        }
+                    }
+                }
+                
+                if(currentLayer == this.inputLayer)
+                    currentLayer = this.compressedLayer;
+                else
+                    currentLayer = null;
+            }
+            
+            return weightSum / weightCount;
+    }
+    
     
     private void propagateLayer(LayerProcessingUnit layer)
     {
@@ -467,7 +533,9 @@ public class NciBrain implements java.io.Serializable
                 //uncompressedImage.setRGB(xIndex, yIndex, rgbCurrent);
                 finalRgbArray[xSize * yIndex + (xIndex)] = rgbCurrent;
             }
-        uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
+        //uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
+        uncompressedImage.setRGB(0, 0, xSize, ySize, originalRgbArray, 0, xSize);
+        
 
 
         if (this.learning == false)

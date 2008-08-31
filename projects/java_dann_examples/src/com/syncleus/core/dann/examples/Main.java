@@ -25,7 +25,6 @@ public class Main
 {
     public static void main(String args[])
     {
-        System.out.println("test: " + ((byte) 0x000000FF) + ", " + ((double)((int) 0x000000ff)) );
         try
         {
             BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
