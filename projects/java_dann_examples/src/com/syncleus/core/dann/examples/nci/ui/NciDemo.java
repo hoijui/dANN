@@ -13,8 +13,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class NciDemo extends javax.swing.JFrame implements ActionListener, BrainListener
 {
-    private final static int BLOCK_WIDTH = 16;
-    private final static int BLOCK_HEIGHT = 16;
+    private final static int BLOCK_WIDTH = 8;
+    private final static int BLOCK_HEIGHT = 8;
     private BrainRunner brainRunner;
     private Thread brainRunnerThread;
     private File trainingDirectory;

@@ -109,7 +109,7 @@ public class NciBrain implements java.io.Serializable
      * @since 0.1
      */
     private boolean learning = true;
-    private static final int CHANNELS = 1;
+    private static final int CHANNELS = 3;
     private ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
 
 
