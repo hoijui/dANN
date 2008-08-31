@@ -20,6 +20,6 @@ public class SampleRun implements Callable<BufferedImage>
     public BufferedImage call()
     {
         this.brain.setLearning(false);
-        return this.brain.test(sampleImage);
+        return this.brain.uncompress(this.brain.compress(sampleImage));
     }
 }
