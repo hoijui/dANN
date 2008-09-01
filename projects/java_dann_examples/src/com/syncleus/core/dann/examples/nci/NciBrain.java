@@ -22,6 +22,7 @@ import com.syncleus.dann.*;
 import com.syncleus.dann.activation.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,7 +34,7 @@ import java.util.concurrent.FutureTask;
  * @author Jeffrey Phillips Freeman
  * @since 0.1
  */
-public class NciBrain implements java.io.Serializable
+public class NciBrain extends Brain implements java.io.Serializable
 {
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
@@ -162,6 +163,10 @@ public class NciBrain implements java.io.Serializable
         this.inputLayer.connectAllTo(this.compressedLayer);
         this.compressedLayer.connectAllTo(this.outputLayer);
 
+        this.addChild(this.inputLayer);
+        this.addChild(this.compressedLayer);
+        this.addChild(this.outputLayer);
+
 
     //if you want to add an extra level of connectivity.
         /*
@@ -213,25 +218,16 @@ public class NciBrain implements java.io.Serializable
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        NeuronGroup currentLayer = this.inputLayer;
-        while (currentLayer != null)
+        HashSet<Neuron> allChildren = this.getChildrenNeuronsRecursivly();
+        for (Neuron child : allChildren)
         {
-            ArrayList<Neuron> children = currentLayer.getChildrenNeuronsRecursivly();
-            for (Neuron child : children)
+            HashSet<Synapse> childSynapses = child.getDestinations();
+
+            for (Synapse childSynapse : childSynapses)
             {
-                ArrayList<Synapse> childSynapses = child.getDestinations();
-
-                for (Synapse childSynapse : childSynapses)
-                {
-                    weightSum += childSynapse.getWeight();
-                    weightCount++;
-                }
+                weightSum += childSynapse.getWeight();
+                weightCount++;
             }
-
-            if (currentLayer == this.inputLayer)
-                currentLayer = this.compressedLayer;
-            else
-                currentLayer = null;
         }
 
         return weightSum / weightCount;
@@ -244,25 +240,16 @@ public class NciBrain implements java.io.Serializable
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        NeuronGroup currentLayer = this.inputLayer;
-        while (currentLayer != null)
+        HashSet<Neuron> allChildren = this.getChildrenNeuronsRecursivly();
+        for (Neuron child : allChildren)
         {
-            ArrayList<Neuron> children = currentLayer.getChildrenNeuronsRecursivly();
-            for (Neuron child : children)
+            HashSet<Synapse> childSynapses = child.getDestinations();
+
+            for (Synapse childSynapse : childSynapses)
             {
-                ArrayList<Synapse> childSynapses = child.getDestinations();
-
-                for (Synapse childSynapse : childSynapses)
-                {
-                    weightSum += Math.abs(childSynapse.getWeight());
-                    weightCount++;
-                }
+                weightSum += Math.abs(childSynapse.getWeight());
+                weightCount++;
             }
-
-            if (currentLayer == this.inputLayer)
-                currentLayer = this.compressedLayer;
-            else
-                currentLayer = null;
         }
 
         return weightSum / weightCount;
@@ -278,7 +265,7 @@ public class NciBrain implements java.io.Serializable
         for (Neuron unit : units)
         {
             PropagateRun propagateRun = new PropagateRun(unit);
-            FutureTask futurePropagateRun = new FutureTask(propagateRun, null);
+            FutureTask<Void> futurePropagateRun = new FutureTask<Void>(propagateRun, null);
 
             processing.add(futurePropagateRun);
             executor.execute(futurePropagateRun);
@@ -308,7 +295,7 @@ public class NciBrain implements java.io.Serializable
         for (Neuron unit : units)
         {
             BackPropagateRun backPropagateRun = new BackPropagateRun(unit);
-            FutureTask futureBackPropagateRun = new FutureTask(backPropagateRun, null);
+            FutureTask<Void> futureBackPropagateRun = new FutureTask<Void>(backPropagateRun, null);
 
             processing.add(futureBackPropagateRun);
             executor.execute(futureBackPropagateRun);

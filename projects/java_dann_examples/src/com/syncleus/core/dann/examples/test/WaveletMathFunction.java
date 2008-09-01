@@ -25,7 +25,7 @@ public class WaveletMathFunction extends MathFunction
 
     public TreeSet<String> getDimensions()
     {
-        return (TreeSet<String>)this.dimensions.clone();
+        return new TreeSet<String>(this.dimensions);
     }
 
 

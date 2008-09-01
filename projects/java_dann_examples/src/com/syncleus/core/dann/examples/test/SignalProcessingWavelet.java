@@ -71,8 +71,8 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
     {
         SignalProcessingWavelet copy = new SignalProcessingWavelet();
         //copy.inputs = (Hashtable<DistributedFormedWaveMathFunction, Signal>)this.inputs.clone();
-        copy.dimensions = (TreeSet<Signal>)this.dimensions.clone();
-        copy.waveDimensions = (ArrayList<WaveMultidimensionalMathFunction>)this.waveDimensions.clone();
+        copy.dimensions = new TreeSet<Signal>(this.dimensions);
+        copy.waveDimensions = new ArrayList<WaveMultidimensionalMathFunction>(this.waveDimensions);
         /*
         for(Hashtable<Signal, WaveMultidimensionalMathFunction> current:this.waveDimensions)
         {

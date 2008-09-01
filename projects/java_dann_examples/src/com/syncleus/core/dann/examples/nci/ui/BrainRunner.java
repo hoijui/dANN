@@ -211,7 +211,7 @@ public class BrainRunner implements Runnable
                                 this.trainingRemaining = 0;
                         }
                         TrainRun trainRun = new TrainRun(this.brain, this.getRandomTrainingBlock(xSize, ySize));
-                        FutureTask trainTask = new FutureTask(trainRun, null);
+                        FutureTask<Void> trainTask = new FutureTask<Void>(trainRun, null);
                         
                         
                         trainingSegments.add(trainTask);
