@@ -5,9 +5,9 @@ import com.syncleus.dann.*;
 
 public class PropagateRun implements Runnable
 {
-    private ProcessingUnit processor;
+    private NetworkNode processor;
     
-    public PropagateRun(ProcessingUnit processor)
+    public PropagateRun(NetworkNode processor)
     {
         this.processor = processor;
     }

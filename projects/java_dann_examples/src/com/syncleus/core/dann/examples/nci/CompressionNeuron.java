@@ -26,7 +26,7 @@ import com.syncleus.dann.*;
  * @author Jeffrey Phillips Freeman
  * @since 0.1
  */
-public class CompressionNeuron extends NeuronProcessingUnit implements java.io.Serializable
+public class CompressionNeuron extends Neuron implements java.io.Serializable
 {
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
@@ -42,7 +42,7 @@ public class CompressionNeuron extends NeuronProcessingUnit implements java.io.S
 
 
     /**
-     * Creates a new instance of InputNeuronProcessingUnit<BR>
+     * Creates a new instance of InputNeuron<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      * @param OwnedDNAToSet This dna class will determine the various properties

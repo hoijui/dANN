@@ -25,7 +25,7 @@ package com.syncleus.dann;
  * @since 0.1
  * @see com.syncleus.dann.InputNeuronProcessingUnit
  */
-public class OutputNeuronProcessingUnit extends NeuronProcessingUnit implements java.io.Serializable
+public class OutputNeuron extends Neuron implements java.io.Serializable
 {
     /**
      * holds the value for the current training set.<BR>
@@ -37,13 +37,13 @@ public class OutputNeuronProcessingUnit extends NeuronProcessingUnit implements 
 
 
     /**
-     * Creates a new instance of OutputNeuronProcessingUnit<BR>
+     * Creates a new instance of OutputNeuron<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      * @param ownedDNAToSet This dna class will determine the various properties
      * 	of the layer.
      */
-    public OutputNeuronProcessingUnit(DNA ownedDNAToSet)
+    public OutputNeuron(DNA ownedDNAToSet)
     {
         super(ownedDNAToSet);
     }
@@ -67,7 +67,7 @@ public class OutputNeuronProcessingUnit extends NeuronProcessingUnit implements 
      * Calculates the Delta Train based on all the destination synapses<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
-     * @see com.syncleus.dann.NeuronProcessingUnit#backPropagate
+     * @see com.syncleus.dann.Neuron#backPropagate
      */
     public void calculateDeltaTrain()
     {

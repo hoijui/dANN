@@ -55,7 +55,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import com.syncleus.core.dann.examples.xor.XorBrain;
-import com.syncleus.dann.NeuronProcessingUnit;
+import com.syncleus.dann.Neuron;
 
 /**
  * A graphical user interface based on java swing
@@ -483,10 +483,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		int row = 1;
 
 		// One table line per neuron -> 10 lines
-		// WARNING: cast problem with brain.getSecondLayer().children -> ArrayList of ProcessingUnit instead of NeuronProcessingUnit
-//		  for (NeuronProcessingUnit myNeuron : (NeuronProcessingUnit)this.brain.getSecondLayer().children) {
+		// WARNING: cast problem with brain.getSecondLayer().children -> ArrayList of NetworkNode instead of Neuron
+//		  for (Neuron myNeuron : (Neuron)this.brain.getSecondLayer().children) {
 		for (int i = 0; i < this.brain.getSecondLayer().children.size(); i++) {
-			double neuronDeltaTrain = ((NeuronProcessingUnit)this.brain.getSecondLayer().children.get(i)).deltaTrain;
+			double neuronDeltaTrain = ((Neuron)this.brain.getSecondLayer().children.get(i)).deltaTrain;
 			//double neuronBiasWeight = xxx;
 			//...for each synapse...
 			//double synapseDeltaTrain = xxx;

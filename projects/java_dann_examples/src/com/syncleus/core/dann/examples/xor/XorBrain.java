@@ -22,10 +22,10 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 
 import com.syncleus.dann.DNA;
-import com.syncleus.dann.InputNeuronProcessingUnit;
-import com.syncleus.dann.LayerProcessingUnit;
-import com.syncleus.dann.NeuronProcessingUnit;
-import com.syncleus.dann.OutputNeuronProcessingUnit;
+import com.syncleus.dann.InputNeuron;
+import com.syncleus.dann.NeuronGroup;
+import com.syncleus.dann.Neuron;
+import com.syncleus.dann.OutputNeuron;
 
 
 /**
@@ -41,12 +41,12 @@ public class XorBrain {
 	
 	private DNA myDNA = new DNA();
 	private BufferedReader inReader = null;
-	private InputNeuronProcessingUnit inputA = null;
-	private InputNeuronProcessingUnit inputB = null;
-	private InputNeuronProcessingUnit inputC = null;
-	private LayerProcessingUnit firstLayer = null;
-	private LayerProcessingUnit secondLayer = null;
-	private OutputNeuronProcessingUnit output = null;
+	private InputNeuron inputA = null;
+	private InputNeuron inputB = null;
+	private InputNeuron inputC = null;
+	private NeuronGroup firstLayer = null;
+	private NeuronGroup secondLayer = null;
+	private OutputNeuron output = null;
 	private String saveLocation = "default.dann";
 
 	/**
@@ -61,23 +61,23 @@ public class XorBrain {
 		myDNA.learningRate = 0.05;
 			
 		//creates the first layer which holds all the input neurons
-		inputA = new InputNeuronProcessingUnit(myDNA);
-		inputB = new InputNeuronProcessingUnit(myDNA);
-		inputC = new InputNeuronProcessingUnit(myDNA);
-		firstLayer = new LayerProcessingUnit(myDNA);
+		inputA = new InputNeuron(myDNA);
+		inputB = new InputNeuron(myDNA);
+		inputC = new InputNeuron(myDNA);
+		firstLayer = new NeuronGroup(myDNA);
 		firstLayer.add(inputA);
 		firstLayer.add(inputB);
 		firstLayer.add(inputC);
 
 		//creates the second layer of neurons containing 10 neurons.
-		secondLayer = new LayerProcessingUnit(myDNA);
+		secondLayer = new NeuronGroup(myDNA);
 		for( int lcv = 0; lcv < 10; lcv++ )
 		{
-			secondLayer.add(new NeuronProcessingUnit(myDNA));
+			secondLayer.add(new Neuron(myDNA));
 		}
 
 		//the output layer is just a single neuron
-		output = new OutputNeuronProcessingUnit(myDNA);
+		output = new OutputNeuron(myDNA);
 		
 		//connects the network in a feedforward fasion.
 		firstLayer.connectAllTo(secondLayer);
@@ -266,7 +266,7 @@ public class XorBrain {
         }
 	}
 	
-	public LayerProcessingUnit getSecondLayer() {
+	public NeuronGroup getSecondLayer() {
 		return this.secondLayer;
 	}
 }

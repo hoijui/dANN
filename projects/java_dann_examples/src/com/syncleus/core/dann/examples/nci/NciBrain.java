@@ -58,22 +58,22 @@ public class NciBrain implements java.io.Serializable
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-    private InputNeuronProcessingUnit[][][] inputNeurons = null;
+    private InputNeuron[][][] inputNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-    private LayerProcessingUnit inputLayer = new LayerProcessingUnit(sharedDna);
+    private NeuronGroup inputLayer = new NeuronGroup(sharedDna);
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-//    private NeuronProcessingUnit[] inputHiddenNeurons = null;
+//    private Neuron[] inputHiddenNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-//    private LayerProcessingUnit inputHiddenLayer = new LayerProcessingUnit(sharedDna);
+//    private NeuronGroup inputHiddenLayer = new NeuronGroup(sharedDna);
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
@@ -83,27 +83,27 @@ public class NciBrain implements java.io.Serializable
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-    private LayerProcessingUnit compressedLayer = new LayerProcessingUnit(sharedDna);
+    private NeuronGroup compressedLayer = new NeuronGroup(sharedDna);
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-//    private NeuronProcessingUnit[] outputHiddenNeurons = null;
+//    private Neuron[] outputHiddenNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-//    private LayerProcessingUnit outputHiddenLayer = new LayerProcessingUnit(sharedDna);
+//    private NeuronGroup outputHiddenLayer = new NeuronGroup(sharedDna);
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-    private OutputNeuronProcessingUnit[][][] outputNeurons = null;
+    private OutputNeuron[][][] outputNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-    private LayerProcessingUnit outputLayer = new LayerProcessingUnit(sharedDna);
+    private NeuronGroup outputLayer = new NeuronGroup(sharedDna);
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
@@ -130,11 +130,11 @@ public class NciBrain implements java.io.Serializable
         this.ySize = ySize;
         int compressedNeuronCount = ((int) Math.ceil((((double) xSize) * ((double) ySize) * ((double) CHANNELS)) * (1.0 - compression)));
 //        int hiddenNeuronCount = ((xSize * ySize * 3 - compressedNeuronCount) / 2) + compressedNeuronCount;
-        this.inputNeurons = new InputNeuronProcessingUnit[xSize][ySize][CHANNELS];
-//        this.inputHiddenNeurons = new NeuronProcessingUnit[hiddenNeuronCount];
+        this.inputNeurons = new InputNeuron[xSize][ySize][CHANNELS];
+//        this.inputHiddenNeurons = new Neuron[hiddenNeuronCount];
         this.compressedNeurons = new CompressionNeuron[compressedNeuronCount];
-//        this.outputHiddenNeurons = new NeuronProcessingUnit[hiddenNeuronCount];
-        this.outputNeurons = new OutputNeuronProcessingUnit[xSize][ySize][CHANNELS];
+//        this.outputHiddenNeurons = new Neuron[hiddenNeuronCount];
+        this.outputNeurons = new OutputNeuron[xSize][ySize][CHANNELS];
         this.actualCompression = 1.0 - ((double) this.compressedNeurons.length) / (((double) xSize) * ((double) ySize) * ((double) CHANNELS));
 
         //create the input and output neurons and add it to the input layer
@@ -142,10 +142,10 @@ public class NciBrain implements java.io.Serializable
             for (int xIndex = 0; xIndex < xSize; xIndex++)
                 for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
                 {
-                    this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuronProcessingUnit(sharedDna);
+                    this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuron(sharedDna);
                     this.inputLayer.add(this.inputNeurons[xIndex][yIndex][rgbIndex]);
 
-                    this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuronProcessingUnit(sharedDna);
+                    this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuron(sharedDna);
                     this.outputLayer.add(this.outputNeurons[xIndex][yIndex][rgbIndex]);
                 }
 
@@ -211,14 +211,14 @@ public class NciBrain implements java.io.Serializable
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        LayerProcessingUnit currentLayer = this.inputLayer;
+        NeuronGroup currentLayer = this.inputLayer;
         while (currentLayer != null)
         {
-            ArrayList<ProcessingUnit> children = currentLayer.getChildrenRecursivly();
-            for (ProcessingUnit child : children)
-                if (child instanceof NeuronProcessingUnit)
+            ArrayList<NetworkNode> children = currentLayer.getChildrenRecursivly();
+            for (NetworkNode child : children)
+                if (child instanceof Neuron)
                 {
-                    NeuronProcessingUnit childNeuron = (NeuronProcessingUnit) child;
+                    Neuron childNeuron = (Neuron) child;
                     Synapse[] childSynapses = childNeuron.getDestinations();
 
                     for (Synapse childSynapse : childSynapses)
@@ -244,14 +244,14 @@ public class NciBrain implements java.io.Serializable
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        LayerProcessingUnit currentLayer = this.inputLayer;
+        NeuronGroup currentLayer = this.inputLayer;
         while (currentLayer != null)
         {
-            ArrayList<ProcessingUnit> children = currentLayer.getChildrenRecursivly();
-            for (ProcessingUnit child : children)
-                if (child instanceof NeuronProcessingUnit)
+            ArrayList<NetworkNode> children = currentLayer.getChildrenRecursivly();
+            for (NetworkNode child : children)
+                if (child instanceof Neuron)
                 {
-                    NeuronProcessingUnit childNeuron = (NeuronProcessingUnit) child;
+                    Neuron childNeuron = (Neuron) child;
                     Synapse[] childSynapses = childNeuron.getDestinations();
 
                     for (Synapse childSynapse : childSynapses)
@@ -272,12 +272,12 @@ public class NciBrain implements java.io.Serializable
 
 
 
-    private void propagateLayer(LayerProcessingUnit layer)
+    private void propagateLayer(NeuronGroup layer)
     {
         ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
 
-        ArrayList<ProcessingUnit> units = layer.getChildrenRecursivly();
-        for (ProcessingUnit unit : units)
+        ArrayList<NetworkNode> units = layer.getChildrenRecursivly();
+        for (NetworkNode unit : units)
         {
             PropagateRun propagateRun = new PropagateRun(unit);
             FutureTask futurePropagateRun = new FutureTask(propagateRun, null);
@@ -302,12 +302,12 @@ public class NciBrain implements java.io.Serializable
 
 
 
-    private void backPropagateLayer(LayerProcessingUnit layer)
+    private void backPropagateLayer(NeuronGroup layer)
     {
         ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
 
-        ArrayList<ProcessingUnit> units = layer.getChildrenRecursivly();
-        for (ProcessingUnit unit : units)
+        ArrayList<NetworkNode> units = layer.getChildrenRecursivly();
+        for (NetworkNode unit : units)
         {
             BackPropagateRun backPropagateRun = new BackPropagateRun(unit);
             FutureTask futureBackPropagateRun = new FutureTask(backPropagateRun, null);

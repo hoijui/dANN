@@ -34,12 +34,12 @@ public class Main
 {
 	private static DNA myDNA = new DNA();
 	private static BufferedReader inReader = null;
-	private static InputNeuronProcessingUnit inputA = null;
-	private static InputNeuronProcessingUnit inputB = null;
-	private static InputNeuronProcessingUnit inputC = null;
-	private static LayerProcessingUnit firstLayer = null;
-	private static LayerProcessingUnit secondLayer = null;
-	private static OutputNeuronProcessingUnit output = null;
+	private static InputNeuron inputA = null;
+	private static InputNeuron inputB = null;
+	private static InputNeuron inputC = null;
+	private static NeuronGroup firstLayer = null;
+	private static NeuronGroup secondLayer = null;
+	private static OutputNeuron output = null;
 	private static String saveLocation = "default.dann";
 			
 	public static void main(String args[])
@@ -55,23 +55,23 @@ public class Main
 			myDNA.learningRate = 0.05;
 			
 			//creates the first layer which holds all the input neurons
-			inputA = new InputNeuronProcessingUnit(myDNA);
-			inputB = new InputNeuronProcessingUnit(myDNA);
-			inputC = new InputNeuronProcessingUnit(myDNA);
-			firstLayer = new LayerProcessingUnit(myDNA);
+			inputA = new InputNeuron(myDNA);
+			inputB = new InputNeuron(myDNA);
+			inputC = new InputNeuron(myDNA);
+			firstLayer = new NeuronGroup(myDNA);
 			firstLayer.add(inputA);
 			firstLayer.add(inputB);
 			firstLayer.add(inputC);
 
 			//creates the second layer of neurons containing 10 neurons.
-			secondLayer = new LayerProcessingUnit(myDNA);
+			secondLayer = new NeuronGroup(myDNA);
 			for( int lcv = 0; lcv < 10; lcv++ )
 			{
-				secondLayer.add(new NeuronProcessingUnit(myDNA));
+				secondLayer.add(new Neuron(myDNA));
 			}
 
 			//the output layer is just a single neuron
-			output = new OutputNeuronProcessingUnit(myDNA);
+			output = new OutputNeuron(myDNA);
 
 			//connects the network in a feedforward fasion.
 			firstLayer.connectAllTo(secondLayer);
@@ -183,12 +183,12 @@ public class Main
 		
 		try
 		{
-			firstLayer = (LayerProcessingUnit) in.readObject();
-			secondLayer = (LayerProcessingUnit) in.readObject();
-			output = (OutputNeuronProcessingUnit) in.readObject();
-			inputA = (InputNeuronProcessingUnit) in.readObject();
-			inputB = (InputNeuronProcessingUnit) in.readObject();
-			inputC = (InputNeuronProcessingUnit) in.readObject();
+			firstLayer = (NeuronGroup) in.readObject();
+			secondLayer = (NeuronGroup) in.readObject();
+			output = (OutputNeuron) in.readObject();
+			inputA = (InputNeuron) in.readObject();
+			inputB = (InputNeuron) in.readObject();
+			inputC = (InputNeuron) in.readObject();
 		}
 		finally
 		{

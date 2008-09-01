@@ -27,7 +27,7 @@ import java.security.InvalidParameterException;
  * @since 0.1
  * @see com.syncleus.dann.OutputNeuronProcessingUnit
  */
-public class InputNeuronProcessingUnit extends NeuronProcessingUnit implements java.io.Serializable
+public class InputNeuron extends Neuron implements java.io.Serializable
 {
     /**
      * Holds the current input value for this neuron<BR>
@@ -39,13 +39,13 @@ public class InputNeuronProcessingUnit extends NeuronProcessingUnit implements j
 
 
     /**
-     * Creates a new instance of InputNeuronProcessingUnit<BR>
+     * Creates a new instance of InputNeuron<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      * @param ownedDNAToSet This dna class will determine the various properties
      * 	of the layer.
      */
-    public InputNeuronProcessingUnit(DNA ownedDNAToSet)
+    public InputNeuron(DNA ownedDNAToSet)
     {
         super(ownedDNAToSet);
     }
