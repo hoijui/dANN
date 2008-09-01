@@ -18,29 +18,18 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.xor.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -54,7 +43,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import com.syncleus.core.dann.examples.xor.XorBrain;
-import com.syncleus.dann.Neuron;
+import com.syncleus.dann.*;
 
 
 /**
@@ -496,9 +485,10 @@ public class MainWindow extends JFrame implements ActionListener
         // One table line per neuron -> 10 lines
         // WARNING: cast problem with brain.getSecondLayer().children -> ArrayList of NetworkNode instead of Neuron
 //		  for (Neuron myNeuron : (Neuron)this.brain.getSecondLayer().children) {
-        for (int i = 0; i < this.brain.getSecondLayer().getChildren().size(); i++)
+        ArrayList<NetworkNode> secondLayerChildren = this.brain.getSecondLayer().getChildren();
+        for (int i = 0; i < secondLayerChildren.size(); i++)
         {
-            double neuronDeltaTrain = ((Neuron) this.brain.getSecondLayer().getChildren().get(i)).getDeltaTrain();
+            double neuronDeltaTrain = ((Neuron) secondLayerChildren.get(i)).getDeltaTrain();
             //double neuronBiasWeight = xxx;
             //...for each synapse...
             //double synapseDeltaTrain = xxx;
