@@ -19,6 +19,7 @@
 package com.syncleus.core.dann.examples.nci;
 
 import com.syncleus.dann.*;
+import com.syncleus.dann.activation.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -138,21 +139,22 @@ public class NciBrain implements java.io.Serializable
         this.actualCompression = 1.0 - ((double) this.compressedNeurons.length) / (((double) xSize) * ((double) ySize) * ((double) CHANNELS));
 
         //create the input and output neurons and add it to the input layer
+        ActivationFunction activationFunction = new SineActivationFunction();
         for (int yIndex = 0; yIndex < ySize; yIndex++)
             for (int xIndex = 0; xIndex < xSize; xIndex++)
                 for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
                 {
-                    this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuron(sharedDna);
+                    this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuron(sharedDna, activationFunction);
                     this.inputLayer.add(this.inputNeurons[xIndex][yIndex][rgbIndex]);
 
-                    this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuron(sharedDna);
+                    this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuron(sharedDna, activationFunction);
                     this.outputLayer.add(this.outputNeurons[xIndex][yIndex][rgbIndex]);
                 }
 
         //create the comrpession layer
         for (int compressionIndex = 0; compressionIndex < this.compressedNeurons.length; compressionIndex++)
         {
-            this.compressedNeurons[compressionIndex] = new CompressionNeuron(sharedDna);
+            this.compressedNeurons[compressionIndex] = new CompressionNeuron(sharedDna, activationFunction);
             this.compressedLayer.add(this.compressedNeurons[compressionIndex]);
         }
 
