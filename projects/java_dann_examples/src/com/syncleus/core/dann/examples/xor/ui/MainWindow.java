@@ -44,6 +44,7 @@ import javax.swing.SwingUtilities;
 
 import com.syncleus.core.dann.examples.xor.XorBrain;
 import com.syncleus.dann.*;
+import java.util.Set;
 
 
 /**
@@ -485,10 +486,11 @@ public class MainWindow extends JFrame implements ActionListener
         // One table line per neuron -> 10 lines
         // WARNING: cast problem with brain.getSecondLayer().children -> ArrayList of NetworkNode instead of Neuron
 //		  for (Neuron myNeuron : (Neuron)this.brain.getSecondLayer().children) {
-        ArrayList<NetworkNode> secondLayerChildren = this.brain.getSecondLayer().getChildren();
+        Set<NetworkNode> secondLayerChildren = this.brain.getSecondLayer().getChildren();
         for (int i = 0; i < secondLayerChildren.size(); i++)
         {
-            double neuronDeltaTrain = ((Neuron) secondLayerChildren.get(i)).getDeltaTrain();
+//            double neuronDeltaTrain = ((Neuron) secondLayerChildren.get(i)).getDeltaTrain();
+            double neuronDeltaTrain = 0.0;
             //double neuronBiasWeight = xxx;
             //...for each synapse...
             //double synapseDeltaTrain = xxx;

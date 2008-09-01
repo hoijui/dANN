@@ -21,8 +21,7 @@ package com.syncleus.core.dann.examples.nci;
 import com.syncleus.dann.*;
 import com.syncleus.dann.activation.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -218,10 +217,10 @@ public class NciBrain extends Brain implements java.io.Serializable
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        HashSet<Neuron> allChildren = this.getChildrenNeuronsRecursivly();
+        Set<Neuron> allChildren = this.getChildrenNeuronsRecursivly();
         for (Neuron child : allChildren)
         {
-            HashSet<Synapse> childSynapses = child.getDestinations();
+            Set<Synapse> childSynapses = child.getDestinations();
 
             for (Synapse childSynapse : childSynapses)
             {
@@ -240,10 +239,10 @@ public class NciBrain extends Brain implements java.io.Serializable
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        HashSet<Neuron> allChildren = this.getChildrenNeuronsRecursivly();
+        Set<Neuron> allChildren = this.getChildrenNeuronsRecursivly();
         for (Neuron child : allChildren)
         {
-            HashSet<Synapse> childSynapses = child.getDestinations();
+            Set<Synapse> childSynapses = child.getDestinations();
 
             for (Synapse childSynapse : childSynapses)
             {
@@ -261,7 +260,7 @@ public class NciBrain extends Brain implements java.io.Serializable
     {
         ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
 
-        ArrayList<Neuron> units = layer.getChildrenNeuronsRecursivly();
+        Set<Neuron> units = layer.getChildrenNeuronsRecursivly();
         for (Neuron unit : units)
         {
             PropagateRun propagateRun = new PropagateRun(unit);
@@ -291,7 +290,7 @@ public class NciBrain extends Brain implements java.io.Serializable
     {
         ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
 
-        ArrayList<Neuron> units = layer.getChildrenNeuronsRecursivly();
+        Set<Neuron> units = layer.getChildrenNeuronsRecursivly();
         for (Neuron unit : units)
         {
             BackPropagateRun backPropagateRun = new BackPropagateRun(unit);
