@@ -214,19 +214,17 @@ public class NciBrain implements java.io.Serializable
         NeuronGroup currentLayer = this.inputLayer;
         while (currentLayer != null)
         {
-            ArrayList<NetworkNode> children = currentLayer.getChildrenRecursivly();
-            for (NetworkNode child : children)
-                if (child instanceof Neuron)
-                {
-                    Neuron childNeuron = (Neuron) child;
-                    Synapse[] childSynapses = childNeuron.getDestinations();
+            ArrayList<Neuron> children = currentLayer.getChildrenNeuronsRecursivly();
+            for (Neuron child : children)
+            {
+                ArrayList<Synapse> childSynapses = child.getDestinations();
 
-                    for (Synapse childSynapse : childSynapses)
-                    {
-                        weightSum += childSynapse.getWeight();
-                        weightCount++;
-                    }
+                for (Synapse childSynapse : childSynapses)
+                {
+                    weightSum += childSynapse.getWeight();
+                    weightCount++;
                 }
+            }
 
             if (currentLayer == this.inputLayer)
                 currentLayer = this.compressedLayer;
@@ -247,19 +245,17 @@ public class NciBrain implements java.io.Serializable
         NeuronGroup currentLayer = this.inputLayer;
         while (currentLayer != null)
         {
-            ArrayList<NetworkNode> children = currentLayer.getChildrenRecursivly();
-            for (NetworkNode child : children)
-                if (child instanceof Neuron)
-                {
-                    Neuron childNeuron = (Neuron) child;
-                    Synapse[] childSynapses = childNeuron.getDestinations();
+            ArrayList<Neuron> children = currentLayer.getChildrenNeuronsRecursivly();
+            for (Neuron child : children)
+            {
+                ArrayList<Synapse> childSynapses = child.getDestinations();
 
-                    for (Synapse childSynapse : childSynapses)
-                    {
-                        weightSum += Math.abs(childSynapse.getWeight());
-                        weightCount++;
-                    }
+                for (Synapse childSynapse : childSynapses)
+                {
+                    weightSum += Math.abs(childSynapse.getWeight());
+                    weightCount++;
                 }
+            }
 
             if (currentLayer == this.inputLayer)
                 currentLayer = this.compressedLayer;
@@ -276,8 +272,8 @@ public class NciBrain implements java.io.Serializable
     {
         ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
 
-        ArrayList<NetworkNode> units = layer.getChildrenRecursivly();
-        for (NetworkNode unit : units)
+        ArrayList<Neuron> units = layer.getChildrenNeuronsRecursivly();
+        for (Neuron unit : units)
         {
             PropagateRun propagateRun = new PropagateRun(unit);
             FutureTask futurePropagateRun = new FutureTask(propagateRun, null);
@@ -306,8 +302,8 @@ public class NciBrain implements java.io.Serializable
     {
         ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
 
-        ArrayList<NetworkNode> units = layer.getChildrenRecursivly();
-        for (NetworkNode unit : units)
+        ArrayList<Neuron> units = layer.getChildrenNeuronsRecursivly();
+        for (Neuron unit : units)
         {
             BackPropagateRun backPropagateRun = new BackPropagateRun(unit);
             FutureTask futureBackPropagateRun = new FutureTask(backPropagateRun, null);
@@ -380,7 +376,7 @@ public class NciBrain implements java.io.Serializable
                     this.outputNeurons[xIndex][yIndex][rgbIndex].setDesired(input);
                 }
             }
-        
+
         if (this.compressionInputsSet == true)
         {
             for (CompressionNeuron compressionNeuron : this.compressedNeurons)
@@ -491,7 +487,7 @@ public class NciBrain implements java.io.Serializable
         int compressedDataIndex = 0;
         for (CompressionNeuron compressionNeuron : this.compressedNeurons)
             compressionNeuron.setInput(compressedData[compressedDataIndex++]);
-        
+
         this.compressionInputsSet = true;
 
         this.propagateLayer(this.compressedLayer);
