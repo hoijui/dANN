@@ -19,20 +19,18 @@
 package com.syncleus.core.dann.examples.nci.ui;
 
 import com.syncleus.core.dann.examples.nci.NciBrain;
+import com.syncleus.dann.associativemap.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 import javax.imageio.ImageIO;
 
 
 public class BrainRunner implements Runnable
 {
     private NciBrain brain = null;
+    private BrainAssociativeMap brainMap;
     private double compression;
     private int xSize;
     private int ySize;
@@ -58,6 +56,12 @@ public class BrainRunner implements Runnable
         this.xSize = xSize;
         this.ySize = ySize;
         this.extraConnectivity = extraConnectivity;
+    }
+    
+    
+    public BrainAssociativeMap getBrainMap()
+    {
+        return this.brainMap;
     }
     
     
@@ -144,11 +148,17 @@ public class BrainRunner implements Runnable
             executor = Executors.newFixedThreadPool(1);
 
             this.brain = new NciBrain(this.compression, this.xSize, this.ySize, this.extraConnectivity);
+            this.brainMap = new BrainAssociativeMap(brain, 3);
             this.setTrainingImages(trainingFiles);
+            
+            for(int i = 0; i< 2; i++)
+                this.brainMap.align();
 
             this.listener.brainFinishedBuffering();
             while (this.shutdown == false)
             {
+//                this.brainMap.align();
+                  
                 File sampleFile = this.sampleFile;
                 if (this.sampleFile != null)
                 {
