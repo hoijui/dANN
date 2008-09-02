@@ -26,16 +26,6 @@ public class Main
 {
     public static void main(String args[])
     {
-        //Point testPoint = new Point(new double[]{1.0,0.001,0.001});
-        Point testPoint = new Point(new double[]{0.02,1.0,0.001});
-        System.out.println("magnitude: " + testPoint.getDistance());
-        System.out.println("angle 1: " + testPoint.getAngularComponent(1));
-        System.out.println("angle 2: " + testPoint.getAngularComponent(2));
-        testPoint.setDistance(5.567);
-        System.out.println("magnitude: " + testPoint.getDistance());
-        System.out.println("angle 1: " + testPoint.getAngularComponent(1));
-        System.out.println("angle 2: " + testPoint.getAngularComponent(2));
-        
         try
         {
             BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
