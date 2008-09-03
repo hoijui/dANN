@@ -69,12 +69,12 @@ public class NciBrain extends Brain implements java.io.Serializable
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-//    private Neuron[] inputHiddenNeurons = null;
+    private Neuron[] inputHiddenNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-//    private NeuronGroup inputHiddenLayer = new NeuronGroup(sharedDna);
+    private NeuronGroup inputHiddenLayer = new NeuronGroup(sharedDna);
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
@@ -89,12 +89,12 @@ public class NciBrain extends Brain implements java.io.Serializable
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-//    private Neuron[] outputHiddenNeurons = null;
+    private Neuron[] outputHiddenNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
      */
-//    private NeuronGroup outputHiddenLayer = new NeuronGroup(sharedDna);
+    private NeuronGroup outputHiddenLayer = new NeuronGroup(sharedDna);
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 0.1
@@ -133,9 +133,9 @@ public class NciBrain extends Brain implements java.io.Serializable
         int hiddenNeuronCount = xSize*ySize*CHANNELS;
         //int hiddenNeuronCount = ((xSize * ySize * 3 - compressedNeuronCount) / 2) + compressedNeuronCount;
         this.inputNeurons = new InputNeuron[xSize][ySize][CHANNELS];
-//        this.inputHiddenNeurons = new Neuron[hiddenNeuronCount];
+        this.inputHiddenNeurons = new Neuron[hiddenNeuronCount];
         this.compressedNeurons = new CompressionNeuron[compressedNeuronCount];
-//        this.outputHiddenNeurons = new Neuron[hiddenNeuronCount];
+        this.outputHiddenNeurons = new Neuron[hiddenNeuronCount];
         this.outputNeurons = new OutputNeuron[xSize][ySize][CHANNELS];
         this.actualCompression = 1.0 - ((double) this.compressedNeurons.length) / (((double) xSize) * ((double) ySize) * ((double) CHANNELS));
 
@@ -149,11 +149,11 @@ public class NciBrain extends Brain implements java.io.Serializable
                     this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuron(sharedDna, activationFunction);
                     this.inputLayer.add(this.inputNeurons[xIndex][yIndex][rgbIndex]);
 
-  //                  this.inputHiddenNeurons[hiddenIndex] = new Neuron(sharedDna, activationFunction);
-  //                  this.inputHiddenLayer.add(this.inputHiddenNeurons[hiddenIndex]);
+                    this.inputHiddenNeurons[hiddenIndex] = new Neuron(sharedDna, activationFunction);
+                    this.inputHiddenLayer.add(this.inputHiddenNeurons[hiddenIndex]);
                     
-  //                  this.outputHiddenNeurons[hiddenIndex] = new Neuron(sharedDna, activationFunction);
-  //                  this.outputHiddenLayer.add(this.outputHiddenNeurons[hiddenIndex]);
+                    this.outputHiddenNeurons[hiddenIndex] = new Neuron(sharedDna, activationFunction);
+                    this.outputHiddenLayer.add(this.outputHiddenNeurons[hiddenIndex]);
                     
                     this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuron(sharedDna, activationFunction);
                     this.outputLayer.add(this.outputNeurons[xIndex][yIndex][rgbIndex]);
@@ -169,15 +169,15 @@ public class NciBrain extends Brain implements java.io.Serializable
         }
 
         //connect the neurons together
-        this.inputLayer.connectAllTo(this.compressedLayer);
-        this.compressedLayer.connectAllTo(this.outputLayer);
+//        this.inputLayer.connectAllTo(this.compressedLayer);
+//        this.compressedLayer.connectAllTo(this.outputLayer);
         
-//        this.inputLayer.connectAllTo(this.inputHiddenLayer);
-//        this.inputHiddenLayer.connectAllTo(this.compressedLayer);
-//        this.compressedLayer.connectAllTo(this.outputHiddenLayer);
-//        this.outputHiddenLayer.connectAllTo(this.outputLayer);
-//        this.addChild(this.inputHiddenLayer);
-//        this.addChild(this.outputHiddenLayer);
+        this.inputLayer.connectAllTo(this.inputHiddenLayer);
+        this.inputHiddenLayer.connectAllTo(this.compressedLayer);
+        this.compressedLayer.connectAllTo(this.outputHiddenLayer);
+        this.outputHiddenLayer.connectAllTo(this.outputLayer);
+        this.addChild(this.inputHiddenLayer);
+        this.addChild(this.outputHiddenLayer);
 
         this.addChild(this.inputLayer);
         this.addChild(this.compressedLayer);
