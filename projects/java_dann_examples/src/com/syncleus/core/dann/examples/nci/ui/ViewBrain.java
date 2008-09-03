@@ -1,12 +1,20 @@
 package com.syncleus.core.dann.examples.nci.ui;
 import com.syncleus.dann.visualization.*;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 import javax.swing.JDialog;
+import javax.swing.Timer;
 
 
-public class ViewBrain extends JDialog
+public class ViewBrain extends JDialog implements ActionListener
 {
     private AssociativeMapCanvas brainVisual;
+//    private ExecutorService executor = Executors.newFixedThreadPool(1);
+//    private FutureTask<Void> lastRun;
 
     public ViewBrain(Frame parent, AssociativeMapCanvas brainVisual)
     {
@@ -22,13 +30,32 @@ public class ViewBrain extends JDialog
         this.brainVisual.setVisible(true);
         
         this.setSize(800,600);
+        
+        this.brainVisual.refresh();
+        
+//        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual),null);
+//        this.executor.execute(this.lastRun);
+        
+//        new Timer(5000, this).start();
+        
+    }
+    
+    
+    public void actionPerformed(ActionEvent evt)
+    {
+        /*
+        if((this.lastRun != null)&&(this.lastRun.isDone() == false))
+            return;
+        
+        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual),null);
+        this.executor.execute(this.lastRun);
+         */
     }
 
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

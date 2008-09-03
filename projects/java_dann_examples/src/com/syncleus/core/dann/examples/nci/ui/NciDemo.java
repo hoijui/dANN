@@ -47,6 +47,7 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
     private boolean processing = false;
     int trainingRemaining;
     int currentTrainingCycles = 100000;
+    private ViewBrain viewBrain;
 
 
 
@@ -480,12 +481,20 @@ private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
 private void brainViewMenuMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_brainViewMenuMenuKeyPressed
     this.brainVisual.refresh();
-    (new ViewBrain(this, brainVisual)).setVisible(true);
+    
+    if(this.viewBrain == null)
+        this.viewBrain = new ViewBrain(this, brainVisual);
+    
+    this.viewBrain.setVisible(true);
 }//GEN-LAST:event_brainViewMenuMenuKeyPressed
 
 private void brainViewMenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brainViewMenuMouseReleased
     this.brainVisual.refresh();
-    (new ViewBrain(this, brainVisual)).setVisible(true);
+    
+    if(this.viewBrain == null)
+        this.viewBrain = new ViewBrain(this, brainVisual);
+    
+    this.viewBrain.setVisible(true);
 }//GEN-LAST:event_brainViewMenuMouseReleased
 
 private void refreshOriginalImage()

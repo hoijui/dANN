@@ -255,8 +255,8 @@ public class BrainRunner implements Runnable
                     
                     this.listener.brainTrainingComplete();
                 }
-                else
-                    this.brainMap.align();
+                else if(this.getTrainingCycles() <= 0)
+                    this.brainMap.align(); 
             }
 
 
