@@ -151,13 +151,11 @@ public class BrainRunner implements Runnable
             this.brainMap = new BrainAssociativeMap(brain, 3);
             this.setTrainingImages(trainingFiles);
             
-            for(int i = 0; i< 2; i++)
-                this.brainMap.align();
+
 
             this.listener.brainFinishedBuffering();
             while (this.shutdown == false)
             {
-//                this.brainMap.align();
                   
                 File sampleFile = this.sampleFile;
                 if (this.sampleFile != null)
@@ -258,13 +256,7 @@ public class BrainRunner implements Runnable
                     this.listener.brainTrainingComplete();
                 }
                 else
-                    try
-                    {
-                        Thread.sleep(10);
-                    }
-                    catch (Exception e)
-                    {
-                    }
+                    this.brainMap.align();
             }
 
 

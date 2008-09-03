@@ -27,6 +27,8 @@ import javax.swing.JFileChooser;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import com.syncleus.dann.associativemap.*;
+import com.syncleus.dann.visualization.*;
 
 
 public class NciDemo extends javax.swing.JFrame implements ActionListener, BrainListener
@@ -34,6 +36,7 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
     private final static int BLOCK_WIDTH = 8;
     private final static int BLOCK_HEIGHT = 8;
     private BrainRunner brainRunner;
+    private AssociativeMapCanvas brainVisual;
     private Thread brainRunnerThread;
     private File trainingDirectory;
     private File originalImageLocation;
@@ -53,12 +56,12 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             System.out.println("Danger Will Robinson, Danger! Can not set native look and feel! " + e);
             e.printStackTrace();
         }
-         
+
         initComponents();
 
         this.add(this.originalImagePanel);
@@ -86,6 +89,7 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
 
     public void actionPerformed(ActionEvent evt)
     {
+
         if (this.trainingRemaining > 0)
         {
             this.trainingRemaining = this.brainRunner.getTrainingCycles();
@@ -123,6 +127,8 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
         jMenuBar2 = new javax.swing.JMenuBar();
         fileMenu1 = new javax.swing.JMenu();
         quitMenuItem1 = new javax.swing.JMenuItem();
+        toolsMenu = new javax.swing.JMenu();
+        brainViewMenu = new javax.swing.JMenuItem();
         helpMenu1 = new javax.swing.JMenu();
         aboutMenuItem1 = new javax.swing.JMenuItem();
 
@@ -248,6 +254,28 @@ public class NciDemo extends javax.swing.JFrame implements ActionListener, Brain
         fileMenu1.add(quitMenuItem1);
 
         jMenuBar2.add(fileMenu1);
+
+        toolsMenu.setText("Tools");
+
+        brainViewMenu.setText("3D Brain View");
+        brainViewMenu.setEnabled(false);
+        brainViewMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                brainViewMenuMouseReleased(evt);
+            }
+        });
+        brainViewMenu.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
+                brainViewMenuMenuKeyPressed(evt);
+            }
+            public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
+            }
+            public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
+            }
+        });
+        toolsMenu.add(brainViewMenu);
+
+        jMenuBar2.add(toolsMenu);
 
         helpMenu1.setText("Help");
 
@@ -436,7 +464,7 @@ private void trainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processButtonActionPerformed
     if ((this.processing == true) || (finalImage == null) || (originalImage == null))
         return;
-    
+
     this.processButton.setEnabled(false);
     this.trainButton.setEnabled(false);
     this.stopButton.setEnabled(false);
@@ -449,6 +477,16 @@ private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
     this.brainRunner.stop();
 }//GEN-LAST:event_stopButtonActionPerformed
+
+private void brainViewMenuMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_brainViewMenuMenuKeyPressed
+    this.brainVisual.refresh();
+    (new ViewBrain(this, brainVisual)).setVisible(true);
+}//GEN-LAST:event_brainViewMenuMenuKeyPressed
+
+private void brainViewMenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brainViewMenuMouseReleased
+    this.brainVisual.refresh();
+    (new ViewBrain(this, brainVisual)).setVisible(true);
+}//GEN-LAST:event_brainViewMenuMouseReleased
 
 private void refreshOriginalImage()
 {
@@ -478,6 +516,16 @@ private void refreshOriginalImage()
     
     public void brainFinishedBuffering()
     {
+        this.brainVisual = new AssociativeMapCanvas(this.brainRunner.getBrainMap());
+        this.brainViewMenu.setEnabled(true);
+        
+        
+        /*
+        this.add(this.brainVisual);
+        this.brainVisual.setLocation(0, 0);
+        this.brainVisual.setSize(800, 600);
+        this.brainVisual.setVisible(true);
+         */
     }
     
     public void brainSampleProcessed(BufferedImage finalImage)
@@ -487,7 +535,7 @@ private void refreshOriginalImage()
         this.finalImage = finalImage;
         this.finalImagePanel.setImage(this.finalImage);
         this.finalImagePanel.repaint();
-        
+
         this.processButton.setEnabled(true);
         this.trainButton.setEnabled(true);
         this.stopButton.setEnabled(false);
@@ -522,6 +570,7 @@ private void refreshOriginalImage()
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem aboutMenuItem1;
+    private javax.swing.JMenuItem brainViewMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu fileMenu1;
     private javax.swing.JMenu helpMenu;
@@ -540,6 +589,7 @@ private void refreshOriginalImage()
     private javax.swing.JSeparator separator;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JButton stopButton;
+    private javax.swing.JMenu toolsMenu;
     private javax.swing.JButton trainButton;
     private javax.swing.JSpinner trainingCylcesInput;
     private javax.swing.JButton trainingDirectorySelect;
