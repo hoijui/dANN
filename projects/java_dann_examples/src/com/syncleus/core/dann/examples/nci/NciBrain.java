@@ -130,7 +130,8 @@ public class NciBrain extends Brain implements java.io.Serializable
         this.xSize = xSize;
         this.ySize = ySize;
         int compressedNeuronCount = ((int) Math.ceil((((double) xSize) * ((double) ySize) * ((double) CHANNELS)) * (1.0 - compression)));
-//        int hiddenNeuronCount = ((xSize * ySize * 3 - compressedNeuronCount) / 2) + compressedNeuronCount;
+        int hiddenNeuronCount = xSize*ySize*CHANNELS;
+        //int hiddenNeuronCount = ((xSize * ySize * 3 - compressedNeuronCount) / 2) + compressedNeuronCount;
         this.inputNeurons = new InputNeuron[xSize][ySize][CHANNELS];
 //        this.inputHiddenNeurons = new Neuron[hiddenNeuronCount];
         this.compressedNeurons = new CompressionNeuron[compressedNeuronCount];
@@ -139,6 +140,7 @@ public class NciBrain extends Brain implements java.io.Serializable
         this.actualCompression = 1.0 - ((double) this.compressedNeurons.length) / (((double) xSize) * ((double) ySize) * ((double) CHANNELS));
 
         //create the input and output neurons and add it to the input layer
+        int hiddenIndex = 0;
         ActivationFunction activationFunction = new SineActivationFunction();
         for (int yIndex = 0; yIndex < ySize; yIndex++)
             for (int xIndex = 0; xIndex < xSize; xIndex++)
@@ -147,8 +149,16 @@ public class NciBrain extends Brain implements java.io.Serializable
                     this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputNeuron(sharedDna, activationFunction);
                     this.inputLayer.add(this.inputNeurons[xIndex][yIndex][rgbIndex]);
 
+  //                  this.inputHiddenNeurons[hiddenIndex] = new Neuron(sharedDna, activationFunction);
+  //                  this.inputHiddenLayer.add(this.inputHiddenNeurons[hiddenIndex]);
+                    
+  //                  this.outputHiddenNeurons[hiddenIndex] = new Neuron(sharedDna, activationFunction);
+  //                  this.outputHiddenLayer.add(this.outputHiddenNeurons[hiddenIndex]);
+                    
                     this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputNeuron(sharedDna, activationFunction);
                     this.outputLayer.add(this.outputNeurons[xIndex][yIndex][rgbIndex]);
+                    
+                    hiddenIndex++;
                 }
 
         //create the comrpession layer
@@ -161,6 +171,13 @@ public class NciBrain extends Brain implements java.io.Serializable
         //connect the neurons together
         this.inputLayer.connectAllTo(this.compressedLayer);
         this.compressedLayer.connectAllTo(this.outputLayer);
+        
+//        this.inputLayer.connectAllTo(this.inputHiddenLayer);
+//        this.inputHiddenLayer.connectAllTo(this.compressedLayer);
+//        this.compressedLayer.connectAllTo(this.outputHiddenLayer);
+//        this.outputHiddenLayer.connectAllTo(this.outputLayer);
+//        this.addChild(this.inputHiddenLayer);
+//        this.addChild(this.outputHiddenLayer);
 
         this.addChild(this.inputLayer);
         this.addChild(this.compressedLayer);
