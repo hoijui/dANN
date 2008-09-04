@@ -16,28 +16,14 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.nci.ui;
-import com.syncleus.core.dann.examples.nci.NciBrain;
+package com.syncleus.core.dann.examples.nci;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.Callable;
 
 
 
-public class SampleRun implements Callable<BufferedImage>
+public interface BrainListener
 {
-    private NciBrain brain;
-    private BufferedImage sampleImage;
-    
-    
-    public SampleRun(NciBrain brain, BufferedImage sampleImage)
-    {
-        this.brain = brain;
-        this.sampleImage = sampleImage;
-    }
-    
-    public BufferedImage call()
-    {
-        this.brain.setLearning(false);
-        return this.brain.uncompress(this.brain.compress(sampleImage));
-    }
+    public void brainFinishedBuffering();
+    public void brainSampleProcessed(BufferedImage finalImage);
+    public void brainTrainingComplete();
 }

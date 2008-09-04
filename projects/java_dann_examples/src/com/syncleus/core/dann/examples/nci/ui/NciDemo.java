@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci.ui;
 
+import com.syncleus.core.dann.examples.nci.BrainRunner;
+import com.syncleus.core.dann.examples.nci.BrainListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;

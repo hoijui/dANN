@@ -16,26 +16,28 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.nci.ui;
+package com.syncleus.core.dann.examples.nci;
+import com.syncleus.core.dann.examples.nci.NciBrain;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.Callable;
 
-/**
- *
- * @author Administrator
- */
-public class BusyException extends Exception {
 
-    /**
-     * Creates a new instance of <code>BusyException</code> without detail message.
-     */
-    public BusyException() {
+
+public class SampleRun implements Callable<BufferedImage>
+{
+    private NciBrain brain;
+    private BufferedImage sampleImage;
+    
+    
+    public SampleRun(NciBrain brain, BufferedImage sampleImage)
+    {
+        this.brain = brain;
+        this.sampleImage = sampleImage;
     }
-
-
-    /**
-     * Constructs an instance of <code>BusyException</code> with the specified detail message.
-     * @param msg the detail message.
-     */
-    public BusyException(String msg) {
-        super(msg);
+    
+    public BufferedImage call()
+    {
+        this.brain.setLearning(false);
+        return this.brain.uncompress(this.brain.compress(sampleImage));
     }
 }

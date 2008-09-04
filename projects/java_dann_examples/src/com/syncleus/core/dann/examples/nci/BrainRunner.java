@@ -16,7 +16,7 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.nci.ui;
+package com.syncleus.core.dann.examples.nci;
 
 import com.syncleus.core.dann.examples.nci.NciBrain;
 import com.syncleus.dann.associativemap.*;
