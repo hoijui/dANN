@@ -169,15 +169,15 @@ public class NciBrain extends Brain implements java.io.Serializable
         }
 
         //connect the neurons together
-//        this.inputLayer.connectAllTo(this.compressedLayer);
-//        this.compressedLayer.connectAllTo(this.outputLayer);
+        this.inputLayer.connectAllTo(this.compressedLayer);
+        this.compressedLayer.connectAllTo(this.outputLayer);
         
-        this.inputLayer.connectAllTo(this.inputHiddenLayer);
-        this.inputHiddenLayer.connectAllTo(this.compressedLayer);
-        this.compressedLayer.connectAllTo(this.outputHiddenLayer);
-        this.outputHiddenLayer.connectAllTo(this.outputLayer);
-        this.addChild(this.inputHiddenLayer);
-        this.addChild(this.outputHiddenLayer);
+//        this.inputLayer.connectAllTo(this.inputHiddenLayer);
+//        this.inputHiddenLayer.connectAllTo(this.compressedLayer);
+//        this.compressedLayer.connectAllTo(this.outputHiddenLayer);
+//        this.outputHiddenLayer.connectAllTo(this.outputLayer);
+//        this.addChild(this.inputHiddenLayer);
+//        this.addChild(this.outputHiddenLayer);
 
         this.addChild(this.inputLayer);
         this.addChild(this.compressedLayer);
