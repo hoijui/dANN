@@ -13,8 +13,8 @@ import javax.swing.Timer;
 public class ViewBrain extends JDialog implements ActionListener
 {
     private AssociativeMapCanvas brainVisual;
-//    private ExecutorService executor = Executors.newFixedThreadPool(1);
-//    private FutureTask<Void> lastRun;
+    private ExecutorService executor = Executors.newFixedThreadPool(1);
+    private FutureTask<Void> lastRun;
 
     public ViewBrain(Frame parent, AssociativeMapCanvas brainVisual)
     {
@@ -33,23 +33,21 @@ public class ViewBrain extends JDialog implements ActionListener
         
         this.brainVisual.refresh();
         
-//        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual),null);
-//        this.executor.execute(this.lastRun);
+        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual),null);
+        this.executor.execute(this.lastRun);
         
-//        new Timer(5000, this).start();
+        new Timer(100, this).start();
         
     }
     
     
     public void actionPerformed(ActionEvent evt)
     {
-        /*
         if((this.lastRun != null)&&(this.lastRun.isDone() == false))
             return;
         
         this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual),null);
         this.executor.execute(this.lastRun);
-         */
     }
 
 
