@@ -25,15 +25,23 @@ public class LayeredAssociativeMap extends AssociativeMap
             }
         
         //connect the nodes
-        for(int layerIndex = 0; layerIndex < (layers-1); layerIndex++)
+        for(int layerIndex = 0; layerIndex < layers; layerIndex++)
         {
             for(int nodeIndex = 0; nodeIndex < NODES_PER_LAYER; nodeIndex++)
             {
                 AssociativeNode currentNode = this.layeredNodes[layerIndex][nodeIndex];
                 for(int toNodeIndex = 0; toNodeIndex < NODES_PER_LAYER; toNodeIndex++)
                 {
-                    currentNode.associate(this.layeredNodes[layerIndex+1][toNodeIndex], 1.0);
-                    this.layeredNodes[layerIndex+1][toNodeIndex].associate(currentNode, 1.0);
+                    if(layerIndex < (layers-1))
+                    {
+                        currentNode.associate(this.layeredNodes[layerIndex+1][toNodeIndex], 1.0);
+                        this.layeredNodes[layerIndex+1][toNodeIndex].associate(currentNode, 1.0);
+                    }
+                    else
+                    {
+                        currentNode.associate(this.layeredNodes[0][toNodeIndex], 1.0);
+                        this.layeredNodes[0][toNodeIndex].associate(currentNode, 1.0);
+                    }
                 }
             }
         }
