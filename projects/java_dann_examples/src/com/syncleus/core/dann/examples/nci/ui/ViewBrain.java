@@ -46,6 +46,9 @@ public class ViewBrain extends JDialog implements ActionListener
         if((this.lastRun != null)&&(this.lastRun.isDone() == false))
             return;
         
+        if(this.isVisible() == false)
+            return;
+        
         this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual),null);
         this.executor.execute(this.lastRun);
     }
