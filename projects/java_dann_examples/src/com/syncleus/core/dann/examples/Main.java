@@ -64,6 +64,7 @@ public class Main
                     System.out.println("X) XOR Example");
                     System.out.println("Y) XOR Example w/GUI");
                     System.out.println("I) Image Compression Example w/GUI");
+                    System.out.println("V) Associative Map Visualizations");
                     System.out.println("H) Command Line Help");
                     System.out.println("Q) quit");
                     System.out.print("\tEnter command: ");
@@ -99,6 +100,9 @@ public class Main
                     System.out.println();
                     System.out.println("XOR Exmaple:");
                     System.out.println("java -jar bin dANN-examples.jar --xor [save-location]");
+                    break;
+                case 'v':
+                    com.syncleus.core.dann.examples.associativemap.visualization.ViewMap.main(newArgs);
                     break;
                 case 'q':
                     break;

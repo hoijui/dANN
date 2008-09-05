@@ -31,9 +31,10 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import com.syncleus.dann.associativemap.*;
 import com.syncleus.dann.visualization.*;
+import javax.swing.JFrame;
 
 
-public class NciDemo extends javax.swing.JFrame implements ActionListener, BrainListener
+public class NciDemo extends JFrame implements ActionListener, BrainListener
 {
     private final static int BLOCK_WIDTH = 8;
     private final static int BLOCK_HEIGHT = 8;
@@ -564,9 +565,6 @@ private void refreshOriginalImage()
 
 
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) throws Exception
     {
         java.awt.EventQueue.invokeAndWait(new Runnable()
