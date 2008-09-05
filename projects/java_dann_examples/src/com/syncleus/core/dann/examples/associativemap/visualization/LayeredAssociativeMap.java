@@ -45,5 +45,7 @@ public class LayeredAssociativeMap extends AssociativeMap
                 }
             }
         }
+        
+        //connect the last layer to itself
     }
 }
