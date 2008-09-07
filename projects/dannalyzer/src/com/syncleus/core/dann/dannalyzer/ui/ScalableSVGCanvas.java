@@ -1,5 +1,6 @@
 package com.syncleus.core.dann.dannalyzer.ui;
 
+import java.awt.image.ImageObserver;
 import org.apache.batik.swing.JSVGCanvas;
 import org.w3c.dom.svg.*;
 import org.w3c.dom.*;
@@ -7,7 +8,6 @@ import org.apache.batik.util.*;
 import org.apache.batik.dom.svg.*;
 import org.apache.batik.bridge.*;
 import org.apache.batik.gvt.*;
-import java.awt.geom.Rectangle2D;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,12 +15,14 @@ public class ScalableSVGCanvas extends JSVGCanvas
 {
     private static final Pattern translatePattern = Pattern.compile("translate\\(([\\-\\.1234567890]*)[,\\s]*([\\-\\.1234567890]*)\\)");
     private double scale;
+    private ImageObserver observer;
 
 
 
-    public ScalableSVGCanvas(double scale)
+    public ScalableSVGCanvas(double scale, ImageObserver observer)
     {
         this.scale = scale;
+        this.observer = observer;
     }
     
     public void setScale(double scale)
@@ -66,6 +68,7 @@ public class ScalableSVGCanvas extends JSVGCanvas
         vectorsElement.setAttribute("transform", "translate(" + translateX + ", " + translateY + ") scale(" + this.scale + ")");
         
         this.setSize((int) newWidth, (int) newHeight);
+        this.observer.imageUpdate(this.image, ImageObserver.WIDTH|ImageObserver.HEIGHT, this.getX(), this.getY(), (int) newWidth, (int)newHeight);
         
         svg.setAttribute("width", newWidth + "in");
         svg.setAttribute("height", newHeight + "in");
