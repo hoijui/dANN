@@ -24,6 +24,10 @@
             <compilerarg value="-Xlint:unchecked"/>
             <src path="src/com"/>
         </javac>
+        <mkdir dir="build/classes/com/syncleus/core/dann/dannalyzer/ui/resources"/>
+        <copy todir="build/classes/com/syncleus/core/dann/dannalyzer/ui/resources">
+            <fileset dir="src/com/syncleus/core/dann/dannalyzer/ui/resources" includes="**/*.svg"/>
+        </copy>
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/dannalyzer.jar" basedir="build/classes">
             <manifest>
@@ -37,7 +41,6 @@
         <antcall target="compile"/>
     </target>
     <target name="run">
-        <!--java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d"-->
         <java fork="true" classname="com.syncleus.core.dann.dannalyzer.ui.MainWindow">
             <!--jvmarg value="-Xmx512m" /-->
             <classpath>
@@ -63,5 +66,4 @@
             </classpath>
         </java>
     </target>
-
 </project>

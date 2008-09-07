@@ -1,5 +1,6 @@
 package com.syncleus.core.dann.dannalyzer.ui;
 
+import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
@@ -50,8 +51,15 @@ public class MainWindow extends JFrame
         neuronGroupsNode.add(neuronGroupNode);
 
         this.paletteTree.setModel(new DefaultTreeModel(rootNode));
-
+          
+//       this.add(this.designer);
+//        this.editSplitter.setRightComponent(this.designer);
+        this.designer.setLocation(0,0);
+        this.designer.setSize(1,1);
+        this.designer.setPreferredSize(new Dimension(1,1));
+        this.designer.setVisible(true);
         this.designerScrollPane.setViewportView(this.designer);
+//        this.designerScrollPane.getViewport().setPreferredSize(new Dimension(2000,2000));
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -77,6 +85,8 @@ public class MainWindow extends JFrame
         jScrollPane1.setViewportView(paletteTree);
 
         editSplitter.setLeftComponent(jScrollPane1);
+
+        designerScrollPane.setAutoscrolls(true);
         editSplitter.setRightComponent(designerScrollPane);
 
         jMenu1.setText("File");
