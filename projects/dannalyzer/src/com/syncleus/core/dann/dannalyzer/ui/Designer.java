@@ -1,5 +1,6 @@
 package com.syncleus.core.dann.dannalyzer.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
@@ -8,7 +9,7 @@ import javax.swing.JPanel;
 
 public class Designer extends JPanel implements ImageObserver
 {
-    protected ScalableSVGCanvas test = new ScalableSVGCanvas(0.1, this);
+    protected ScalableSVGCanvas test = new ScalableSVGCanvas(100, 100, this);
 
 
 
@@ -23,6 +24,7 @@ public class Designer extends JPanel implements ImageObserver
 //        this.test.setSize(400, 400);
         
 //        this.setBackground(Color.BLUE);
+//        this.setBackground(new Color(0.5f, 0.5f, 0.5f, 1.0f));
     }
     
     
