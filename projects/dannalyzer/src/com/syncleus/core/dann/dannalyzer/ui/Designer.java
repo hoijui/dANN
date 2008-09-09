@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 public class Designer extends JPanel implements ImageObserver
 {
-    protected ScalableSVGCanvas test = new ScalableSVGCanvas(100, 100, this);
+    protected ScalableSVGCanvas test = new ScalableSVGCanvas(0.1f, this);
 
 
 
@@ -17,14 +17,7 @@ public class Designer extends JPanel implements ImageObserver
     {
         initComponents();
         
-//        this.test.setVisible(true);
-//        this.setSize(2000,2000);
-//        this.setPreferredSize(new Dimension(2000,2000));
-//        this.test.setLocation(0, 0);
-//        this.test.setSize(400, 400);
-        
-//        this.setBackground(Color.BLUE);
-//        this.setBackground(new Color(0.5f, 0.5f, 0.5f, 1.0f));
+        this.setBackground(Color.WHITE);
     }
     
     
