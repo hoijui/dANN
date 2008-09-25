@@ -1,5 +1,6 @@
 package com.syncleus.core.dann.dannalyzer.ui;
 
+import com.syncleus.core.dann.dannalyzer.ui.resources.ScalableSVGCanvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;

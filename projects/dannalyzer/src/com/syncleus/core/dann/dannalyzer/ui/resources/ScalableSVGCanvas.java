@@ -1,4 +1,4 @@
-package com.syncleus.core.dann.dannalyzer.ui;
+package com.syncleus.core.dann.dannalyzer.ui.resources;
 
 import java.awt.Color;
 import java.awt.image.ImageObserver;
@@ -63,7 +63,7 @@ public class ScalableSVGCanvas extends JSVGCanvas
         Dimension newDimensions = null;
         if(this.usingScalar)
             newDimensions = SvgUtility.scale(doc, scale);
-        else
+            else
             newDimensions = SvgUtility.scale(doc, (int)this.width, (int)this.height);
         
         this.setSize((int) newDimensions.getWidth(), (int) newDimensions.getHeight());

@@ -12,8 +12,18 @@ import org.apache.batik.gvt.*;
 
 public abstract class NeuronUtility
 {
+    public static boolean checkId(SVGDocument original)
+    {
+        SVGSVGElement svg = (SVGSVGElement) original.getRootElement();
+        
+        return (svg.getAttribute("id").compareTo("neuron") == 0);
+    }
+    
     public static void removeConnections(SVGDocument original)
     {
+        if(NeuronUtility.checkId(original) == false)
+            return;
+        
         Element vectorsElement = (Element) original.getElementsByTagName("g").item(0);
         
         Set<Node> nodesToRemove = new HashSet<Node>();
