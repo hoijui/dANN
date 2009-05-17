@@ -23,7 +23,14 @@ public class Test3d extends JFrame
         this.initComponents();
 
         Canvas3D canvas = this.createUniverse();
-        this.drawingPanel.add(canvas, java.awt.BorderLayout.CENTER);
+        try
+        {
+           this.drawingPanel.add(canvas, java.awt.BorderLayout.CENTER);
+        }
+        catch(ArithmeticException caughtException)
+        {
+            System.out.println("Division by 0!");
+        }
     }
 
 
@@ -32,12 +39,12 @@ public class Test3d extends JFrame
     {
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
 
-        Signal signalX = new Signal();
-        Signal signalY = new Signal();
-        Signal signalZ = new Signal();
-        SignalProcessingWavelet processor = new SignalProcessingWavelet(signalX, signalZ);
+        GlobalSignal signalX = new GlobalSignal();
+        GlobalSignal signalY = new GlobalSignal();
+        GlobalSignal signalZ = new GlobalSignal();
+        SignalProcessingWavelet processor = new SignalProcessingWavelet(new Cell(), signalX, signalZ);
         Random random = new Random();
-        for(int index = 0;index < 10;index++)
+        for(int index = 0;index < 500 ;index++)
         {
             //if(random.nextDouble() < 0.5555556)
             //{
@@ -53,17 +60,21 @@ public class Test3d extends JFrame
 
             processor = processor.mutate();
         }
+        
+        System.out.println("The current equation contains " + processor.getWaveCount() + " waves:");
+        System.out.println(processor.toString());
 
-        processor.updateOutput();
+        processor.preTick();
+        processor.tick();
 
         MathFunction3dDataBinder dataBinder = new MathFunction3dDataBinder(
             processor.getWavelet(),
             signalX.getId().toString(),
             signalY.getId().toString(),
-            -100.0f,
-            100.0f,
-            -100.0f,
-            100.0f,
+            -200.0f,
+            200.0f,
+            -200.0f,
+            200.0f,
             200);
 
 
@@ -99,7 +110,7 @@ public class Test3d extends JFrame
             {
                 public void run()
                 {
-                    for(int index = 0; index < 5; index++)
+                    for(int index = 0; index < 1; index++)
                         new Test3d().setVisible(true);
                 }
             });

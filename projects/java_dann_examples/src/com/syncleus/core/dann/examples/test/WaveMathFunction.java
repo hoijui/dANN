@@ -71,6 +71,11 @@ public class WaveMathFunction extends MathFunction
     
     public String toString()
     {
-        return "sin( (x+(phase/360)) * 2pi * frequency) * amplitude";
+        return this.toString("x");
+    }
+    
+    String toString(String xName)
+    {
+        return "sin( (" + xName + "+(phase/360)) * 2pi * frequency) * amplitude";
     }
 }

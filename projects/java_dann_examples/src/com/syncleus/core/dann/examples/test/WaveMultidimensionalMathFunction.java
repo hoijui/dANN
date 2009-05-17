@@ -7,8 +7,7 @@ public class WaveMultidimensionalMathFunction extends MathFunction
     private boolean constantMode = false;
     private double constantValue;
     
-    private
-    String[] dimensionNames = null;
+    private String[] dimensionNames = null;
     
     DistributedFormedWaveMathFunction wave = new DistributedFormedWaveMathFunction();
     
@@ -25,6 +24,11 @@ public class WaveMultidimensionalMathFunction extends MathFunction
         super(combineLabels(appendStrings(dimensions, "center-"), combineLabels(dimensions, new String[]{"distribution", "form", "frequency", "amplitude", "phase"})));
         this.setDistribution(1.0);
         this.dimensionNames = dimensions.clone();
+    }
+    
+    public String[] getDimensions()
+    {
+        return this.dimensionNames.clone();
     }
 
 
@@ -182,9 +186,24 @@ public class WaveMultidimensionalMathFunction extends MathFunction
 
 
 
+    String toString(String centerName)
+    {
+        String equation = "";
+        for(int squaredSumsIndex = 0; squaredSumsIndex < this.dimensionNames.length; squaredSumsIndex++)
+        {
+            if(squaredSumsIndex > 0)
+                equation += " + ";
+            equation += "(" + this.dimensionNames[squaredSumsIndex] + " - center-" + this.dimensionNames[squaredSumsIndex] + ")^2";
+        }
+        equation = "sqrt( " + equation + " )";
+        
+        return this.wave.toString(equation, centerName);
+    }
+    
+    
     public String toString()
     {
-        return "";
+        return this.toString("center");
     }
 
 

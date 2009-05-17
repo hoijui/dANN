@@ -45,6 +45,11 @@ public class FormedWaveMathFunction extends WaveMathFunction
     
     public String toString()
     {
-        return "(" + super.toString() + "/|" + super.toString() + "|) * |(|" + super.toString() + ")/amplitude|^form| * amplitude";
+        return this.toString("x");
+    }
+    
+    String toString(String xName)
+    {
+        return "(" + super.toString(xName) + "/|" + super.toString(xName) + "|) * |(|" + super.toString(xName) + ")/amplitude|^form| * amplitude";
     }
 }

@@ -1,0 +1,1 @@
+java -Xmx512m -classpath ..\build\jar\dann_examples.jar;..\..\java_dann\build\jar\dann.jar com.syncleus.core.dann.examples.Main

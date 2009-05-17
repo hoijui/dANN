@@ -20,6 +20,12 @@ public class WaveletMathFunction extends MathFunction
             this.dimensions.add(dimension);
         }
     }
+    
+    
+    public int  getWaveCount()
+    {
+        return this.waves.size();
+    }
 
 
 
@@ -163,6 +169,18 @@ public class WaveletMathFunction extends MathFunction
 
     public String toString()
     {
-        return "";
+        String equation = "";
+        WaveMultidimensionalMathFunction[] waveArray = new WaveMultidimensionalMathFunction[this.waves.size()];
+        this.waves.toArray(waveArray);
+        for(int waveArrayIndex = 0; waveArrayIndex < waveArray.length; waveArrayIndex++)
+        //for(WaveMultidimensionalMathFunction currentWave : this.waves)
+        {
+            WaveMultidimensionalMathFunction currentWave = waveArray[waveArrayIndex];
+            if( waveArrayIndex > 0 )
+                equation += " + ";
+            equation += currentWave.toString();
+        }
+
+        return equation;
     }
 }

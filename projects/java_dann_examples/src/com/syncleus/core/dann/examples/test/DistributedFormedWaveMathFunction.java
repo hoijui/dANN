@@ -108,6 +108,11 @@ public class DistributedFormedWaveMathFunction extends FormedWaveMathFunction
 
     public String toString()
     {
-        return "";
+        return this.toString("x", "center");
+    }
+    
+    String toString(String xName, String centerName)
+    {
+        return "(1 / (distribution * Math.sqrt(2 * pi))) * e^(-1 * ( (" + xName + " - " + centerName + ")^2 ) / (2 * distribution^2))" + " * " + super.toString(xName);
     }
 }

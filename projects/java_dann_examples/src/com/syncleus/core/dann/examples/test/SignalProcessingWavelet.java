@@ -1,40 +1,66 @@
 package com.syncleus.core.dann.examples.test;
 
 
+import com.syncleus.util.UniqueId;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProcessingWavelet>
+public class SignalProcessingWavelet implements SignalMutatable<SignalProcessingWavelet>, Comparable<SignalProcessingWavelet>
 {
-    //private Hashtable<DistributedFormedWaveMathFunction, Signal> inputs = new Hashtable<DistributedFormedWaveMathFunction, Signal>();
+    private UniqueId id = null;
     private Signal output;
     private double currentOutput = 0.0;
     private static Random random = new Random();
-    //ArrayList<Hashtable<Signal, WaveMultidimensionalMathFunction>> waveDimensions = new ArrayList<Hashtable<Signal, WaveMultidimensionalMathFunction>>();
-    TreeSet<Signal> dimensions = new TreeSet<Signal>();
-    ArrayList<WaveMultidimensionalMathFunction> waveDimensions = new ArrayList<WaveMultidimensionalMathFunction>();
+    TreeSet<Signal> signals = new TreeSet<Signal>();
+    ArrayList<WaveMultidimensionalMathFunction> waves = new ArrayList<WaveMultidimensionalMathFunction>();
     WaveletMathFunction wavelet;
+    private Cell cell = null;
 
 
 
-    public SignalProcessingWavelet(Signal initialInput, Signal initialOutput)
+    public SignalProcessingWavelet(Cell cell, Signal initialInput, Signal initialOutput)
     {
-        //this.inputs.put(initialWave, initialInput);
         this.output = initialOutput;
 
-        //Hashtable<Signal, WaveMultidimensionalMathFunction> initialDimensions = new Hashtable<Signal, WaveMultidimensionalMathFunction>();
-        //initialDimensions.put(initialInput, initialWave);
-        this.dimensions.add(initialInput);
-        
+        this.signals.add(initialInput);
+
         WaveMultidimensionalMathFunction initialWave = generateNewWave();
-        this.waveDimensions.add(initialWave);
+        this.waves.add(initialWave);
+
+        this.cell = cell;
+
+        this.id = new UniqueId(64);
     }
 
 
 
     private SignalProcessingWavelet()
     {
+    }
+
+
+
+    public int getWaveCount()
+    {
+        this.reconstructWavelet();
+        return this.wavelet.getWaveCount();
+    }
+
+
+
+    public TreeSet<Signal> getSignals()
+    {
+        TreeSet<Signal> copy = (TreeSet<Signal>)this.signals.clone();
+        copy.add(this.output);
+        return copy;
+    }
+
+
+
+    public int compareTo(SignalProcessingWavelet compareWith)
+    {
+        return compareWith.id.compareTo(this.id);
     }
 
 
@@ -47,22 +73,27 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
 
 
 
-    public void updateOutput()
+    public void preTick()
     {
         this.reconstructWavelet();
 
-        for(Signal signal:this.dimensions)
+        for(Signal signal:this.signals)
         {
             this.wavelet.setParameter(this.wavelet.getParameterNameIndex(signal.getId().toString()), signal.getValue());
         }
 
         double newOutput = this.wavelet.calculate();
 
-        this.output.setValue(this.output.getValue() + (-1 * this.currentOutput) + newOutput);
+        //this.output.setValue(this.output.getValue() + newOutput);
+        // this.output.setValue(this.output.getValue() + (-1 * this.currentOutput) + newOutput);
         this.currentOutput = newOutput;
-        
-        //for(Signal dimension : this.dimensions)
-        //    System.out.println("dimension: " + dimension.getId().toString());
+    }
+
+
+
+    public void tick()
+    {
+        this.output.setValue(this.output.getValue() + currentOutput);
     }
 
 
@@ -70,272 +101,259 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
     public SignalProcessingWavelet clone()
     {
         SignalProcessingWavelet copy = new SignalProcessingWavelet();
-        //copy.inputs = (Hashtable<DistributedFormedWaveMathFunction, Signal>)this.inputs.clone();
-        copy.dimensions = new TreeSet<Signal>(this.dimensions);
-        copy.waveDimensions = new ArrayList<WaveMultidimensionalMathFunction>(this.waveDimensions);
-        /*
-        for(Hashtable<Signal, WaveMultidimensionalMathFunction> current:this.waveDimensions)
-        {
-        Hashtable<Signal, WaveMultidimensionalMathFunction> waveDimensionsCopy = new Hashtable<Signal, WaveMultidimensionalMathFunction>();
-        for(Entry<Signal, WaveMultidimensionalMathFunction> currentPair:current.entrySet())
-        {
-        waveDimensionsCopy.put(currentPair.getKey(), currentPair.getValue().clone());
-        }
-        copy.waveDimensions.add(waveDimensionsCopy);
-        }*/
+        copy.signals = (TreeSet<Signal>)this.signals.clone();
+        copy.waves = (ArrayList<WaveMultidimensionalMathFunction>)this.waves.clone();
+
+
+
+
+
+
+
+
+
+
+
         copy.output = this.output;
         copy.wavelet = (this.wavelet == null ? null : this.wavelet.clone());
+        copy.id = this.id;
         return copy;
+    }
+
+
+
+    public SignalProcessingWavelet clone(Cell cell)
+    {
+        SignalProcessingWavelet newWavelet = this.clone();
+        newWavelet.setCell(cell);
+
+        return newWavelet;
+    }
+
+
+
+    void setCell(Cell cell)
+    {
+        this.cell = cell;
+
+        this.output = this.cell.updateSignal(this.output);
+        TreeSet<Signal> newSignals = new TreeSet<Signal>();
+        for(Signal dimension:this.signals)
+        {
+            newSignals.add(this.cell.updateSignal(dimension));
+        }
+        this.signals = newSignals;
     }
 
 
 
     private void reconstructWavelet()
     {
-        /*
-        TreeSet<String> newDimensions = new TreeSet<String>();
-        for(Hashtable<Signal, WaveMultidimensionalMathFunction> current:this.waveDimensions)
-        {
-        for(Signal currentSignal:current.keySet())
-        {
-        newDimensions.add(currentSignal.getId().toString());
-        }
-        }
-        //*
-        for(Entry<DistributedFormedWaveMathFunction, Signal> input:this.inputs.entrySet())
-        {
-        newDimensions.add(input.getValue().getId().toString());
-        }*/
-        String[] signalNames = new String[this.dimensions.size()];
+        String[] signalNames = new String[this.signals.size()];
         //System.out.println("dimensions size: " + this.dimensions.size());
         int signalNamesIndex = 0;
-        for(Signal dimension:this.dimensions)
+        for(Signal dimension:this.signals)
         {
             signalNames[signalNamesIndex++] = dimension.getId().toString();
         }
 
         this.wavelet = new WaveletMathFunction(signalNames);
 
-        for(WaveMultidimensionalMathFunction wave:this.waveDimensions)
+        for(WaveMultidimensionalMathFunction wave:this.waves)
         {
             this.wavelet.addWave(wave);
         }
-
-    /*
-    for(Hashtable<Signal, WaveMultidimensionalMathFunction> current:this.waveDimensions)
-    {
-    WaveDimension[] dimensions = new WaveDimension[signalNames.length];
-    int index = 0;
-    TreeSet<String> filledSignals = new TreeSet<String>();
-    for(Entry<Signal, WaveMultidimensionalMathFunction> currentEntry:current.entrySet())
-    {
-    dimensions[index] = new WaveDimension(currentEntry.getKey().getId().toString(), currentEntry.getValue());
-    index++;
-    filledSignals.add(currentEntry.getKey().getId().toString());
-    }
-    while(index < dimensions.length)
-    {
-    String unusedSignal = null;
-    //System.out.println("signal count: " + signalNames.length);
-    for(String currentSignal:signalNames)
-    {
-    if(filledSignals.contains(currentSignal) == false)
-    {
-    unusedSignal = currentSignal;
-    }
-    }
-    WaveMultidimensionalMathFunction wave = new WaveMultidimensionalMathFunction(1.0);
-    dimensions[index] = new WaveDimension(unusedSignal, wave);
-    index++;
-    }
-    this.wavelet.addWave(dimensions);
-    }*/
-    /*
-    for(Entry<DistributedFormedWaveMathFunction, Signal> input:this.inputs.entrySet())
-    {
-    Signal currentSignal = input.getValue();
-    DistributedFormedWaveMathFunction currentWave = input.getKey();
-    WaveDimension waveDimension = new WaveDimension(currentSignal.getId().toString(), currentWave);
-    this.wavelet.addWave(waveDimension);
-    }*/
     }
 
 
 
+    /**
+     * Internally mutates.<br/>
+     * <br/>
+     * may change in any of the following ways:<br/>
+     * <ul>
+     * <li>add a new bound wave</li>
+     * <li>copy an existing wave and mutates it adding the new mutated wave</li>
+     * <li>delete an existing wave</li>
+     * <li>removing a signal</li>
+     * <li>Do nothing</li>
+     * </ul>
+     * 
+     * @return New mutated wavelet
+     */
     public SignalProcessingWavelet mutate()
     {
-        if(this.waveDimensions.size() > 0)
+        SignalProcessingWavelet copy = this.clone();
+
+        while(random.nextFloat() < 0.1)
         {
-            //there is a chance a signal will be used to create a new wave
-            //if(random.nextDouble() < 0.5)
-            if(true)
+
+            //add a mutated copy of an existing wave
+            if(random.nextDouble() < 0.1)
             {
                 //Signal newSignal = this.getRandomSignal();
                 //return this.mutate(newSignal);
-                SignalProcessingWavelet copy = this.clone();
-                copy.waveDimensions.add(this.generateRandomWave());
-                return copy;
+                copy.waves.add(this.generateRandomWave());
+                copy.id = new UniqueId(64);
             }
-            else
+            //make a random new wave
+            if(random.nextDouble() < 0.1)
             {
-                SignalProcessingWavelet copy = this.clone();
-                copy.waveDimensions.add(this.generateNewWave());
-                return copy;
+                copy.waves.add(this.generateNewWave());
+                copy.id = new UniqueId(64);
             }
-        //there is a chance a wave will be removed
-            /*
-        else
-        {
-        if(this.inputs.size() >= 2)
-        {
-        DistributedFormedWaveMathFunction[] waves = getWaves();
-        DistributedFormedWaveMathFunction randomWave = waves[random.nextInt(waves.length)];
-        SignalProcessingWavelet copy = this.clone();
-        copy.inputs.remove(randomWave);
-        return copy;
-        }
-        }*/
+            //delete a random wave
+            if(random.nextDouble() < 0.1)
+            {
+                //only delete if there will be atleast one wave left
+                if(this.waves.size() > 1)
+                {
+                    WaveMultidimensionalMathFunction deleteWave = copy.waves.get(this.random.nextInt(copy.waves.size()));
+                    copy.waves.remove(deleteWave);
+                }
+            }
+            //delete a signal
+            if(random.nextDouble() < 0.1)
+            {
+                //only delet eif there will be atleast one signal left
+                if(this.signals.size() > 1)
+                {
+                    Signal[] signals = new Signal[copy.signals.size()];
+                    copy.signals.toArray(signals);
+
+                    Signal deleteSignal = signals[random.nextInt(signals.length)];
+                    copy.signals.remove(deleteSignal);
+
+                    Signal[] copySignals = new Signal[copy.signals.size()];
+                    copy.signals.toArray(copySignals);
+
+                    String[] dimensionNames = new String[copySignals.length];
+                    int dimensionNamesIndex = 0;
+                    for(Signal copySignal:copySignals)
+                    {
+                        dimensionNames[dimensionNamesIndex++] = copySignal.getId().toString();
+                    }
+
+                    copy.waves.clear();
+                    for(WaveMultidimensionalMathFunction wave:this.waves)
+                    {
+                        WaveMultidimensionalMathFunction newWave = new WaveMultidimensionalMathFunction(dimensionNames);
+                        newWave.setAmplitude(wave.getAmplitude());
+                        newWave.setDistribution(wave.getDistribution());
+                        newWave.setForm(wave.getForm());
+                        newWave.setFrequency(wave.getFrequency());
+                        newWave.setPhase(wave.getPhase());
+                        for(String dimension:dimensionNames)
+                        {
+                            newWave.setCenter(dimension, wave.getCenter(dimension));
+                            newWave.setDimension(dimension, wave.getDimension(dimension));
+                        }
+
+                        copy.waves.add(newWave);
+                    }
+                }
+            }
         }
 
-        return this;
+        return copy;
     }
 
 
 
+    /**
+     * Mutates by incorperating a new signal into the mutated result.<br/>
+     * <br/>
+     * May mutate by:<br/>
+     * <ul>
+     * <li>adding the new signal</li>
+     * <ul>
+     * @param newSignal The new signal to incorperate.
+     * @return New mutated wavelet
+     */
     public SignalProcessingWavelet mutate(Signal newSignal)
     {
         SignalProcessingWavelet copy = this.clone();
-        copy.dimensions.add(newSignal);
-        if( copy.dimensions.size() > this.dimensions.size())
+        copy.signals.add(newSignal);
+        if(copy.signals.size() > this.signals.size())
         {
-            copy.waveDimensions.clear();
-            for(WaveMultidimensionalMathFunction wave : this.waveDimensions)
+            copy.waves.clear();
+            for(WaveMultidimensionalMathFunction wave:this.waves)
             {
                 String[] names = new String[wave.getDimensionNames().length + 1];
                 int index = 0;
-                for(String dimensionName : wave.getDimensionNames())
+                for(String dimensionName:wave.getDimensionNames())
+                {
                     names[index++] = dimensionName;
+                }
                 names[index++] = newSignal.getId().toString();
+
                 WaveMultidimensionalMathFunction newWave = new WaveMultidimensionalMathFunction(names);
                 newWave.setAmplitude(wave.getAmplitude());
                 newWave.setDistribution(wave.getDistribution());
                 newWave.setForm(wave.getForm());
                 newWave.setFrequency(wave.getFrequency());
                 newWave.setPhase(wave.getPhase());
-                for(String dimension : wave.getDimensionNames())
+                for(String dimension:wave.getDimensionNames())
                 {
                     newWave.setCenter(dimension, wave.getCenter(dimension));
                     newWave.setDimension(dimension, wave.getDimension(dimension));
                 }
-                
-                copy.waveDimensions.add(newWave);
+
+                copy.waves.add(newWave);
             }
         }
-        return copy;
-        /*
-        //if(this.inputs.size() > 0)
-        //{
-        //there is a chance the wave used will be new
-        if(random.nextDouble() < 0.9)
-        {
-            SignalProcessingWavelet copy = this.clone();
-            //WaveMultidimensionalMathFunction newWave = generateNewWave(new String[]{newSignal.getId().toString()});
-            //System.out.println("adding dimensions: " + newSignal.getId().toString());
-            //System.out.println("dimensions before: " + copy.dimensions.size());
-            copy.dimensions.add(newSignal);
-            //System.out.println("dimensions after: " + copy.dimensions.size());
-            return copy;
-        //WaveMultidimensionalMathFunction newWave = generateNewWave();
 
-        //return this.mutate(newWave);
-        }
-        //there is a chance the new signal will replace an old signal
-            /*else
-        {
-        DistributedFormedWaveMathFunction[] waves = getWaves();
-        DistributedFormedWaveMathFunction randomWave = waves[random.nextInt(waves.length)];
-        SignalProcessingWavelet copy = this.clone();
-        copy.inputs.put(randomWave, newSignal);
-        return copy;
-        }
-        //}
-
-        return this;*/
+        copy.id = new UniqueId(64);
+        return copy.mutate();
     }
 
 
 
-    public SignalProcessingWavelet mutate(Signal newSignal, WaveMultidimensionalMathFunction newWave)
-    {
-        return this.clone();
-    }
-    /*
-    public SignalProcessingWavelet mutate(WaveMultidimensionalMathFunction newWave)
-    {
-    SignalProcessingWavelet copy = this.clone();
-    //copy.dimensions.add(newSignal);
-    copy.waveDimensions.add(newWave);
-    return copy;
-    // *
-    //ther eis a chance it will be added 
-    SignalProcessingWavelet copy = this.clone();
-    while(random.nextDouble() < 0.999)
-    {
-    Hashtable<Signal, WaveMultidimensionalMathFunction> randomWave = this.generateRandomWave();
-    if(randomWave.containsKey(newSignal) == false)
-    {
-    randomWave.put(newSignal, newWave);
-    copy.waveDimensions.add(randomWave);
-    return copy;
-    }
-    }
-    //copy.inputs.put(newWave, newSignal);
-    Hashtable<Signal, WaveMultidimensionalMathFunction> newDimension = new Hashtable<Signal, WaveMultidimensionalMathFunction>();
-    newDimension.put(newSignal, newWave);
-    copy.waveDimensions.add(newDimension);
-    return copy;* /
-    }*/
-
-
-    /*
-    private DistributedFormedWaveMathFunction[] getWaves()
-    {
-    DistributedFormedWaveMathFunction[] waves = new DistributedFormedWaveMathFunction[this.inputs.size()];
-    this.inputs.keySet().toArray(waves);
-    return waves;
-    }
+    /**
+     * Mutates by incorperating the wave.<br/>
+     * <br/>
+     * May mutate by:<br/>
+     * <ul>
+     * <li>add the wave with the current signals as its dimensions.</li>
+     * </ul>
+     * 
+     * @param wave wave to incorperate
+     * @return New mutated wavelet
      */
     /*
-    private Signal[] getSignals()
-    {*/
-    /*
-    TreeSet<Signal> newDimensions = new TreeSet<Signal>();
-    for(Entry<DistributedFormedWaveMathFunction, Signal> input:this.inputs.entrySet())
+    public SignalProcessingWavelet mutate(WaveMultidimensionalMathFunction wave)
     {
-    newDimensions.add(input.getValue());
-    }
-    Signal[] signals = new Signal[newDimensions.size()];
-    newDimensions.toArray(signals);
-    return signals;*//*
-    TreeSet<Signal> newDimensions = new TreeSet<Signal>();
-    for(Hashtable<Signal, WaveMultidimensionalMathFunction> current:this.waveDimensions)
-    {
-    for(Signal currentSignal:current.keySet())
-    {
-    newDimensions.add(currentSignal);
-    }
-    }
-    Signal[] signals = new Signal[newDimensions.size()];
-    newDimensions.toArray(signals);
-    return signals;
+        String[] dimensionNames = new String[this.signals.size()];
+        int index = 0;
+        for(Signal dimension:this.signals)
+        {
+            dimensionNames[index++] = dimension.getId().toString();
+        }
+
+        WaveMultidimensionalMathFunction newWave = new WaveMultidimensionalMathFunction(dimensionNames);
+        newWave.setAmplitude(wave.getAmplitude());
+        newWave.setDistribution(wave.getDistribution());
+        newWave.setForm(wave.getForm());
+        newWave.setFrequency(wave.getFrequency());
+        newWave.setPhase(wave.getPhase());
+        for(String dimension:wave.getDimensionNames())
+        {
+            newWave.setCenter(dimension, wave.getCenter(dimension));
+            newWave.setDimension(dimension, wave.getDimension(dimension));
+        }
+
+        SignalProcessingWavelet copy = this.clone();
+        copy.waves.add(newWave);
+        return copy.mutate();
     }*/
+
 
 
     private Signal getRandomSignal()
     {
 
-        Signal[] signalsArray = new Signal[this.dimensions.size()];
-        this.dimensions.toArray(signalsArray);
+        Signal[] signalsArray = new Signal[this.signals.size()];
+        this.signals.toArray(signalsArray);
         Signal randomSignal = signalsArray[random.nextInt(signalsArray.length)];
 
         return randomSignal;
@@ -345,22 +363,18 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
 
     private WaveMultidimensionalMathFunction generateNewWave()
     {
-        //   if(this.waveDimensions.size() > 0)
-        //   {
-        //       return generateRandomWave();
-        //   }
-        //   else
-        //   {
-        String[] dimensionNames = new String[this.dimensions.size()];
+        String[] dimensionNames = new String[this.signals.size()];
         int index = 0;
-        for(Signal dimension : this.dimensions)
+        for(Signal dimension:this.signals)
+        {
             dimensionNames[index++] = dimension.getId().toString();
+        }
         WaveMultidimensionalMathFunction newWave = new WaveMultidimensionalMathFunction(dimensionNames);
 
-        newWave.setFrequency(random.nextGaussian());
+        newWave.setFrequency(random.nextGaussian() * 0.001);
         newWave.setPhase(random.nextGaussian() * 10);
         newWave.setAmplitude(random.nextGaussian());
-        newWave.setForm(random.nextGaussian());
+        newWave.setForm(Math.abs(random.nextGaussian()));
         if(newWave.getForm() <= 0.0)
         {
             newWave.setForm(newWave.getForm() + ((1 + random.nextGaussian()) * 10));
@@ -368,28 +382,27 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
 
         for(String dimensionName:dimensionNames)
         {
-            newWave.setCenter(dimensionName, newWave.getCenter(dimensionName) + ((random.nextFloat() * 2 - 1) * 10));
+            newWave.setCenter(dimensionName, newWave.getCenter(dimensionName) + ((random.nextFloat() * 2 - 1) * 100));
         }
-        newWave.setDistribution(random.nextGaussian() * 10);
+        newWave.setDistribution(random.nextFloat() * 100);
 
         return newWave;
-    //}
     }
 
 
 
     private WaveMultidimensionalMathFunction generateRandomWave()
     {
-        if(this.waveDimensions.size() > 0)
+        if(this.waves.size() > 0)
         {
-            WaveMultidimensionalMathFunction[] wavesArray = new WaveMultidimensionalMathFunction[this.waveDimensions.size()];
-            this.waveDimensions.toArray(wavesArray);
+            WaveMultidimensionalMathFunction[] wavesArray = new WaveMultidimensionalMathFunction[this.waves.size()];
+            this.waves.toArray(wavesArray);
             WaveMultidimensionalMathFunction randomWave = wavesArray[random.nextInt(wavesArray.length)];
             WaveMultidimensionalMathFunction newWave = randomWave.clone();
 
             if(random.nextDouble() <= 1.0)
             {
-                newWave.setFrequency(newWave.getFrequency() + ((random.nextFloat() * 2 - 1) * 1));
+                newWave.setFrequency(newWave.getFrequency() + ((random.nextFloat() * 2 - 1) * 0.01));
             }
             if(random.nextDouble() <= 1.0)
             {
@@ -401,11 +414,11 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
             }
             if(random.nextDouble() <= 1.0)
             {
-                newWave.setForm(newWave.getForm() + (random.nextFloat() * 1.0));
+                newWave.setForm(newWave.getForm() + (random.nextFloat() * 0.01));
             }
             if(random.nextDouble() <= 1.0)
             {
-                newWave.setDistribution(newWave.getDistribution() + ((random.nextFloat() * 2 - 1) * 10));
+                newWave.setDistribution(newWave.getDistribution() + ((random.nextFloat() * 2 - 1) * 100));
             }
             if(random.nextDouble() <= 1.0)
             {
@@ -420,54 +433,14 @@ public class SignalProcessingWavelet implements SignaledWaveMutatable<SignalProc
         }
 
         return null;
+    }
 
 
-    /*
-    DistributedFormedWaveMathFunction newWave = new DistributedFormedWaveMathFunction();
-    if(this.waveDimensions.size() <= 0)
+
+    public String toString()
     {
-    newWave.setX(0.0);
-    newWave.setFrequency(random.nextGaussian() * 10);
-    newWave.setPhase(random.nextGaussian() * 10);
-    newWave.setAmplitude(random.nextGaussian());
-    newWave.setForm(random.nextGaussian() * 10);
-    if(newWave.getForm() <= 0.0)
-    {
-    newWave.setForm(newWave.getForm() + ((1 + random.nextGaussian()) * 10));
-    }
-    newWave.setCenter(random.nextGaussian() * 10);
-    newWave.setDistribution(random.nextGaussian() * 10);
-    }
-    else
-    {
-    DistributedFormedWaveMathFunction[] waves = this.getWaves();
-    DistributedFormedWaveMathFunction randomWave = waves[random.nextInt(waves.length)];
-    newWave = randomWave.clone();
-    if(random.nextDouble() <= 1.0)
-    {
-    newWave.setFrequency(newWave.getFrequency() + ((random.nextFloat() * 2 - 1) * 10));
-    }
-    if(random.nextDouble() <= 1.0)
-    {
-    newWave.setPhase(newWave.getPhase() + ((random.nextFloat() * 2 - 1) * 10));
-    }
-    if(random.nextDouble() <= 1.0)
-    {
-    newWave.setAmplitude(newWave.getAmplitude() + ((random.nextFloat() * 2 - 1) * 10));
-    }
-    if(random.nextDouble() <= 1.0)
-    {
-    newWave.setForm(newWave.getForm() + (random.nextFloat() * 10.0));
-    }
-    if(random.nextDouble() <= 1.0)
-    {
-    newWave.setCenter(newWave.getCenter() + ((random.nextFloat() * 2 - 1) * 100));
-    }
-    if(random.nextDouble() <= 1.0)
-    {
-    newWave.setDistribution(newWave.getDistribution() + ((random.nextFloat() * 2 - 1) * 10));
-    }
-    }
-    return newWave;*/
+        this.reconstructWavelet();
+
+        return this.wavelet.toString();
     }
 }
