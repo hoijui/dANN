@@ -23,7 +23,7 @@ public class ViewMap extends JFrame implements ActionListener
 
     public ViewMap()
     {
-        LayeredAssociativeMap associativeMap = new LayeredAssociativeMap(10);
+        LayeredAssociativeMap associativeMap = new LayeredAssociativeMap(8);
 
         AssociativeMapCanvas mapVisual = new AssociativeMapCanvas(associativeMap);
 
