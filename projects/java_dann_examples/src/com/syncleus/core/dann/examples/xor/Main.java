@@ -39,6 +39,7 @@ public class Main
 	private static InputNeuron inputC = null;
 	private static NeuronGroup firstLayer = null;
 	private static NeuronGroup secondLayer = null;
+	private static NeuronGroup thirdLayer = null;
 	private static OutputNeuron output = null;
 	private static String saveLocation = "default.dann";
 			
@@ -52,7 +53,7 @@ public class Main
 			inReader = new BufferedReader(new InputStreamReader(System.in));
 			
 			//Adjust the learning rate
-			myDNA.learningRate = 0.05;
+			myDNA.learningRate = 0.01;
 			
 			//creates the first layer which holds all the input neurons
 			inputA = new InputNeuron(myDNA);
@@ -70,12 +71,20 @@ public class Main
 				secondLayer.add(new Neuron(myDNA));
 			}
 
+			//creates the second layer of neurons containing 10 neurons.
+			thirdLayer = new NeuronGroup(myDNA);
+			for( int lcv = 0; lcv < 10; lcv++ )
+			{
+				thirdLayer.add(new Neuron(myDNA));
+			}
+
 			//the output layer is just a single neuron
 			output = new OutputNeuron(myDNA);
 
 			//connects the network in a feedforward fasion.
 			firstLayer.connectAllTo(secondLayer);
-			secondLayer.connectAllTo(output);
+			secondLayer.connectAllTo(thirdLayer);
+			thirdLayer.connectAllTo(output);
 
 			//now that we have created the neural network lets put it to use.
 			System.out.println("dANN nXOR Example");
@@ -117,8 +126,8 @@ public class Main
 						testOutput();
 						break;
 					case 't':
-						System.out.print("How many training cycles [Default: 1000]: ");
-						int cycles = 1000;
+						System.out.print("How many training cycles [Default: 10000]: ");
+						int cycles = 10000;
 						try
 						{
 							cycles = Integer.parseInt(inReader.readLine());
@@ -163,6 +172,7 @@ public class Main
 		{
 			out.writeObject(firstLayer);
 			out.writeObject(secondLayer);
+			out.writeObject(thirdLayer);
 			out.writeObject(output);
 			out.writeObject(inputA);
 			out.writeObject(inputB);
@@ -194,6 +204,7 @@ public class Main
 		{
 			firstLayer = (NeuronGroup) in.readObject();
 			secondLayer = (NeuronGroup) in.readObject();
+			thirdLayer = (NeuronGroup) in.readObject();
 			output = (OutputNeuron) in.readObject();
 			inputA = (InputNeuron) in.readObject();
 			inputB = (InputNeuron) in.readObject();
@@ -211,12 +222,14 @@ public class Main
 	{
 		firstLayer.propagate();
 		secondLayer.propagate();
+		thirdLayer.propagate();
 		output.propagate();
 	}
 	
 	private static void backPropogateTraining()
 	{
 		output.backPropagate();
+		thirdLayer.backPropagate();
 		secondLayer.backPropagate();
 		firstLayer.backPropagate();
 	}
