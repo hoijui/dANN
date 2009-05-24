@@ -2,7 +2,7 @@
 <project name="dANN Examples" default="all" basedir=".">
     <path id="classpath">
         <fileset dir="lib" includes="**/*.jar"/>
-        <fileset dir="../java_dann/build/jar" includes="**/*.jar"/>
+        <fileset dir="../java_dann/build/jar" includes="**/dann.jar"/>
     </path>
     <target name="clean">
         <delete dir="build"/>
@@ -37,8 +37,16 @@
         <antcall target="compile"/>
     </target>
     <target name="run">
+        <java fork="true" classname="com.syncleus.core.dann.examples.Main">
+            <jvmarg value="-Xmx512m" />
+            <classpath>
+                <path refid="classpath"/>
+                <path location="build/jar/dann_examples.jar"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="run-tests">
         <java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d">
-        <!--java fork="true" classname="com.syncleus.core.dann.examples.Main"-->
             <jvmarg value="-Xmx512m" />
             <classpath>
                 <path refid="classpath"/>
