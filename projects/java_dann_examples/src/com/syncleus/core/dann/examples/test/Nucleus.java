@@ -3,7 +3,7 @@ package com.syncleus.core.dann.examples.test;
 
 import java.util.TreeSet;
 
-public class Nucleus
+public class Nucleus implements Cloneable
 {
     private TreeSet<Chromosome> chromosomes = new TreeSet<Chromosome>();
     private Cell cell = null;

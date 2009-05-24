@@ -4,7 +4,7 @@ package com.syncleus.core.dann.examples.test;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class Chromosome
+public class Chromosome implements Cloneable
 {
     private TreeSet<Gene> genes = new TreeSet<Gene>();
     private Cell cell = null;

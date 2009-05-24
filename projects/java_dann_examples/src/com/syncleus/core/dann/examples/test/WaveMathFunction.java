@@ -1,6 +1,6 @@
 package com.syncleus.core.dann.examples.test;
 
-public class WaveMathFunction extends MathFunction
+public class WaveMathFunction extends MathFunction implements Cloneable
 {
     public WaveMathFunction()
     {

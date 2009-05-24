@@ -1,6 +1,6 @@
 package com.syncleus.core.dann.examples.test;
 
-public class LocalSignal extends Signal
+public class LocalSignal extends Signal implements Cloneable
 {
     public LocalSignal()
     {

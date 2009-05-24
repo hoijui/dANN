@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class Gene
+public class Gene implements Cloneable
 {
     private TreeSet<SignalProcessingWavelet> processors = new TreeSet<SignalProcessingWavelet>();
     private Cell cell = null;

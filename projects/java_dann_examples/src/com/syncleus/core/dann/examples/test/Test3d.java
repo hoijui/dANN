@@ -37,13 +37,10 @@ public class Test3d extends JFrame
 
     private Canvas3D createUniverse()
     {
-        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-
         GlobalSignal signalX = new GlobalSignal();
         GlobalSignal signalY = new GlobalSignal();
         GlobalSignal signalZ = new GlobalSignal();
         SignalProcessingWavelet processor = new SignalProcessingWavelet(new Cell(), signalX, signalZ);
-        Random random = new Random();
         for(int index = 0;index < 500 ;index++)
         {
             //if(random.nextDouble() < 0.5555556)

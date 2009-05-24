@@ -97,7 +97,11 @@ public class Main
 					received = true;
 					try
 					{
-						currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
+						String lastInput = inReader.readLine();
+						if( lastInput != null)
+							currentCommand = lastInput.toLowerCase().toCharArray()[0];
+						else
+							currentCommand = 'q';
 					}
 					catch(ArrayIndexOutOfBoundsException caughtException)
 					{
@@ -139,6 +143,11 @@ public class Main
 						System.out.println("Invalid command");
 				}
 			} while( (currentCommand != 'q')&&(currentCommand >= 0) );
+		}
+		catch(RuntimeException caughtException)
+		{
+			caughtException.printStackTrace();
+			throw new InternalError("Unhandled RuntimeException: " + caughtException);
 		}
 		catch(Exception caughtException)
 		{

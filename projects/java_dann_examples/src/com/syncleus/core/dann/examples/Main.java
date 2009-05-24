@@ -62,7 +62,6 @@ public class Main
                 {
                     System.out.println();
                     System.out.println("X) XOR Example");
-                    System.out.println("Y) XOR Example w/GUI");
                     System.out.println("I) Image Compression Example w/GUI");
                     System.out.println("V) Associative Map Visualizations");
                     System.out.println("H) Command Line Help");
@@ -88,9 +87,6 @@ public class Main
                 {
                 case 'x':
                     com.syncleus.core.dann.examples.xor.Main.main(newArgs);
-                    break;
-                case 'y':
-                    com.syncleus.core.dann.examples.xor.ui.MainWindow.main(newArgs);
                     break;
                 case 'i':
                     com.syncleus.core.dann.examples.nci.ui.NciDemo.main(newArgs);

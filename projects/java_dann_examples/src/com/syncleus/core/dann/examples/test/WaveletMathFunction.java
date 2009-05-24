@@ -5,7 +5,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-public class WaveletMathFunction extends MathFunction
+public class WaveletMathFunction extends MathFunction implements Cloneable
 {
     private TreeSet<String> dimensions = new TreeSet<String>();
     private ArrayList<WaveMultidimensionalMathFunction> waves = new ArrayList<WaveMultidimensionalMathFunction>();

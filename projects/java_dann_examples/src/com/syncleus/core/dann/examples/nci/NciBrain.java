@@ -21,6 +21,7 @@ package com.syncleus.core.dann.examples.nci;
 import com.syncleus.dann.*;
 import com.syncleus.dann.activation.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -524,4 +525,15 @@ public class NciBrain extends Brain implements java.io.Serializable
 
         return uncompressedImage;
     }
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+	}
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException
+	{
+		out.defaultWriteObject();
+	}
 }

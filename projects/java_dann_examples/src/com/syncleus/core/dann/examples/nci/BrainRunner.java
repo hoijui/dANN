@@ -51,7 +51,7 @@ public class BrainRunner implements Runnable
     public BrainRunner(BrainListener listener, File[] trainingFiles, double compression, int xSize, int ySize, boolean extraConnectivity)
     {
         this.listener = listener;
-        this.trainingFiles = trainingFiles;
+        this.trainingFiles = (File[]) trainingFiles.clone();
         this.compression = compression;
         this.xSize = xSize;
         this.ySize = ySize;
