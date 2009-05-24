@@ -68,18 +68,17 @@ public class UniqueId implements Comparable<UniqueId>, Serializable
 
     public String toString()
     {
-        String dataString = new String();
-
+		StringBuffer dataBuffer = new StringBuffer();
         for(int dataIndex = (this.uniqueData.length - 1);dataIndex >= 0;dataIndex--)
         {
             long currentData = convertByteToUnsignedLong(this.uniqueData[dataIndex]);
             String newHex = Long.toHexString(currentData);
             while(newHex.length() < 2)
                 newHex = "0" + newHex;
-            dataString += newHex;
+            dataBuffer.append(newHex);
         }
 
-        return dataString.toUpperCase();
+        return dataBuffer.toString().toUpperCase();
     }
 
     /*

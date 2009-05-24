@@ -188,14 +188,15 @@ public class WaveMultidimensionalMathFunction extends MathFunction implements Cl
 
     String toString(String centerName)
     {
-        String equation = "";
+        StringBuffer equationBuffer = new StringBuffer();
         for(int squaredSumsIndex = 0; squaredSumsIndex < this.dimensionNames.length; squaredSumsIndex++)
         {
             if(squaredSumsIndex > 0)
-                equation += " + ";
-            equation += "(" + this.dimensionNames[squaredSumsIndex] + " - center-" + this.dimensionNames[squaredSumsIndex] + ")^2";
+                equationBuffer.append(" + ");
+            equationBuffer.append("(" + this.dimensionNames[squaredSumsIndex] + " - center-" + this.dimensionNames[squaredSumsIndex] + ")^2");
         }
-        equation = "sqrt( " + equation + " )";
+
+        String equation = "sqrt( " + equationBuffer.toString() + " )";
         
         return this.wave.toString(equation, centerName);
     }

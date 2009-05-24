@@ -47,7 +47,7 @@ public class Main
 		try
 		{
 			if( args.length > 0 )
-				saveLocation = new String(args[0]);
+				saveLocation = args[0];
 			
 			inReader = new BufferedReader(new InputStreamReader(System.in));
 			

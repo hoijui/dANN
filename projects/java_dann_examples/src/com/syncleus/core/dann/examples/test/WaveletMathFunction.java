@@ -169,7 +169,7 @@ public class WaveletMathFunction extends MathFunction implements Cloneable
 
     public String toString()
     {
-        String equation = "";
+		StringBuffer equationBuffer =new StringBuffer();
         WaveMultidimensionalMathFunction[] waveArray = new WaveMultidimensionalMathFunction[this.waves.size()];
         this.waves.toArray(waveArray);
         for(int waveArrayIndex = 0; waveArrayIndex < waveArray.length; waveArrayIndex++)
@@ -177,10 +177,10 @@ public class WaveletMathFunction extends MathFunction implements Cloneable
         {
             WaveMultidimensionalMathFunction currentWave = waveArray[waveArrayIndex];
             if( waveArrayIndex > 0 )
-                equation += " + ";
-            equation += currentWave.toString();
+                equationBuffer.append(" + ");
+            equationBuffer.append(currentWave.toString());
         }
 
-        return equation;
+        return equationBuffer.toString();
     }
 }

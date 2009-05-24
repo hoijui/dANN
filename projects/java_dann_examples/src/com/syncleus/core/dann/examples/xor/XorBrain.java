@@ -40,14 +40,12 @@ import com.syncleus.dann.OutputNeuron;
 public class XorBrain {
 	
 	private DNA myDNA = new DNA();
-	private BufferedReader inReader = null;
 	private InputNeuron inputA = null;
 	private InputNeuron inputB = null;
 	private InputNeuron inputC = null;
 	private NeuronGroup firstLayer = null;
 	private NeuronGroup secondLayer = null;
 	private OutputNeuron output = null;
-	private String saveLocation = "default.dann";
 
 	/**
 	 * XorBrain is a modified com.syncleus.core.dann.examples.xor.Main

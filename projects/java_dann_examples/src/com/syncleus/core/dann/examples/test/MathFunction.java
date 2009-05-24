@@ -19,7 +19,7 @@ public abstract class MathFunction
         
         for(int index = 0; index < this.parameterNames.length; index++)
         {
-            this.indexNames.put(this.parameterNames[index], new Integer(index));
+            this.indexNames.put(this.parameterNames[index], Integer.valueOf(index));
         }
     }
     

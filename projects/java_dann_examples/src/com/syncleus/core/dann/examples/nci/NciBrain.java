@@ -411,7 +411,7 @@ public class NciBrain extends Brain implements java.io.Serializable
                     else
                         output = this.outputNeurons[xIndex][yIndex][rgbIndex].getOutput();
 
-                    int channel = (new Double((output + 1.0) * 127.5)).intValue();
+                    int channel = (int)((output + 1.0d) * 127.5d);
 
                     rgbCurrent |= (((int) channel) & 0x000000FF) << (rgbIndex * 8);
                 }
@@ -515,7 +515,7 @@ public class NciBrain extends Brain implements java.io.Serializable
                     else
                         output = this.outputNeurons[xIndex][yIndex][rgbIndex].getOutput();
 
-                    int channel = (new Double((output + 1.0) * 127.5)).intValue();
+                    int channel = (int)((output + 1.0d) * 127.5d);
 
                     rgbCurrent |= (((int) channel) & 0x000000FF) << (rgbIndex * 8);
                 }
