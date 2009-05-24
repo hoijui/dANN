@@ -48,10 +48,10 @@ public class SignalProcessingWavelet implements SignalMutatable<SignalProcessing
     }
 
 
-	@SuppressWarnings("unchecked")
+
     public TreeSet<Signal> getSignals()
     {
-        TreeSet<Signal> copy = (TreeSet<Signal>)this.signals.clone();
+        TreeSet<Signal> copy = new TreeSet<Signal>(this.signals);
         copy.add(this.output);
         return copy;
     }
@@ -98,12 +98,11 @@ public class SignalProcessingWavelet implements SignalMutatable<SignalProcessing
 
 
 
-	@SuppressWarnings("unchecked")
     public SignalProcessingWavelet clone()
     {
         SignalProcessingWavelet copy = new SignalProcessingWavelet();
-        copy.signals = (TreeSet<Signal>)this.signals.clone();
-        copy.waves = (ArrayList<WaveMultidimensionalMathFunction>)this.waves.clone();
+        copy.signals = new TreeSet<Signal>(this.signals);
+        copy.waves = new ArrayList<WaveMultidimensionalMathFunction>(this.waves);
 
 
 
