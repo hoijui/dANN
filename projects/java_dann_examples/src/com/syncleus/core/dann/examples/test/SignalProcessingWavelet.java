@@ -48,7 +48,7 @@ public class SignalProcessingWavelet implements SignalMutatable<SignalProcessing
     }
 
 
-
+	@SuppressWarnings("unchecked")
     public TreeSet<Signal> getSignals()
     {
         TreeSet<Signal> copy = (TreeSet<Signal>)this.signals.clone();
@@ -98,6 +98,7 @@ public class SignalProcessingWavelet implements SignalMutatable<SignalProcessing
 
 
 
+	@SuppressWarnings("unchecked")
     public SignalProcessingWavelet clone()
     {
         SignalProcessingWavelet copy = new SignalProcessingWavelet();

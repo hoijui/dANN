@@ -72,7 +72,7 @@ public class Gene implements Cloneable
     }
 
 
-
+	@SuppressWarnings("unchecked")
     private SignalProcessingWavelet[] getRandomizedProcessors()
     {
         TreeSet<SignalProcessingWavelet> processorSet = (TreeSet<SignalProcessingWavelet>)this.processors.clone();
@@ -93,6 +93,7 @@ public class Gene implements Cloneable
 
 
 
+	@SuppressWarnings("unchecked")
     private SignalProcessingWavelet getRandomizedProcessor()
     {
         TreeSet<SignalProcessingWavelet> processorSet = (TreeSet<SignalProcessingWavelet>)this.processors.clone();
