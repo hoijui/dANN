@@ -101,7 +101,7 @@ public class Main
 					System.out.println("S) save");
 					System.out.println("L) load");
 					System.out.println("Q) quit");
-					System.out.print("\tEnter command: ");
+					System.out.println("\tEnter command: ");
 				
 					received = true;
 					try
@@ -126,7 +126,7 @@ public class Main
 						testOutput();
 						break;
 					case 't':
-						System.out.print("How many training cycles [Default: 10000]: ");
+						System.out.println("How many training cycles [Default: 10000]: ");
 						int cycles = 10000;
 						try
 						{

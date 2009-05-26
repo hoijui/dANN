@@ -66,7 +66,7 @@ public class Main
                     System.out.println("V) Associative Map Visualizations");
                     System.out.println("H) Command Line Help");
                     System.out.println("Q) quit");
-                    System.out.print("\tEnter command: ");
+                    System.out.println("\tEnter command: ");
 
                     received = true;
                     try
