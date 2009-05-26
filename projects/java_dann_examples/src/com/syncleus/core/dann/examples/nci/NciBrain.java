@@ -169,9 +169,16 @@ public class NciBrain extends Brain implements java.io.Serializable
             this.compressedLayer.add(this.compressedNeurons[compressionIndex]);
         }
 
-        //connect the neurons together
-        this.inputLayer.connectAllTo(this.compressedLayer);
-        this.compressedLayer.connectAllTo(this.outputLayer);
+		try
+		{
+			//connect the neurons together
+			this.inputLayer.connectAllTo(this.compressedLayer);
+			this.compressedLayer.connectAllTo(this.outputLayer);
+		}
+		catch(DannException caughtException)
+		{
+			throw new Error("Could not connect layers", caughtException);
+		}
         
 //        this.inputLayer.connectAllTo(this.inputHiddenLayer);
 //        this.inputHiddenLayer.connectAllTo(this.compressedLayer);
@@ -180,9 +187,9 @@ public class NciBrain extends Brain implements java.io.Serializable
 //        this.addChild(this.inputHiddenLayer);
 //        this.addChild(this.outputHiddenLayer);
 
-        this.addChild(this.inputLayer);
-        this.addChild(this.compressedLayer);
-        this.addChild(this.outputLayer);
+        this.addNeurons(this.inputLayer.getChildrenNeuronsRecursivly());
+        this.addNeurons(this.compressedLayer.getChildrenNeuronsRecursivly());
+        this.addNeurons(this.outputLayer.getChildrenNeuronsRecursivly());
 
 
     //if you want to add an extra level of connectivity.
@@ -235,8 +242,7 @@ public class NciBrain extends Brain implements java.io.Serializable
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        Set<Neuron> allChildren = this.getChildrenNeuronsRecursivly();
-        for (Neuron child : allChildren)
+        for (Neuron child : this.getNeurons())
         {
             Set<Synapse> childSynapses = child.getDestinations();
 
@@ -257,8 +263,7 @@ public class NciBrain extends Brain implements java.io.Serializable
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        Set<Neuron> allChildren = this.getChildrenNeuronsRecursivly();
-        for (Neuron child : allChildren)
+        for (Neuron child : this.getNeurons())
         {
             Set<Synapse> childSynapses = child.getDestinations();
 

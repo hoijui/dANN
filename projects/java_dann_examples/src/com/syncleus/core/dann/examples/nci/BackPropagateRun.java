@@ -23,9 +23,9 @@ import com.syncleus.dann.*;
 
 public class BackPropagateRun implements Runnable
 {
-    private NetworkNode processor;
+    private Neuron processor;
     
-    public BackPropagateRun(NetworkNode processor)
+    public BackPropagateRun(Neuron processor)
     {
         this.processor = processor;
     }
