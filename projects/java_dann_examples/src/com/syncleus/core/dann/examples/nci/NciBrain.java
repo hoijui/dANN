@@ -175,7 +175,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 			this.inputLayer.connectAllTo(this.compressedLayer);
 			this.compressedLayer.connectAllTo(this.outputLayer);
 		}
-		catch(DannException caughtException)
+		catch(InvalidConnectionTypeDannException caughtException)
 		{
 			throw new Error("Could not connect layers", caughtException);
 		}
