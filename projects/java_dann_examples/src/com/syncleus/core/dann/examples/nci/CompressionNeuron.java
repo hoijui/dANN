@@ -50,9 +50,9 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
      * @param OwnedDNAToSet This dna class will determine the various properties
      * 	of the layer.
      */
-    public CompressionNeuron(DNA OwnedDNAToSet)
+    public CompressionNeuron()
     {
-        super(OwnedDNAToSet);
+        super();
     }
     
     /**
@@ -62,10 +62,20 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
      * @param OwnedDNAToSet This dna class will determine the various properties
      * 	of the layer.
      */
-    public CompressionNeuron(DNA ownedDNAToSet, ActivationFunction activationFunction)
+    public CompressionNeuron(ActivationFunction activationFunction)
     {
-        super(ownedDNAToSet, activationFunction);
+        super(activationFunction);
     }
+
+	public CompressionNeuron(double learningRate)
+	{
+		super(learningRate);
+	}
+
+	public CompressionNeuron(ActivationFunction activationFunction, double learningRate)
+	{
+		super(activationFunction, learningRate);
+	}
 
 
 

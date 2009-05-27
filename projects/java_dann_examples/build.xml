@@ -21,7 +21,7 @@
         <mkdir dir="build/classes"/>
         <javac destdir="build/classes" classpathref="classpath" debug="true">
             <compilerarg value="-Xlint:deprecation"/>
-            <!--compilerarg value="-Xlint:unchecked"/-->
+            <compilerarg value="-Xlint:unchecked"/>
             <src path="src/com"/>
         </javac>
         <mkdir dir="build/jar"/>
