@@ -19,6 +19,7 @@
 package com.syncleus.core.dann.examples.xor;
 
 import java.io.*;
+import com.syncleus.dann.backprop.*;
 import com.syncleus.dann.*;
 
 
@@ -34,13 +35,13 @@ public class Main
 {
 	private static DNA myDNA = new DNA();
 	private static BufferedReader inReader = null;
-	private static InputNeuron inputA = null;
-	private static InputNeuron inputB = null;
-	private static InputNeuron inputC = null;
-	private static NeuronGroup firstLayer = null;
-	private static NeuronGroup secondLayer = null;
-	private static NeuronGroup thirdLayer = null;
-	private static OutputNeuron output = null;
+	private static InputBackpropNeuron inputA = null;
+	private static InputBackpropNeuron inputB = null;
+	private static InputBackpropNeuron inputC = null;
+	private static BackpropNeuronGroup firstLayer = null;
+	private static BackpropNeuronGroup secondLayer = null;
+	private static BackpropNeuronGroup thirdLayer = null;
+	private static OutputBackpropNeuron output = null;
 	private static String saveLocation = "default.dann";
 			
 	public static void main(String args[])
@@ -56,30 +57,30 @@ public class Main
 			myDNA.learningRate = 0.01;
 			
 			//creates the first layer which holds all the input neurons
-			inputA = new InputNeuron(myDNA);
-			inputB = new InputNeuron(myDNA);
-			inputC = new InputNeuron(myDNA);
-			firstLayer = new NeuronGroup(myDNA);
+			inputA = new InputBackpropNeuron(myDNA);
+			inputB = new InputBackpropNeuron(myDNA);
+			inputC = new InputBackpropNeuron(myDNA);
+			firstLayer = new BackpropNeuronGroup(myDNA);
 			firstLayer.add(inputA);
 			firstLayer.add(inputB);
 			firstLayer.add(inputC);
 
 			//creates the second layer of neurons containing 10 neurons.
-			secondLayer = new NeuronGroup(myDNA);
+			secondLayer = new BackpropNeuronGroup(myDNA);
 			for( int lcv = 0; lcv < 10; lcv++ )
 			{
-				secondLayer.add(new Neuron(myDNA));
+				secondLayer.add(new BackpropNeuron(myDNA));
 			}
 
 			//creates the second layer of neurons containing 10 neurons.
-			thirdLayer = new NeuronGroup(myDNA);
+			thirdLayer = new BackpropNeuronGroup(myDNA);
 			for( int lcv = 0; lcv < 10; lcv++ )
 			{
-				thirdLayer.add(new Neuron(myDNA));
+				thirdLayer.add(new BackpropNeuron(myDNA));
 			}
 
 			//the output layer is just a single neuron
-			output = new OutputNeuron(myDNA);
+			output = new OutputBackpropNeuron(myDNA);
 
 			//connects the network in a feedforward fasion.
 			firstLayer.connectAllTo(secondLayer);
@@ -202,13 +203,13 @@ public class Main
 		
 		try
 		{
-			firstLayer = (NeuronGroup) in.readObject();
-			secondLayer = (NeuronGroup) in.readObject();
-			thirdLayer = (NeuronGroup) in.readObject();
-			output = (OutputNeuron) in.readObject();
-			inputA = (InputNeuron) in.readObject();
-			inputB = (InputNeuron) in.readObject();
-			inputC = (InputNeuron) in.readObject();
+			firstLayer = (BackpropNeuronGroup) in.readObject();
+			secondLayer = (BackpropNeuronGroup) in.readObject();
+			thirdLayer = (BackpropNeuronGroup) in.readObject();
+			output = (OutputBackpropNeuron) in.readObject();
+			inputA = (InputBackpropNeuron) in.readObject();
+			inputB = (InputBackpropNeuron) in.readObject();
+			inputC = (InputBackpropNeuron) in.readObject();
 		}
 		finally
 		{

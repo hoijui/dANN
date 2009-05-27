@@ -19,6 +19,7 @@
 package com.syncleus.core.dann.examples.nci;
 
 import com.syncleus.dann.*;
+import com.syncleus.dann.backprop.*;
 import com.syncleus.dann.activation.*;
 
 
@@ -27,7 +28,7 @@ import com.syncleus.dann.activation.*;
  * @author Jeffrey Phillips Freeman
  * @since 0.1
  */
-public class CompressionNeuron extends Neuron implements java.io.Serializable
+public class CompressionNeuron extends BackpropNeuron implements java.io.Serializable
 {
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->

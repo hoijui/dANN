@@ -18,14 +18,14 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
 
-import com.syncleus.dann.*;
+import com.syncleus.dann.backprop.*;
 
 
 public class BackPropagateRun implements Runnable
 {
-    private Neuron processor;
+    private BackpropNeuron processor;
     
-    public BackPropagateRun(Neuron processor)
+    public BackPropagateRun(BackpropNeuron processor)
     {
         this.processor = processor;
     }

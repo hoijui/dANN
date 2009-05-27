@@ -21,7 +21,7 @@
         <mkdir dir="build/classes"/>
         <javac destdir="build/classes" classpathref="classpath" debug="true">
             <compilerarg value="-Xlint:deprecation"/>
-            <compilerarg value="-Xlint:unchecked"/>
+            <!--compilerarg value="-Xlint:unchecked"/-->
             <src path="src/com"/>
         </javac>
         <mkdir dir="build/jar"/>
@@ -63,7 +63,7 @@
         </nbprofiledirect>
         <java fork="true" classname="com.syncleus.core.dann.examples.Main">
             <jvmarg value="${profiler.info.jvmargs.agent}"/>
-            <!--jvmarg value="-Xmx512m" /-->
+            <jvmarg value="-Xmx512m" />
             <classpath>
                 <path refid="classpath"/>
                 <path location="build/jar/dann_examples.jar"/>
