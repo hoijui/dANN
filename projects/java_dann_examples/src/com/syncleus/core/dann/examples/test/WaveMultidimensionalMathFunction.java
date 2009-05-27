@@ -17,8 +17,8 @@
  *                                                                             *
  ******************************************************************************/
 package com.syncleus.core.dann.examples.test;
+
 import java.security.InvalidParameterException;
-import java.util.TreeSet;
 
 public class WaveMultidimensionalMathFunction extends MathFunction implements Cloneable
 {

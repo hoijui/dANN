@@ -17,18 +17,14 @@
  *                                                                             *
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci.ui;
+
 import java.awt.Frame;
 import javax.swing.JDialog;
 
 
-/**
- *
- * @author  Administrator
- */
 public class AboutDialog extends JDialog
 {
 
-    /** Creates new form AboutDialog */
     public AboutDialog(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();

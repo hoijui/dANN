@@ -18,24 +18,13 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
 
-/**
- *
- * @author Administrator
- */
-public class BusyException extends Exception {
-
-    /**
-     * Creates a new instance of <code>BusyException</code> without detail message.
-     */
+public class BusyException extends Exception
+{
     public BusyException() {
     }
 
-
-    /**
-     * Constructs an instance of <code>BusyException</code> with the specified detail message.
-     * @param msg the detail message.
-     */
-    public BusyException(String msg) {
+    public BusyException(String msg)
+	{
         super(msg);
     }
 }

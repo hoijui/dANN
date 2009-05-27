@@ -17,7 +17,7 @@
  *                                                                             *
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
-import com.syncleus.core.dann.examples.nci.NciBrain;
+
 import java.awt.image.BufferedImage;
 
 

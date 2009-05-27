@@ -21,7 +21,6 @@ package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 import com.syncleus.dann.*;
 import com.syncleus.dann.hyperassociativemap.*;
 import com.syncleus.dann.visualization.*;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutorService;

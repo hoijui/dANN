@@ -17,8 +17,9 @@
  *                                                                             *
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
-import java.awt.image.BufferedImage;
 
+
+import java.awt.image.BufferedImage;
 
 
 public interface BrainListener

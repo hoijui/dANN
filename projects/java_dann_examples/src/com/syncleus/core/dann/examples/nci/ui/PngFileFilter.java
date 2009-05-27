@@ -17,6 +17,7 @@
  *                                                                             *
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci.ui;
+
 import java.io.File;
 import java.io.FileFilter;
 

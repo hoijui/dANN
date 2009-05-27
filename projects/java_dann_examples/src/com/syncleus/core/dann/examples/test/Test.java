@@ -20,7 +20,6 @@ package com.syncleus.core.dann.examples.test;
 
 
 import hep.aida.*;
-import java.util.Random;
 
 public class Test
 {
