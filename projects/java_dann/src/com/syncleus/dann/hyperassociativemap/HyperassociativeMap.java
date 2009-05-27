@@ -16,24 +16,25 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.associativemap.visualization;
+package com.syncleus.dann.hyperassociativemap;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.syncleus.dann.visualization.*;
 
-
-
-public class UpdateViewRun implements Runnable
+public abstract class HyperassociativeMap implements Serializable
 {
-    private AssociativeMapCanvas view;
+    protected HashSet<HyperassociativeNode> nodes = new HashSet<HyperassociativeNode>();
     
-    public UpdateViewRun(AssociativeMapCanvas view)
+    public Set<HyperassociativeNode> getNodes()
     {
-        this.view = view;
+        return Collections.unmodifiableSet(this.nodes);
     }
     
-    public void run()
+    public void align()
     {
-        this.view.getAssociativeMap().align();
-        this.view.refresh();
+        for(HyperassociativeNode node : nodes)
+            node.align();
     }
 }

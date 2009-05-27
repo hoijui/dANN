@@ -12,11 +12,11 @@ import javax.swing.Timer;
 
 public class ViewBrain extends JDialog implements ActionListener
 {
-    private AssociativeMapCanvas brainVisual;
+    private HyperassociativeMapCanvas brainVisual;
     private ExecutorService executor = Executors.newFixedThreadPool(1);
     private FutureTask<Void> lastRun;
 
-    public ViewBrain(Frame parent, AssociativeMapCanvas brainVisual)
+    public ViewBrain(Frame parent, HyperassociativeMapCanvas brainVisual)
     {
         super(parent, false);
         

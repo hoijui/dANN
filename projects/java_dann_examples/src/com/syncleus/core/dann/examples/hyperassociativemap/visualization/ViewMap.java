@@ -1,7 +1,7 @@
-package com.syncleus.core.dann.examples.associativemap.visualization;
+package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
 import com.syncleus.dann.*;
-import com.syncleus.dann.associativemap.*;
+import com.syncleus.dann.hyperassociativemap.*;
 import com.syncleus.dann.visualization.*;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -15,7 +15,7 @@ import javax.swing.Timer;
 
 public class ViewMap extends JFrame implements ActionListener
 {
-    private AssociativeMapCanvas mapVisual;
+    private HyperassociativeMapCanvas mapVisual;
     private ExecutorService executor = Executors.newFixedThreadPool(1);
     private FutureTask<Void> lastRun;
 
@@ -23,9 +23,9 @@ public class ViewMap extends JFrame implements ActionListener
 
     public ViewMap()
     {
-        LayeredAssociativeMap associativeMap = new LayeredAssociativeMap(8);
+        LayeredHyperassociativeMap associativeMap = new LayeredHyperassociativeMap(8);
 
-        AssociativeMapCanvas mapVisual = new AssociativeMapCanvas(associativeMap, 0.07F);
+        HyperassociativeMapCanvas mapVisual = new HyperassociativeMapCanvas(associativeMap, 0.07F);
 
         initComponents();
 

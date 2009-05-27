@@ -24,9 +24,9 @@ import com.syncleus.dann.visualization.*;
 
 public class UpdateViewRun implements Runnable
 {
-    private AssociativeMapCanvas view;
+    private HyperassociativeMapCanvas view;
     
-    public UpdateViewRun(AssociativeMapCanvas view)
+    public UpdateViewRun(HyperassociativeMapCanvas view)
     {
         this.view = view;
     }

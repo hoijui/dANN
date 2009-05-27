@@ -29,7 +29,7 @@ import javax.swing.JFileChooser;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import com.syncleus.dann.associativemap.*;
+import com.syncleus.dann.hyperassociativemap.*;
 import com.syncleus.dann.visualization.*;
 import javax.swing.JFrame;
 
@@ -39,7 +39,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
     private final static int BLOCK_WIDTH = 8;
     private final static int BLOCK_HEIGHT = 8;
     private BrainRunner brainRunner;
-    private AssociativeMapCanvas brainVisual;
+    private HyperassociativeMapCanvas brainVisual;
     private Thread brainRunnerThread;
     private File trainingDirectory;
     private File originalImageLocation;
@@ -528,7 +528,7 @@ private void refreshOriginalImage()
     
     public void brainFinishedBuffering()
     {
-        this.brainVisual = new AssociativeMapCanvas(this.brainRunner.getBrainMap());
+        this.brainVisual = new HyperassociativeMapCanvas(this.brainRunner.getBrainMap());
         this.brainViewMenu.setEnabled(true);
         
         

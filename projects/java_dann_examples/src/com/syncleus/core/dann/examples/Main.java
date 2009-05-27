@@ -98,7 +98,7 @@ public class Main
                     System.out.println("java -jar bin dANN-examples.jar --xor [save-location]");
                     break;
                 case 'v':
-                    com.syncleus.core.dann.examples.associativemap.visualization.ViewMap.main(newArgs);
+                    com.syncleus.core.dann.examples.hyperassociativemap.visualization.ViewMap.main(newArgs);
                     break;
                 case 'q':
                     break;

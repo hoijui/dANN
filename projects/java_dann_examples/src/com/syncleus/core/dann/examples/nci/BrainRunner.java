@@ -18,8 +18,7 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
 
-import com.syncleus.core.dann.examples.nci.NciBrain;
-import com.syncleus.dann.associativemap.*;
+import com.syncleus.dann.hyperassociativemap.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
@@ -30,7 +29,7 @@ import javax.imageio.ImageIO;
 public class BrainRunner implements Runnable
 {
     private NciBrain brain = null;
-    private BrainAssociativeMap brainMap;
+    private BrainHyperassociativeMap brainMap;
     private double compression;
     private int xSize;
     private int ySize;
@@ -59,7 +58,7 @@ public class BrainRunner implements Runnable
     }
     
     
-    public BrainAssociativeMap getBrainMap()
+    public BrainHyperassociativeMap getBrainMap()
     {
         return this.brainMap;
     }
@@ -148,7 +147,7 @@ public class BrainRunner implements Runnable
             executor = Executors.newFixedThreadPool(1);
 
             this.brain = new NciBrain(this.compression, this.xSize, this.ySize, this.extraConnectivity);
-            this.brainMap = new BrainAssociativeMap(brain, 3);
+            this.brainMap = new BrainHyperassociativeMap(brain, 3);
             this.setTrainingImages(trainingFiles);
             
 
