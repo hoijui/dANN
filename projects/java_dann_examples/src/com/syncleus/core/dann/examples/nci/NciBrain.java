@@ -233,6 +233,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
 
 
+	@SuppressWarnings("unchecked")
     public double getAverageWeight()
     {
         double weightSum = 0.0;
@@ -240,13 +241,20 @@ public class NciBrain extends Brain implements java.io.Serializable
 
         for (Neuron child : this.getNeurons())
         {
-            Set<Synapse> childSynapses = child.getDestinations();
+			try
+			{
+				Set<Synapse> childSynapses = child.getDestinations();
 
-            for (Synapse childSynapse : childSynapses)
-            {
-                weightSum += childSynapse.getWeight();
-                weightCount++;
-            }
+				for (Synapse childSynapse : childSynapses)
+				{
+					weightSum += childSynapse.getWeight();
+					weightCount++;
+				}
+			}
+			catch(ClassCastException caughtException)
+			{
+				throw new AssertionError(caughtException);
+			}
         }
 
         return weightSum / weightCount;
@@ -254,6 +262,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
 
 
+	@SuppressWarnings("unchecked")
     public double getAverageAbsoluteWeight()
     {
         double weightSum = 0.0;
@@ -261,13 +270,20 @@ public class NciBrain extends Brain implements java.io.Serializable
 
         for (Neuron child : this.getNeurons())
         {
-            Set<Synapse> childSynapses = child.getDestinations();
+			try
+			{
+				Set<Synapse> childSynapses = child.getDestinations();
 
-            for (Synapse childSynapse : childSynapses)
-            {
-                weightSum += Math.abs(childSynapse.getWeight());
-                weightCount++;
-            }
+				for (Synapse childSynapse : childSynapses)
+				{
+					weightSum += Math.abs(childSynapse.getWeight());
+					weightCount++;
+				}
+			}
+			catch(ClassCastException caughtException)
+			{
+				throw new AssertionError(caughtException);
+			}
         }
 
         return weightSum / weightCount;
@@ -305,19 +321,27 @@ public class NciBrain extends Brain implements java.io.Serializable
 
 
 
+	@SuppressWarnings("unchecked")
     private void backPropagateLayer(NeuronGroup layer)
     {
         ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
 
-        Set<BackpropNeuron> units = layer.getChildrenNeuronsRecursivly();
-        for (BackpropNeuron unit : units)
-        {
-            BackPropagateRun backPropagateRun = new BackPropagateRun(unit);
-            FutureTask<Void> futureBackPropagateRun = new FutureTask<Void>(backPropagateRun, null);
+		try
+		{
+			Set<BackpropNeuron> units = layer.getChildrenNeuronsRecursivly();
+			for (BackpropNeuron unit : units)
+			{
+				BackPropagateRun backPropagateRun = new BackPropagateRun(unit);
+				FutureTask<Void> futureBackPropagateRun = new FutureTask<Void>(backPropagateRun, null);
 
-            processing.add(futureBackPropagateRun);
-            executor.execute(futureBackPropagateRun);
-        }
+				processing.add(futureBackPropagateRun);
+				executor.execute(futureBackPropagateRun);
+			}
+		}
+		catch(ClassCastException caughtException)
+		{
+			throw new AssertionError(caughtException);
+		}
 
         while (processing.peek() != null)
             try
