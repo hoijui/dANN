@@ -21,7 +21,7 @@ package com.syncleus.core.dann.examples.test;
 
 import java.security.InvalidParameterException;
 
-public class DistributedFormedWaveMathFunction extends FormedWaveMathFunction implements Cloneable
+public class DistributedFormedWaveMathFunction extends FormedWaveMathFunction
 {
     private boolean constantMode = false;
     private double constantValue;

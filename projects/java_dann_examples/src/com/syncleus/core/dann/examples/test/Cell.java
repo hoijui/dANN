@@ -24,12 +24,12 @@ import java.util.Hashtable;
 
 public class Cell
 {
-    private Organism organism = null;
-    private Nucleus nucleus = null;
+    private Organism organism;
+    private Nucleus nucleus;
     private Hashtable<UniqueId, LocalSignal> localSignals = new Hashtable<UniqueId, LocalSignal>();
     
-    private LocalSignal mitosisActivator;
-    private LocalSignal identitySignal;
+//    private LocalSignal mitosisActivator;
+//    private LocalSignal identitySignal;
     
     LocalSignal getLocalSignal(UniqueId signalId)
     {
@@ -53,7 +53,7 @@ public class Cell
         if( newSignal != null )
             return newSignal;
         else
-            newSignal = oldLocalSignal.clone();
+            newSignal = new LocalSignal(oldLocalSignal);
         
         this.localSignals.put(newSignal.getId(), newSignal);
         

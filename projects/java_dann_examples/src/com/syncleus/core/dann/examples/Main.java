@@ -28,15 +28,12 @@ public class Main
         {
             BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
 
-            String[] newArgs = null;
+            String[] newArgs = (args.length <= 1 ? new String[0] : new String[args.length - 1]);
             if (args.length > 1)
             {
-                newArgs = new String[args.length - 1];
                 for (int index = 1; index < args.length; index++)
                     newArgs[index - 1] = args[index];
             }
-            else
-                newArgs = new String[0];
 
             String selectorArg = null;
             if (args.length > 0)

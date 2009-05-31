@@ -61,6 +61,4 @@ public abstract class Signal implements Comparable<Signal>
     {
         return this.getId().compareTo(compareWith.getId());
     }
-    
-    abstract public Signal clone();
 }

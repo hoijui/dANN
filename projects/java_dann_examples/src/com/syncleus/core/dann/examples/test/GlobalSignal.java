@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.test;
 
-public class GlobalSignal extends Signal implements Cloneable
+public class GlobalSignal extends Signal
 {
     public GlobalSignal()
     {
@@ -27,11 +27,5 @@ public class GlobalSignal extends Signal implements Cloneable
     protected GlobalSignal(GlobalSignal originalSignal)
     {
         super(originalSignal);
-    }
-    
-    public GlobalSignal clone()
-    {
-        GlobalSignal newSignal = new GlobalSignal(this);
-        return newSignal;
     }
 }

@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.test;
 
-public class FormedWaveMathFunction extends WaveMathFunction implements Cloneable
+public class FormedWaveMathFunction extends WaveMathFunction
 {
     public FormedWaveMathFunction()
     {

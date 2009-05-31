@@ -28,7 +28,7 @@ import javax.imageio.ImageIO;
 
 public class BrainRunner implements Runnable
 {
-    private NciBrain brain = null;
+    private NciBrain brain;
     private BrainHyperassociativeMap brainMap;
     private double compression;
     private int xSize;

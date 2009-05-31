@@ -23,8 +23,8 @@ import java.util.Hashtable;
 
 public abstract class MathFunction
 {
-    private double[] parameters = null;
-    private String[] parameterNames = null;
+    private double[] parameters;
+    private String[] parameterNames;
     private Hashtable<String,Integer> indexNames = new Hashtable<String,Integer>();
     
     protected MathFunction(String[] parameterNames)
