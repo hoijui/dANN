@@ -38,8 +38,10 @@ public class LayeredHyperassociativeMap extends HyperassociativeMap
                 this.layeredNodes[layerIndex][nodeIndex] = new HyperassociativeNode(this, HyperassociativeNode.randomCoordinates(3), 0.02d);
                 this.nodes.add(this.layeredNodes[layerIndex][nodeIndex]);
             }
-        
+
+		
         //connect the nodes
+		
         for(int layerIndex = 0; layerIndex < layers; layerIndex++)
         {
             for(int nodeIndex = 0; nodeIndex < NODES_PER_LAYER; nodeIndex++)
@@ -60,7 +62,5 @@ public class LayeredHyperassociativeMap extends HyperassociativeMap
                 }
             }
         }
-        
-        //connect the last layer to itself
     }
 }

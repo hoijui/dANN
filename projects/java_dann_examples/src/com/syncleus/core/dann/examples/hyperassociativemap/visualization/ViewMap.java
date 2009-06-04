@@ -109,7 +109,8 @@ public class ViewMap extends JFrame implements ActionListener
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+	// </editor-fold>
 }
