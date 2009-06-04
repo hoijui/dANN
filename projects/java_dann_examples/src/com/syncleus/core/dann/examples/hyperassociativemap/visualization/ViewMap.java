@@ -42,11 +42,9 @@ public class ViewMap extends JFrame implements ActionListener
     {
         LayeredHyperassociativeMap associativeMap = new LayeredHyperassociativeMap(8);
 
-        HyperassociativeMapCanvas mapVisual = new HyperassociativeMapCanvas(associativeMap, 0.07F);
+        this.mapVisual = new HyperassociativeMapCanvas(associativeMap, 0.07F);
 
         initComponents();
-
-        this.mapVisual = mapVisual;
 
         this.add(this.mapVisual);
         this.mapVisual.setLocation(0, 0);
