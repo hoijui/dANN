@@ -376,7 +376,8 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }//GEN-END:initComponents
+	// </editor-fold>
 
 private void quitMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quitMenuItemMouseReleased
     if (this.brainRunner != null)
@@ -492,7 +493,10 @@ private void brainViewMenuMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//
 }//GEN-LAST:event_brainViewMenuMenuKeyPressed
 
 private void brainViewMenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brainViewMenuMouseReleased
-    this.brainVisual.refresh();
+	if(this.brainVisual == null)
+		return;
+	
+	this.brainVisual.refresh();
     
     if(this.viewBrain == null)
         this.viewBrain = new ViewBrain(this, brainVisual);

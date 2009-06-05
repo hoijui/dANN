@@ -166,21 +166,30 @@ public class BrainRunner implements Runnable
                     ArrayBlockingQueue<FutureTask<BufferedImage>> processingSampleSegments = new ArrayBlockingQueue<FutureTask<BufferedImage>>(10000, true);
 
                     this.sampleTotal = 0;
-                    for (int currentY = 0; currentY < this.sampleImage.getHeight(); currentY += ySize)
-                        for (int currentX = 0; currentX < this.sampleImage.getWidth(); currentX += xSize)
-                        {
-                            int blockWidth = this.sampleImage.getWidth() - currentX < xSize ? this.sampleImage.getWidth() - currentX : xSize;
-                            int blockHeight = this.sampleImage.getHeight() - currentY < ySize ? this.sampleImage.getHeight() - currentY : ySize;
-                            BufferedImage currentSegment = this.sampleImage.getSubimage(currentX, currentY, blockWidth, blockHeight);
+                    stopProcessing:
+						for (int currentY = 0; currentY < this.sampleImage.getHeight(); currentY += ySize)
+							for (int currentX = 0; currentX < this.sampleImage.getWidth(); currentX += xSize)
+							{
+								int blockWidth = this.sampleImage.getWidth() - currentX < xSize ? this.sampleImage.getWidth() - currentX : xSize;
+								int blockHeight = this.sampleImage.getHeight() - currentY < ySize ? this.sampleImage.getHeight() - currentY : ySize;
+								BufferedImage currentSegment = this.sampleImage.getSubimage(currentX, currentY, blockWidth, blockHeight);
 
-                            SampleRun sampleRun = new SampleRun(this.brain, currentSegment);
-                            FutureTask<BufferedImage> futureSampleRun = new FutureTask<BufferedImage>(sampleRun);
+								SampleRun sampleRun = new SampleRun(this.brain, currentSegment);
+								FutureTask<BufferedImage> futureSampleRun = new FutureTask<BufferedImage>(sampleRun);
 
-                            this.sampleTotal++;
+								this.sampleTotal++;
 
-                            processingSampleSegments.add(futureSampleRun);
-                            executor.execute(futureSampleRun);
-                        }
+								try
+								{
+									processingSampleSegments.add(futureSampleRun);
+								}
+								catch(IllegalStateException caughtException)
+								{
+									System.out.println("The original image you selected is too large, aborting processing");
+									break stopProcessing;
+								}
+								executor.execute(futureSampleRun);
+							}
 
                     this.sampleRemaining = this.sampleTotal;
 
