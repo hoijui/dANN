@@ -179,15 +179,13 @@ public class BrainRunner implements Runnable
 
 								this.sampleTotal++;
 
-								try
-								{
-									processingSampleSegments.add(futureSampleRun);
-								}
-								catch(IllegalStateException caughtException)
+								if( processingSampleSegments.remainingCapacity() <= 0)
 								{
 									System.out.println("The original image you selected is too large, aborting processing");
 									break stopProcessing;
 								}
+
+								processingSampleSegments.add(futureSampleRun);
 								executor.execute(futureSampleRun);
 							}
 
