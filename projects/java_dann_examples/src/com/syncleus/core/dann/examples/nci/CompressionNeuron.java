@@ -26,18 +26,18 @@ import com.syncleus.dann.activation.*;
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
  * @author Syncleus, Inc.
- * @since 0.1
+ * @since 1.0
  */
 public class CompressionNeuron extends BackpropNeuron implements java.io.Serializable
 {
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     protected byte input = 0;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     protected boolean inputSet = false;
 
@@ -46,7 +46,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
     /**
      * Creates a new instance of InputNeuron<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      * @param OwnedDNAToSet This dna class will determine the various properties
      * 	of the layer.
      */
@@ -58,7 +58,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
     /**
      * Creates a new instance of InputNeuron<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      * @param OwnedDNAToSet This dna class will determine the various properties
      * 	of the layer.
      */
@@ -82,7 +82,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
     /**
      * This method sets the current input on the neuron.<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      * @param inputToSet The value to set the current input to.
      */
     public void setInput(byte inputToSet)
@@ -95,7 +95,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     public void unsetInput()
     {
@@ -106,7 +106,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     public byte getChannelOutput()
     {
@@ -117,7 +117,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private double getDoubleInput()
     {
@@ -128,7 +128,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     protected void setOutput(double newOutput)
     {

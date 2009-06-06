@@ -33,78 +33,78 @@ import java.util.concurrent.FutureTask;
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
  * @author Syncleus, Inc.
- * @since 0.1
+ * @since 1.0
  */
 public class NciBrain extends Brain implements java.io.Serializable
 {
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private double actualCompression = 0.0;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private int xSize = 0;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private int ySize = 0;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private InputBackpropNeuron[][][] inputNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private BackpropNeuronGroup inputLayer = new BackpropNeuronGroup();
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private BackpropNeuron[] inputHiddenNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private BackpropNeuronGroup inputHiddenLayer = new BackpropNeuronGroup();
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private CompressionNeuron[] compressedNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private BackpropNeuronGroup compressedLayer = new BackpropNeuronGroup();
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private BackpropNeuron[] outputHiddenNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private BackpropNeuronGroup outputHiddenLayer = new BackpropNeuronGroup();
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private OutputBackpropNeuron[][][] outputNeurons = null;
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private BackpropNeuronGroup outputLayer = new BackpropNeuronGroup();
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private boolean learning = true;
     private static final int CHANNELS = 3;
@@ -202,7 +202,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     public double getCompression()
     {
@@ -213,7 +213,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     public boolean getLearning()
     {
@@ -224,7 +224,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     public void setLearning(boolean learningToSet)
     {
@@ -361,7 +361,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private void propagate()
     {
@@ -374,7 +374,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     private void backPropagate()
     {
@@ -463,7 +463,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     public byte[] compress(final BufferedImage originalImage)
     {
@@ -511,7 +511,7 @@ public class NciBrain extends Brain implements java.io.Serializable
 
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 0.1
+     * @since 1.0
      */
     public BufferedImage uncompress(final byte[] compressedData)
     {
