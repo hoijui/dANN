@@ -32,7 +32,7 @@ import java.util.concurrent.FutureTask;
 
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
- * @author Jeffrey Phillips Freeman
+ * @author Syncleus, Inc.
  * @since 0.1
  */
 public class NciBrain extends Brain implements java.io.Serializable

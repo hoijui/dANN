@@ -29,7 +29,7 @@ import com.syncleus.dann.*;
  * returns false (-1) if none all of its inputs are false or if more then one
  * of its inputs are true.
  * <!-- Author: Jeffrey Phillips Freeman -->
- * @author Jeffrey Phillips Freeman
+ * @author Syncleus, Inc.
  */
 public class Main
 {
