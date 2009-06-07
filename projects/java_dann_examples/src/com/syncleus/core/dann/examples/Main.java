@@ -60,7 +60,7 @@ public class Main
                     System.out.println();
                     System.out.println("X) XOR Example");
                     System.out.println("I) Image Compression Example w/GUI");
-                    System.out.println("V) Associative Map Visualizations");
+                    System.out.println("V) Hyperassociative Map Visualizations");
                     System.out.println("H) Command Line Help");
                     System.out.println("Q) quit");
                     System.out.println("\tEnter command: ");
