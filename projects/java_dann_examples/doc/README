@@ -1,0 +1,93 @@
+                           dANN Examples Application
+                      http://www.syncleus.com/dannProject
+
+These are the instructions for compiling, and running the dANN examples
+application. These instructions assume you have already followed the
+instructions in the dANN Core Library README file. If you've downloaded the
+binary distribution, skip the compilation portion of this document.
+
+
+Description:
+
+dANN is an Artificial Neural Network (ANN) and Artificial Intelligence suite
+intending to incorporate conventional techniques as well as entirely new
+techniques inspired by biological systems. Some of the features included are:
+
+ * Hyperassociative Map
+ * 3D mapping and visualizations
+ * Genetic Algorithms
+ * Genetic Programming
+ * Wavelet Genetics
+ * ANN Connection Optimization
+ * ANN Genetic Framework
+ * Backprop ANN
+ * Perceptron ANN
+ * Layered Feedforward ANN
+ * Fully/partial Feedback ANN
+ * Example Applications
+
+The examples distribution provides you with several example applications that
+shows you how to use the library as well as a demonstration of some of its
+features.
+
+
+Getting The Files:
+
+There are several distributions available: you can export from svn, download
+the source, or download the precompiled jar files. If you would like to export
+the latest version from svn to the current directory the command is:
+
+svn export svn://svn.syncleus.com/dANN/trunk/projects/java_dann_examples/
+
+If you would like to obtain one of the latest versioned distributions simply get
+one of the files found at:
+
+http://files.syncleus.com/pub/dANN/latest/
+
+If You would like an older version or snapshot you can go directly to:
+
+http://files.syncleus.com/pub/dANN/
+
+
+Compilation:
+
+Assuming you obtained a source distribution in the previous step you will need
+to continue with this step, otherwise skip ahead to "Running the Examples".
+
+First we need to compile the examples application; change directory to the
+java_dann_examples directory where the build.xml file resides. Next run the
+following command:
+
+ant clean compile
+
+If you are developing and would like to display lint4j based warnings execute
+the following command:
+
+ant lint
+
+You should now have the appropriate jar files in build/jar.
+
+
+
+Running the Examples:
+
+In order to use the application you either need to have obtained the binary
+distribution or used the source distribution and successfully completed the
+"Compilation" step above. Once compiled the core library will reside in the
+following location:
+
+build/jar/dann_examples.jar
+
+You will want to invoke the dann_examples.jar file with the dann.jar in the
+classpath as well as the following dependencies which can be found in the
+lib directory:
+
+lib/j3dcore.jar
+lib/vecmath.jar
+lib/j3dutils.jar
+
+The examples application requires Java 1.6 (also called Java 6) in order to
+compile and run. You can either invoke the dann_examples.jar file directly
+by calling the java virtual machine with the above libraries in the class
+path (as well as dann.jar) or you can simple change to the scripts directory
+and invoke run.bat on windows or run.sh on Linux.
