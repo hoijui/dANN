@@ -47,8 +47,6 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
      * Creates a new instance of InputNeuron<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 1.0
-     * @param OwnedDNAToSet This dna class will determine the various properties
-     * 	of the layer.
      */
     public CompressionNeuron()
     {
@@ -59,8 +57,6 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
      * Creates a new instance of InputNeuron<BR>
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 1.0
-     * @param OwnedDNAToSet This dna class will determine the various properties
-     * 	of the layer.
      */
     public CompressionNeuron(ActivationFunction activationFunction)
     {

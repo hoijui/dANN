@@ -327,7 +327,7 @@ public class SignalProcessingWavelet implements SignalMutatable<SignalProcessing
 
 
 
-    /**
+    /*
      * Mutates by incorperating the wave.<br/>
      * <br/>
      * May mutate by:<br/>
