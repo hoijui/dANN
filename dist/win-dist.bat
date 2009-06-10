@@ -24,6 +24,9 @@ cd .\tmp
 zip -r9 ..\%1-src.zip .\%1
 cd ..
 
+REM clean dist directory
+rmdir /S /Q .\tmp\%1\dist
+
 REM compile core library
 call ant -buildfile .\tmp\%1\java_dann\build.xml build-all javadoc
 
