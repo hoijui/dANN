@@ -18,6 +18,9 @@ svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$1/java_dann_examples/do
 # tarball source distribution
 tar -czvf $1-src.tar.gz -C ./tmp/ $1
 
+#remove dist dir for binary distribution
+rm -rf ./tmp/$1/dist
+
 #compile core library
 ant -buildfile ./tmp/$1/java_dann/build.xml build-all javadoc
 
