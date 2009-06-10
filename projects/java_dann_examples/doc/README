@@ -91,3 +91,9 @@ compile and run. You can either invoke the dann_examples.jar file directly
 by calling the java virtual machine with the above libraries in the class
 path (as well as dann.jar) or you can simple change to the scripts directory
 and invoke run.bat on windows or run.sh on Linux.
+
+If you intend to run any of the 3D visualizations, such as the Hyperassociative
+Map and Neural Image Compression, then you will need to have Java3D installed.
+You can obtain Java3D at the following URL:
+
+http://java.sun.com/javase/technologies/desktop/java3d/index.jsp
