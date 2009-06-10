@@ -53,7 +53,7 @@ public class Main
 			inReader = new BufferedReader(new InputStreamReader(System.in));
 			
 			//Adjust the learning rate
-			double learningRate = 0.01;
+			double learningRate = 0.0175;
 			
 			//creates the first layer which holds all the input neurons
 			inputA = new InputBackpropNeuron(learningRate);
@@ -126,8 +126,8 @@ public class Main
 						testOutput();
 						break;
 					case 't':
-						System.out.println("How many training cycles [Default: 10000]: ");
-						int cycles = 10000;
+						System.out.println("How many training cycles [Default: 15000]: ");
+						int cycles = 15000;
 						try
 						{
 							cycles = Integer.parseInt(inReader.readLine());
