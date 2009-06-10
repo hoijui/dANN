@@ -32,6 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.syncleus.dann.hyperassociativemap.*;
 import com.syncleus.dann.visualization.*;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 
 public class NciDemo extends JFrame implements ActionListener, BrainListener
@@ -436,6 +437,15 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
         {
 
             File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
+			if(trainingFiles.length <= 0)
+			{
+				this.trainingDirectory = null;
+				this.trainingDirectoryText.setText("");
+
+				JOptionPane.showMessageDialog(this, "The selected training directory does not contain *.png files! Select a new directory", "Invalid Training Directory", JOptionPane.ERROR_MESSAGE);
+
+				return;
+			}
             this.brainRunner = new BrainRunner(this, trainingFiles, 0.875, BLOCK_WIDTH, BLOCK_HEIGHT, true);
             this.brainRunnerThread = new Thread(this.brainRunner);
             this.brainRunnerThread.start();
