@@ -16,7 +16,7 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
 
 import java.util.Random;

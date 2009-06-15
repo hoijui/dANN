@@ -16,48 +16,74 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.math;
 
-public class FormedWaveMathFunction extends WaveMathFunction
+public class WaveMathFunction extends MathFunction implements Cloneable
 {
-    public FormedWaveMathFunction()
+    public WaveMathFunction()
     {
-        super(new String[]{"form"});
+        super(new String[]{"x", "frequency", "amplitude", "phase"});
     }
     
-    public FormedWaveMathFunction(String[] additionalParameters)
+    protected WaveMathFunction(String[] parameterNames)
     {
-        super(combineLabels(new String[]{"form"},additionalParameters));
+        super(
+                combineLabels(new String[]{"x", "frequency", "amplitude", "phase"}, parameterNames)
+        );
     }
     
-    public void setForm(double form)
+    protected void setX(double x)
     {
-        this.setParameter(this.getParameterNameIndex("form"), form);
+        this.setParameter(this.getParameterNameIndex("x"), x);
     }
     
-    public double getForm()
+    protected double getX()
     {
-        return this.getParameter(this.getParameterNameIndex("form"));
-    } 
+        return this.getParameter(this.getParameterNameIndex("x"));
+    }
+    
+    public void setFrequency(double frequency)
+    {
+        this.setParameter(this.getParameterNameIndex("frequency"), frequency);
+    }
+    
+    public double getFrequency()
+    {
+        return this.getParameter(this.getParameterNameIndex("frequency"));
+    }
+    
+    public void setAmplitude(double amplitude)
+    {
+        this.setParameter(this.getParameterNameIndex("amplitude"), amplitude);
+    }
+    
+    public double getAmplitude()
+    {
+        return this.getParameter(this.getParameterNameIndex("amplitude"));
+    }
+    
+    public void setPhase(double phase)
+    {
+        this.setParameter(this.getParameterNameIndex("phase"), phase);
+    }
+    
+    public double getPhase()
+    {
+        return this.getParameter(this.getParameterNameIndex("phase"));
+    }
     
     public double calculate()
     {
-        if( super.calculate() == 0.0)
-            return 0.0;
-        if( this.getAmplitude() == 0.0 )
-            return 0.0;
-        
-        return (super.calculate()/Math.abs(super.calculate())) * Math.abs(Math.pow(Math.abs(super.calculate()/this.getAmplitude()),this.getForm()) * this.getAmplitude() );
+        return Math.sin( (this.getX()+(this.getPhase()/360)) * 2 * Math.PI * this.getFrequency()) * this.getAmplitude();
     }
     
-    public FormedWaveMathFunction clone()
+    public WaveMathFunction clone()
     {
-        FormedWaveMathFunction copy = new FormedWaveMathFunction();
+        WaveMathFunction copy = new WaveMathFunction();
         copy.setX(this.getX());
         copy.setFrequency(this.getFrequency());
         copy.setPhase(this.getPhase());
         copy.setAmplitude(this.getAmplitude());
-        copy.setForm(this.getForm());
         return copy;
     }
     
@@ -68,6 +94,6 @@ public class FormedWaveMathFunction extends WaveMathFunction
     
     String toString(String xName)
     {
-        return "(" + super.toString(xName) + "/|" + super.toString(xName) + "|) * |(|" + super.toString(xName) + ")/amplitude|^form| * amplitude";
+        return "sin( (" + xName + "+(phase/360)) * 2pi * frequency) * amplitude";
     }
 }

@@ -16,11 +16,16 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
-public interface SignaledWaveMutatable<E> extends SignalMutatable<E>
+public class LocalSignal extends Signal
 {
-    public E mutate();
-    public E mutate(Signal newSignal);
-    public E mutate(Signal newSignal, WaveMultidimensionalMathFunction newWave);
+    public LocalSignal()
+    {
+    }
+    
+    protected LocalSignal(LocalSignal originalSignal)
+    {
+        super(originalSignal);
+    }
 }

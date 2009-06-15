@@ -19,12 +19,13 @@
 package com.syncleus.core.dann.examples.test;
 
 
+import com.syncleus.dann.math.DistributedFormedWaveMathFunction;
 import hep.aida.*;
 
 public class Test
 {
     public static void main(String[] args)
-    {
+    {/*
         IAnalysisFactory af = IAnalysisFactory.create();
         ITree tree = af.createTreeFactory().create();
         IDataPointSetFactory dpsf = af.createDataPointSetFactory(tree);
@@ -75,6 +76,6 @@ public class Test
     //plotter.region(0).plot(result.fittedFunction());
 
     //System.out.println("Chi2="+result.quality());   
-
+*/
     }
 }

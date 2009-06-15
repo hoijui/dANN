@@ -16,7 +16,7 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.util;
+package com.syncleus.dann.util;
 
 
 import java.util.Random;

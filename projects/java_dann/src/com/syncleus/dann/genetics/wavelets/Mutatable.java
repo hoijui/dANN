@@ -16,33 +16,9 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
-
-public class WaveDimension
+public interface Mutatable<E>
 {
-    private String dimension;
-    private WaveMultidimensionalMathFunction wave;
-
-
-
-    public WaveDimension(String dimension, WaveMultidimensionalMathFunction wave)
-    {
-        this.dimension = dimension;
-        this.wave = wave;
-    }
-
-
-
-    public String getDimension()
-    {
-        return dimension;
-    }
-
-
-
-    public WaveMultidimensionalMathFunction getWave()
-    {
-        return wave;
-    }
+    public E mutate();
 }

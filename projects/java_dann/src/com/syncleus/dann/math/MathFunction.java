@@ -16,7 +16,7 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.math;
 
 import java.security.InvalidParameterException;
 import java.util.Hashtable;
@@ -72,6 +72,11 @@ public abstract class MathFunction
         
         this.parameters[parameterIndex] = value;
     }
+
+	public void setParameter(String parameterName, double value)
+	{
+		this.setParameter(this.getParameterNameIndex(parameterName), value);
+	}
     
     public double getParameter(int parameterIndex)
     {
@@ -80,6 +85,11 @@ public abstract class MathFunction
         
         return this.parameters[parameterIndex];
     }
+
+	public double getParameter(String parameterName)
+	{
+		return this.getParameter(this.getParameterNameIndex(parameterName));
+	}
     
     public String getParameterName(int parameterIndex)
     {

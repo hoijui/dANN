@@ -16,57 +16,32 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
 
-import com.syncleus.util.UniqueId;
+import com.syncleus.dann.util.UniqueId;
 import java.util.Hashtable;
+import java.util.TreeSet;
 
-public class Cell
+public class Organism
 {
-    private Organism organism;
-    private Nucleus nucleus;
-    private Hashtable<UniqueId, LocalSignal> localSignals = new Hashtable<UniqueId, LocalSignal>();
+    TreeSet<Cell> cells = new TreeSet<Cell>();
+    Hashtable<UniqueId, GlobalSignal> globalSignals = new Hashtable<UniqueId, GlobalSignal>();
     
-//    private LocalSignal mitosisActivator;
-//    private LocalSignal identitySignal;
-    
-    LocalSignal getLocalSignal(UniqueId signalId)
+    public GlobalSignal getGlobalSignal(UniqueId signalId)
     {
-        return this.localSignals.get(signalId);
-    }
-    
-    GlobalSignal getGlobalSignal(UniqueId signalId)
-    {
-        return this.organism.getGlobalSignal(signalId);
-    }
-    
-    Signal updateSignal(Signal oldSignal)
-    {
-        if( oldSignal instanceof GlobalSignal )
-            return oldSignal;
-        
-        LocalSignal oldLocalSignal = (LocalSignal) oldSignal;
-        
-        //if the local signal already exists return the current one else create it
-        LocalSignal newSignal = this.getLocalSignal(oldLocalSignal.getId());
-        if( newSignal != null )
-            return newSignal;
-        else
-            newSignal = new LocalSignal(oldLocalSignal);
-        
-        this.localSignals.put(newSignal.getId(), newSignal);
-        
-        return newSignal;
+        return this.globalSignals.get(signalId);
     }
     
     void preTick()
     {
-        this.nucleus.preTick();
+        for(Cell cell : this.cells)
+            cell.preTick();
     }
     
     void tick()
     {
-        this.nucleus.tick();
+        for(Cell cell : this.cells)
+            cell.tick();
     }
 }

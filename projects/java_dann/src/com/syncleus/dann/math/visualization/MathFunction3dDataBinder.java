@@ -16,9 +16,10 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.math.visualization;
 
 
+import com.syncleus.dann.math.MathFunction;
 import org.freehep.j3d.plot.*;
 import javax.vecmath.*;
 import java.awt.Color;

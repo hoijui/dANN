@@ -19,6 +19,10 @@
 package com.syncleus.core.dann.examples.test;
 
 
+import com.syncleus.dann.genetics.wavelets.GlobalSignal;
+import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet;
+import com.syncleus.dann.genetics.wavelets.Cell;
+import com.syncleus.dann.math.visualization.MathFunction3dDataBinder;
 import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
 import javax.media.j3d.*;

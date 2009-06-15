@@ -16,32 +16,57 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
 
-import com.syncleus.util.UniqueId;
-import java.util.Hashtable;
 import java.util.TreeSet;
 
-public class Organism
+public class Nucleus implements Cloneable
 {
-    TreeSet<Cell> cells = new TreeSet<Cell>();
-    Hashtable<UniqueId, GlobalSignal> globalSignals = new Hashtable<UniqueId, GlobalSignal>();
+    private TreeSet<Chromosome> chromosomes = new TreeSet<Chromosome>();
+    private Cell cell = null;
     
-    public GlobalSignal getGlobalSignal(UniqueId signalId)
+    private Nucleus(Nucleus originalNucleus)
     {
-        return this.globalSignals.get(signalId);
+        this.cell = originalNucleus.cell;
+        for(Chromosome oldChromosome : originalNucleus.chromosomes)
+            this.chromosomes.add(oldChromosome);
     }
+    
+    public Nucleus clone()
+    {
+        Nucleus copy = new Nucleus(this);
+        return copy;
+    }
+
+
+
+    public Nucleus clone(Cell cell)
+    {
+        Nucleus copy = this.clone();
+        copy.setCell(cell);
+        return copy;
+    }
+    
     
     void preTick()
     {
-        for(Cell cell : this.cells)
-            cell.preTick();
+        for(Chromosome chromosome : this.chromosomes)
+            chromosome.preTick();
     }
     
     void tick()
     {
-        for(Cell cell : this.cells)
-            cell.tick();
+        for(Chromosome chromosome : this.chromosomes)
+            chromosome.preTick();
+    }
+
+
+
+    private void setCell(Cell cell)
+    {
+        this.cell = cell;
+        for(Chromosome chromosome : this.chromosomes )
+            chromosome.setCell(cell);
     }
 }

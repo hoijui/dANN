@@ -16,57 +16,33 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.math;
 
 
-import java.util.TreeSet;
-
-public class Nucleus implements Cloneable
+public class WaveDimension
 {
-    private TreeSet<Chromosome> chromosomes = new TreeSet<Chromosome>();
-    private Cell cell = null;
-    
-    private Nucleus(Nucleus originalNucleus)
+    private String dimension;
+    private WaveMultidimensionalMathFunction wave;
+
+
+
+    public WaveDimension(String dimension, WaveMultidimensionalMathFunction wave)
     {
-        this.cell = originalNucleus.cell;
-        for(Chromosome oldChromosome : originalNucleus.chromosomes)
-            this.chromosomes.add(oldChromosome);
-    }
-    
-    public Nucleus clone()
-    {
-        Nucleus copy = new Nucleus(this);
-        return copy;
+        this.dimension = dimension;
+        this.wave = wave;
     }
 
 
 
-    public Nucleus clone(Cell cell)
+    public String getDimension()
     {
-        Nucleus copy = this.clone();
-        copy.setCell(cell);
-        return copy;
-    }
-    
-    
-    void preTick()
-    {
-        for(Chromosome chromosome : this.chromosomes)
-            chromosome.preTick();
-    }
-    
-    void tick()
-    {
-        for(Chromosome chromosome : this.chromosomes)
-            chromosome.preTick();
+        return dimension;
     }
 
 
 
-    private void setCell(Cell cell)
+    public WaveMultidimensionalMathFunction getWave()
     {
-        this.cell = cell;
-        for(Chromosome chromosome : this.chromosomes )
-            chromosome.setCell(cell);
+        return wave;
     }
 }

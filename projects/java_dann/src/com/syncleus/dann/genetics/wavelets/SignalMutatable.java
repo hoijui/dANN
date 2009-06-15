@@ -16,49 +16,10 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
-
-import com.syncleus.util.UniqueId;
-
-public abstract class Signal implements Comparable<Signal>
+public interface SignalMutatable<E> extends Mutatable<E>
 {
-    private double value = 0.0;
-    private UniqueId id = new UniqueId(32);
-    
-    public Signal()
-    {
-    }
-    
-    protected Signal(Signal originalSignal)
-    {
-        value = originalSignal.value;
-        id = originalSignal.id;
-    }
-    
-    public double add(double addValue)
-    {
-        this.value += addValue;
-        return this.value;
-    }
-    
-    public double getValue()
-    {
-        return this.value;
-    }
-    
-    public void setValue(double newValue)
-    {
-        this.value = newValue;
-    }
-    
-    public UniqueId getId()
-    {
-        return this.id;
-    }
-    
-    public int compareTo(Signal compareWith)
-    {
-        return this.getId().compareTo(compareWith.getId());
-    }
+    public E mutate();
+    public E mutate(Signal newSignal);
 }

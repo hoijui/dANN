@@ -16,10 +16,12 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
 
-import com.syncleus.util.UniqueId;
+import com.syncleus.dann.math.WaveletMathFunction;
+import com.syncleus.dann.math.WaveMultidimensionalMathFunction;
+import com.syncleus.dann.util.UniqueId;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeSet;

@@ -16,9 +16,57 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
-public interface Mutatable<E>
+
+import com.syncleus.dann.util.UniqueId;
+import java.util.Hashtable;
+
+public class Cell
 {
-    public E mutate();
+    private Organism organism;
+    private Nucleus nucleus;
+    private Hashtable<UniqueId, LocalSignal> localSignals = new Hashtable<UniqueId, LocalSignal>();
+    
+//    private LocalSignal mitosisActivator;
+//    private LocalSignal identitySignal;
+    
+    LocalSignal getLocalSignal(UniqueId signalId)
+    {
+        return this.localSignals.get(signalId);
+    }
+    
+    GlobalSignal getGlobalSignal(UniqueId signalId)
+    {
+        return this.organism.getGlobalSignal(signalId);
+    }
+    
+    Signal updateSignal(Signal oldSignal)
+    {
+        if( oldSignal instanceof GlobalSignal )
+            return oldSignal;
+        
+        LocalSignal oldLocalSignal = (LocalSignal) oldSignal;
+        
+        //if the local signal already exists return the current one else create it
+        LocalSignal newSignal = this.getLocalSignal(oldLocalSignal.getId());
+        if( newSignal != null )
+            return newSignal;
+        else
+            newSignal = new LocalSignal(oldLocalSignal);
+        
+        this.localSignals.put(newSignal.getId(), newSignal);
+        
+        return newSignal;
+    }
+    
+    void preTick()
+    {
+        this.nucleus.preTick();
+    }
+    
+    void tick()
+    {
+        this.nucleus.tick();
+    }
 }

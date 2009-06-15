@@ -16,15 +16,15 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.test;
+package com.syncleus.dann.genetics.wavelets;
 
-public class LocalSignal extends Signal
+public class GlobalSignal extends Signal
 {
-    public LocalSignal()
+    public GlobalSignal()
     {
     }
     
-    protected LocalSignal(LocalSignal originalSignal)
+    protected GlobalSignal(GlobalSignal originalSignal)
     {
         super(originalSignal);
     }
