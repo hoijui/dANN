@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci.ui;
 
-import com.syncleus.dann.visualization.*;
+import com.syncleus.dann.hyperassociativemap.visualization.*;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
