@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
 
-import com.syncleus.dann.backprop.*;
+import com.syncleus.dann.neural.backprop.*;
 
 
 public class BackPropagateRun implements Runnable

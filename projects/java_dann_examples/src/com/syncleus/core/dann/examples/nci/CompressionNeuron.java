@@ -18,9 +18,9 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
 
-import com.syncleus.dann.*;
-import com.syncleus.dann.backprop.*;
-import com.syncleus.dann.activation.*;
+import com.syncleus.dann.neural.*;
+import com.syncleus.dann.neural.backprop.*;
+import com.syncleus.dann.neural.activation.*;
 
 
 /**

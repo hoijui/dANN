@@ -18,16 +18,13 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
 
-import com.syncleus.dann.*;
-import com.syncleus.dann.backprop.*;
-import com.syncleus.dann.activation.*;
+import com.syncleus.dann.neural.*;
+import com.syncleus.dann.neural.backprop.*;
+import com.syncleus.dann.neural.activation.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 
 /**

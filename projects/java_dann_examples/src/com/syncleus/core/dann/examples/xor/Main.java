@@ -19,8 +19,8 @@
 package com.syncleus.core.dann.examples.xor;
 
 import java.io.*;
-import com.syncleus.dann.backprop.*;
-import com.syncleus.dann.*;
+import com.syncleus.dann.neural.backprop.*;
+import com.syncleus.dann.neural.*;
 
 
 /**
