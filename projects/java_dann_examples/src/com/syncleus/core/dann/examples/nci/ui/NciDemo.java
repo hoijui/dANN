@@ -124,11 +124,6 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
         statusLabel = new javax.swing.JLabel();
         progress = new javax.swing.JProgressBar();
         stopButton = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        quitMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        aboutMenuItem = new javax.swing.JMenuItem();
         jMenuBar2 = new javax.swing.JMenuBar();
         fileMenu1 = new javax.swing.JMenu();
         quitMenuItem1 = new javax.swing.JMenuItem();
@@ -185,7 +180,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 
         separator.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        statusLabel.setText("Ready!");
+        statusLabel.setText("Please make selections!");
 
         progress.setStringPainted(true);
 
@@ -196,48 +191,6 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
                 stopButtonActionPerformed(evt);
             }
         });
-
-        fileMenu.setText("File");
-
-        quitMenuItem.setText("Quit");
-        quitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                quitMenuItemMouseReleased(evt);
-            }
-        });
-        quitMenuItem.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
-            public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
-                quitMenuItemMenuKeyPressed(evt);
-            }
-            public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
-            }
-            public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
-            }
-        });
-        fileMenu.add(quitMenuItem);
-
-        jMenuBar1.add(fileMenu);
-
-        helpMenu.setText("Help");
-
-        aboutMenuItem.setText("About");
-        aboutMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                aboutMenuItemMouseReleased(evt);
-            }
-        });
-        aboutMenuItem.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
-            public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
-                aboutMenuItemMenuKeyPressed(evt);
-            }
-            public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
-            }
-            public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
-            }
-        });
-        helpMenu.add(aboutMenuItem);
-
-        jMenuBar1.add(helpMenu);
 
         fileMenu1.setText("File");
 
@@ -360,7 +313,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(originalImageText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(originalImageSelect))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 468, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 470, Short.MAX_VALUE)
                         .addComponent(statusLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -377,7 +330,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
         );
 
         pack();
-    }//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
 	// </editor-fold>
 
 private void quitMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quitMenuItemMouseReleased
@@ -418,6 +371,8 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
         {
             this.processButton.setEnabled(true);
             this.trainButton.setEnabled(true);
+
+			this.statusLabel.setText("Ready!");
         }
     }
 }//GEN-LAST:event_originalImageSelectActionPerformed
@@ -446,6 +401,7 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
 
 				return;
 			}
+			
             this.brainRunner = new BrainRunner(this, trainingFiles, 0.875, BLOCK_WIDTH, BLOCK_HEIGHT, true);
             this.brainRunnerThread = new Thread(this.brainRunner);
             this.brainRunnerThread.start();
@@ -454,6 +410,8 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
             {
                 this.processButton.setEnabled(true);
                 this.trainButton.setEnabled(true);
+
+				this.statusLabel.setText("Ready!");
             }
         }
         catch (Exception e)
@@ -470,6 +428,8 @@ private void trainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     this.processButton.setEnabled(false);
     this.stopButton.setEnabled(true);
 
+	this.statusLabel.setText("Please wait, training...");
+
     this.currentTrainingCycles = ((Integer) this.trainingCylcesInput.getValue()).intValue();
     this.trainingRemaining = this.currentTrainingCycles;
 
@@ -485,6 +445,8 @@ private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     this.stopButton.setEnabled(false);
 
     this.processing = true;
+
+	this.statusLabel.setText("Please wait, processing...");
 
     this.brainRunner.setSampleImage(this.originalImageLocation);
 }//GEN-LAST:event_processButtonActionPerformed
@@ -565,6 +527,8 @@ private void refreshOriginalImage()
         this.processButton.setEnabled(true);
         this.trainButton.setEnabled(true);
         this.stopButton.setEnabled(false);
+
+		this.statusLabel.setText("Ready!");
     }
     
     public void brainTrainingComplete()
@@ -575,6 +539,8 @@ private void refreshOriginalImage()
         this.processButton.setEnabled(true);
         this.trainButton.setEnabled(true);
         this.stopButton.setEnabled(false);
+
+		this.statusLabel.setText("Ready!");
     }
 
 
