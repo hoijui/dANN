@@ -22,6 +22,7 @@ package com.syncleus.core.dann.examples.test;
 import com.syncleus.dann.genetics.wavelets.GlobalSignal;
 import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet;
 import com.syncleus.dann.genetics.wavelets.Cell;
+import com.syncleus.dann.genetics.*;
 import com.syncleus.dann.math.visualization.MathFunction3dDataBinder;
 import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
@@ -67,15 +68,15 @@ public class Test3d extends JFrame
             //{
             //    if(random.nextDouble() < 0.5)
             //    {
-            processor = processor.mutate(signalX);
+            processor = processor.mutate(1.0, signalX);
             //    }
             //    else
             //    {
-            processor = processor.mutate(signalY);
+            processor = processor.mutate(1.0, signalY);
             //    }
             //}
 
-            processor = processor.mutate();
+            processor = processor.mutate(1.0);
         }
         
         System.out.println("The current equation contains " + processor.getWaveCount() + " waves:");
