@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci.ui;
 
-import com.syncleus.dann.hyperassociativemap.visualization.*;
+import com.syncleus.dann.graph.hyperassociativemap.visualization.*;
 
 
 

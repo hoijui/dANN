@@ -29,8 +29,8 @@ import javax.swing.JFileChooser;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import com.syncleus.dann.hyperassociativemap.*;
-import com.syncleus.dann.hyperassociativemap.visualization.*;
+import com.syncleus.dann.graph.hyperassociativemap.*;
+import com.syncleus.dann.graph.hyperassociativemap.visualization.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 

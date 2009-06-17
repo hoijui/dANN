@@ -19,15 +19,11 @@
 package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
 import com.syncleus.dann.*;
-import com.syncleus.dann.hyperassociativemap.*;
-import com.syncleus.dann.hyperassociativemap.visualization.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-import javax.swing.JFrame;
-import javax.swing.Timer;
+import com.syncleus.dann.graph.hyperassociativemap.*;
+import com.syncleus.dann.graph.hyperassociativemap.visualization.*;
+import java.awt.event.*;
+import java.util.concurrent.*;
+import javax.swing.*;
 
 
 public class ViewMap extends JFrame implements ActionListener

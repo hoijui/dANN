@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci;
 
-import com.syncleus.dann.hyperassociativemap.*;
+import com.syncleus.dann.graph.hyperassociativemap.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
