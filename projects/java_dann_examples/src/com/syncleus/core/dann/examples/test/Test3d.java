@@ -19,9 +19,7 @@
 package com.syncleus.core.dann.examples.test;
 
 
-import com.syncleus.dann.genetics.wavelets.GlobalSignal;
-import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet;
-import com.syncleus.dann.genetics.wavelets.Cell;
+import com.syncleus.dann.genetics.wavelets.*;
 import com.syncleus.dann.genetics.*;
 import com.syncleus.dann.math.visualization.MathFunction3dDataBinder;
 import com.sun.j3d.utils.universe.*;
@@ -58,10 +56,10 @@ public class Test3d extends JFrame
 
     private Canvas3D createUniverse()
     {
-        GlobalSignal signalX = new GlobalSignal();
-        GlobalSignal signalY = new GlobalSignal();
-        GlobalSignal signalZ = new GlobalSignal();
-        SignalProcessingWavelet processor = new SignalProcessingWavelet(new Cell(), signalX, signalZ);
+        GlobalSignalConcentration signalX = new GlobalSignalConcentration();
+        GlobalSignalConcentration signalY = new GlobalSignalConcentration();
+        GlobalSignalConcentration signalZ = new GlobalSignalConcentration();
+        SignalProcessingWavelet processor = new SignalProcessingWavelet(/*new Cell(),*/ signalX, signalZ);
         for(int index = 0;index < 500 ;index++)
         {
             //if(random.nextDouble() < 0.5555556)
