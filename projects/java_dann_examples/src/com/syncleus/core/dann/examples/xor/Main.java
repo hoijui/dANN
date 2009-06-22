@@ -21,6 +21,7 @@ package com.syncleus.core.dann.examples.xor;
 import java.io.*;
 import com.syncleus.dann.neural.backprop.*;
 import com.syncleus.dann.neural.*;
+import com.syncleus.dann.neural.activation.*;
 
 
 /**
@@ -39,7 +40,6 @@ public class Main
 	private static InputBackpropNeuron inputC = null;
 	private static BackpropNeuronGroup firstLayer = null;
 	private static BackpropNeuronGroup secondLayer = null;
-	private static BackpropNeuronGroup thirdLayer = null;
 	private static OutputBackpropNeuron output = null;
 	private static String saveLocation = "default.dann";
 			
@@ -54,11 +54,12 @@ public class Main
 			
 			//Adjust the learning rate
 			double learningRate = 0.0175;
+			ActivationFunction activationFunction = new SineActivationFunction();
 			
 			//creates the first layer which holds all the input neurons
-			inputA = new InputBackpropNeuron(learningRate);
-			inputB = new InputBackpropNeuron(learningRate);
-			inputC = new InputBackpropNeuron(learningRate);
+			inputA = new InputBackpropNeuron(activationFunction, learningRate);
+			inputB = new InputBackpropNeuron(activationFunction, learningRate);
+			inputC = new InputBackpropNeuron(activationFunction, learningRate);
 			firstLayer = new BackpropNeuronGroup();
 			firstLayer.add(inputA);
 			firstLayer.add(inputB);
@@ -66,25 +67,17 @@ public class Main
 
 			//creates the second layer of neurons containing 10 neurons.
 			secondLayer = new BackpropNeuronGroup();
-			for( int lcv = 0; lcv < 10; lcv++ )
+			for( int lcv = 0; lcv < 3; lcv++ )
 			{
-				secondLayer.add(new BackpropNeuron(learningRate));
-			}
-
-			//creates the second layer of neurons containing 10 neurons.
-			thirdLayer = new BackpropNeuronGroup();
-			for( int lcv = 0; lcv < 10; lcv++ )
-			{
-				thirdLayer.add(new BackpropNeuron(learningRate));
+				secondLayer.add(new BackpropNeuron(activationFunction, learningRate));
 			}
 
 			//the output layer is just a single neuron
-			output = new OutputBackpropNeuron(learningRate);
+			output = new OutputBackpropNeuron(activationFunction, learningRate);
 
 			//connects the network in a feedforward fasion.
 			firstLayer.connectAllTo(secondLayer);
-			secondLayer.connectAllTo(thirdLayer);
-			thirdLayer.connectAllTo(output);
+			secondLayer.connectAllTo(output);
 
 			//now that we have created the neural network lets put it to use.
 			System.out.println("dANN nXOR Example");
@@ -126,8 +119,8 @@ public class Main
 						testOutput();
 						break;
 					case 't':
-						System.out.println("How many training cycles [Default: 15000]: ");
-						int cycles = 15000;
+						int cycles = 750;
+						System.out.println("How many training cycles [Default: " + cycles + "]: ");
 						try
 						{
 							cycles = Integer.parseInt(inReader.readLine());
@@ -172,7 +165,6 @@ public class Main
 		{
 			out.writeObject(firstLayer);
 			out.writeObject(secondLayer);
-			out.writeObject(thirdLayer);
 			out.writeObject(output);
 			out.writeObject(inputA);
 			out.writeObject(inputB);
@@ -204,7 +196,6 @@ public class Main
 		{
 			firstLayer = (BackpropNeuronGroup) in.readObject();
 			secondLayer = (BackpropNeuronGroup) in.readObject();
-			thirdLayer = (BackpropNeuronGroup) in.readObject();
 			output = (OutputBackpropNeuron) in.readObject();
 			inputA = (InputBackpropNeuron) in.readObject();
 			inputB = (InputBackpropNeuron) in.readObject();
@@ -222,14 +213,12 @@ public class Main
 	{
 		firstLayer.propagate();
 		secondLayer.propagate();
-		thirdLayer.propagate();
 		output.propagate();
 	}
 	
 	private static void backPropogateTraining()
 	{
 		output.backPropagate();
-		thirdLayer.backPropagate();
 		secondLayer.backPropagate();
 		firstLayer.backPropagate();
 	}
