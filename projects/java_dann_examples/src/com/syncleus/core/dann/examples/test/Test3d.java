@@ -19,9 +19,9 @@
 package com.syncleus.core.dann.examples.test;
 
 
+import com.syncleus.dann.math.visualization.MathFunctionCanvas;
 import com.syncleus.dann.genetics.wavelets.*;
 import com.syncleus.dann.genetics.*;
-import com.syncleus.dann.math.visualization.MathFunction3dDataBinder;
 import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
 import javax.media.j3d.*;
@@ -76,14 +76,14 @@ public class Test3d extends JFrame
 
             processor = processor.mutate(1.0);
         }
-        
+
         System.out.println("The current equation contains " + processor.getWaveCount() + " waves:");
         System.out.println(processor.toString());
 
         processor.preTick();
         processor.tick();
 
-        MathFunction3dDataBinder dataBinder = new MathFunction3dDataBinder(
+		MathFunctionCanvas plotCanvas = new MathFunctionCanvas(
             processor.getWavelet(),
             signalX.getId().toString(),
             signalY.getId().toString(),
@@ -92,11 +92,6 @@ public class Test3d extends JFrame
             -200.0f,
             200.0f,
             200);
-
-
-        SurfacePlot plotCanvas = new SurfacePlot();
-        plotCanvas.setLogZscaling(false);
-        plotCanvas.setData(dataBinder);
 
         return plotCanvas;
     }
