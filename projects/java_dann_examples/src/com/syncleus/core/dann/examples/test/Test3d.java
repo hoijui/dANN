@@ -19,6 +19,7 @@
 package com.syncleus.core.dann.examples.test;
 
 
+import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet.GlobalSignalConcentration;
 import com.syncleus.dann.math.visualization.MathFunctionCanvas;
 import com.syncleus.dann.genetics.wavelets.*;
 import com.syncleus.dann.genetics.*;
