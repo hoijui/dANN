@@ -37,17 +37,23 @@ fi
 
 
 #pull the arguments
-if [ $# -lt 1 ]
+if [ $# -lt 2 ]
 then
 	ARCH_NAME="java_dann-trunk"
 	SVN_ROOT="trunk/projects"
 else
-	ARCH_NAME=$1
+	ARCH_NAME=$2
 	SVN_ROOT="tags/$ARCH_NAME"
 fi
+
+if [ $# -lt 1 ]
+then
+	echo "usage: $0 <output dir> [tag name]"
+else
+	OUT_DIR=$1
+fi
+
 SVN_URL="svn://svn.syncleus.com/dANN"
-
-
 
 
 #check out tag
@@ -59,7 +65,7 @@ svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$ARCH_NAME/java_dann/doc
 svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$ARCH_NAME/java_dann_examples/doc/ChangeLog ./tmp/$ARCH_NAME-co/java_dann_examples
 
 # tarball source distribution
-tar -czvf $ARCH_NAME-src.tar.gz -C ./tmp/ $ARCH_NAME
+tar -czvf $OUT_DIR/$ARCH_NAME-src.tar.gz -C ./tmp/ $ARCH_NAME
 
 #remove dist dir for binary distribution
 rm -rf ./tmp/$ARCH_NAME/dist
@@ -82,10 +88,10 @@ rm -rf ./tmp/$ARCH_NAME/java_dann_examples/src
 rm -rf ./tmp/$ARCH_NAME/java_dann_examples/build/classes
 
 # tarball binary distribution
-tar -czvf $ARCH_NAME-bin.tar.gz -C ./tmp/ $ARCH_NAME
+tar -czvf $OUT_DIR/$ARCH_NAME-bin.tar.gz -C ./tmp/ $ARCH_NAME
 
 # tarball javadocs
-tar -czvf $ARCH_NAME-javadoc.tar.gz -C ./tmp/$ARCH_NAME/java_dann/build/ javadoc/
+tar -czvf $OUT_DIR/$ARCH_NAME-javadoc.tar.gz -C ./tmp/$ARCH_NAME/java_dann/build/ javadoc/
 
 #remove tmp directory
 rm -rf ./tmp
