@@ -42,8 +42,14 @@ then
 	ARCH_NAME="java_dann-trunk"
 	SVN_ROOT="trunk/projects"
 else
-	ARCH_NAME=$3
-	SVN_ROOT="tags/$ARCH_NAME"
+	if [ $# -lt 4 ]
+	then
+		ARCH_NAME=$3
+		SVN_ROOT="tags/$ARCH_NAME"
+	else
+		ARCH_NAME=$4
+		SVN_ROOT="$3/$ARCH_NAME"
+	fi
 fi
 
 if [ $# -lt 2 ]
@@ -55,7 +61,7 @@ fi
 
 if [ $# -lt 1 ]
 then
-	echo "usage: $0 <output dir> [revision] [tag name]"
+	echo "usage: $0 <output dir> [revision] [tags|branches] [tag/branch name]"
 	exit 1
 else
 	OUT_DIR=$1
