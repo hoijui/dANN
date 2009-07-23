@@ -1,12 +1,5 @@
 #!/bin/sh
 
-#check to make sure it has an argument
-if [ $# -lt 1 ]
-then
-	echo "must specify the directory in tags to package for distribution."
-	exit 1
-fi
-
 if hash svn2cl 2> /dev/null; then
 	echo "svn2cl found, good..."
 else
@@ -43,45 +36,58 @@ else
 fi
 
 
+#pull the arguments
+if [ $# -lt 1 ]
+then
+	ARCH_NAME="java_dann-trunk"
+	SVN_ROOT="trunk/projects"
+else
+	ARCH_NAME=$1
+	SVN_ROOT="tags/$ARCH_NAME"
+fi
+SVN_URL="svn://svn.syncleus.com/dANN"
+
+
+
 
 #check out tag
-svn co svn://svn.syncleus.com/dANN/tags/$1 ./tmp/$1-co
-svn export svn://svn.syncleus.com/dANN/tags/$1 ./tmp/$1
+svn co $SVN_URL/$SVN_ROOT ./tmp/$ARCH_NAME-co
+svn export $SVN_URL/$SVN_ROOT ./tmp/$ARCH_NAME
 
 #Generate ChangeLog
-svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$1/java_dann/doc/ChangeLog ./tmp/$1-co/java_dann
-svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$1/java_dann_examples/doc/ChangeLog ./tmp/$1-co/java_dann_examples
+svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$ARCH_NAME/java_dann/doc/ChangeLog ./tmp/$ARCH_NAME-co/java_dann
+svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$ARCH_NAME/java_dann_examples/doc/ChangeLog ./tmp/$ARCH_NAME-co/java_dann_examples
 
 # tarball source distribution
-tar -czvf $1-src.tar.gz -C ./tmp/ $1
+tar -czvf $ARCH_NAME-src.tar.gz -C ./tmp/ $ARCH_NAME
 
 #remove dist dir for binary distribution
-rm -rf ./tmp/$1/dist
+rm -rf ./tmp/$ARCH_NAME/dist
 
 #compile core library
-ant -buildfile ./tmp/$1/java_dann/build.xml build-all javadoc
+ant -buildfile ./tmp/$ARCH_NAME/java_dann/build.xml build-all javadoc
 
 #clean core library to include only files for binary distribution
-rm -rf ./tmp/$1/java_dann/src
-rm -rf ./tmp/$1/java_dann/build/classes
-rm -rf ./tmp/$1/java_dann/build/coverage
-rm -rf ./tmp/$1/java_dann/build/tests
-rm -f ./tmp/$1/java_dann/cobertura.ser
+rm -rf ./tmp/$ARCH_NAME/java_dann/src
+rm -rf ./tmp/$ARCH_NAME/java_dann/build/classes
+rm -rf ./tmp/$ARCH_NAME/java_dann/build/coverage
+rm -rf ./tmp/$ARCH_NAME/java_dann/build/tests
+rm -f ./tmp/$ARCH_NAME/java_dann/cobertura.ser
 
 #compile examples application
-ant -buildfile ./tmp/$1/java_dann_examples/build.xml all
+ant -buildfile ./tmp/$ARCH_NAME/java_dann_examples/build.xml all
 
 #clean examples application to include only files for binary distribution
-rm -rf ./tmp/$1/java_dann_examples/src
-rm -rf ./tmp/$1/java_dann_examples/build/classes
+rm -rf ./tmp/$ARCH_NAME/java_dann_examples/src
+rm -rf ./tmp/$ARCH_NAME/java_dann_examples/build/classes
 
 # tarball binary distribution
-tar -czvf $1-bin.tar.gz -C ./tmp/ $1
+tar -czvf $ARCH_NAME-bin.tar.gz -C ./tmp/ $ARCH_NAME
 
 # tarball javadocs
-tar -czvf $1-javadoc.tar.gz -C ./tmp/$1/java_dann/build/ javadoc/
+tar -czvf $ARCH_NAME-javadoc.tar.gz -C ./tmp/$ARCH_NAME/java_dann/build/ javadoc/
 
 #remove tmp directory
 rm -rf ./tmp
 
-exit 0
+#exit 0
