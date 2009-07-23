@@ -7,6 +7,43 @@ then
 	exit 1
 fi
 
+if hash svn2cl 2> /dev/null; then
+	echo "svn2cl found, good..."
+else
+	echo "svn2cl must be on your path"
+	exit 1
+fi
+
+if hash svn 2> /dev/null; then
+	echo "svn found, good..."
+else
+	echo "svn must be on your path"
+	exit 1
+fi
+
+if hash tar 2> /dev/null; then
+	echo "tar found, good..."
+else
+	echo "tar must be on your path"
+	exit 1
+fi
+
+if hash ant 2> /dev/null; then
+	echo "ant found, good..."
+else
+	echo "ant must be on your path"
+	exit 1
+fi
+
+if hash rm 2> /dev/null; then
+	echo "rm found, good..."
+else
+	echo "rm must be on your path"
+	exit 1
+fi
+
+
+
 #check out tag
 svn co svn://svn.syncleus.com/dANN/tags/$1 ./tmp/$1-co
 svn export svn://svn.syncleus.com/dANN/tags/$1 ./tmp/$1
@@ -35,8 +72,8 @@ rm -f ./tmp/$1/java_dann/cobertura.ser
 ant -buildfile ./tmp/$1/java_dann_examples/build.xml all
 
 #clean examples application to include only files for binary distribution
-rm -rf ./tmp/%1/java_dann_examples/src
-rm -rf ./tmp/%1/java_dann_examples/build/classes
+rm -rf ./tmp/$1/java_dann_examples/src
+rm -rf ./tmp/$1/java_dann_examples/build/classes
 
 # tarball binary distribution
 tar -czvf $1-bin.tar.gz -C ./tmp/ $1
