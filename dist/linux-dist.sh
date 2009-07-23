@@ -1,40 +1,34 @@
 #!/bin/sh
-
 if hash svn2cl 2> /dev/null; then
 	echo "svn2cl found, good..."
 else
 	echo "svn2cl must be on your path"
 	exit 1
 fi
-
 if hash svn 2> /dev/null; then
 	echo "svn found, good..."
 else
 	echo "svn must be on your path"
 	exit 1
 fi
-
 if hash tar 2> /dev/null; then
 	echo "tar found, good..."
 else
 	echo "tar must be on your path"
 	exit 1
 fi
-
 if hash ant 2> /dev/null; then
 	echo "ant found, good..."
 else
 	echo "ant must be on your path"
 	exit 1
 fi
-
 if hash rm 2> /dev/null; then
 	echo "rm found, good..."
 else
 	echo "rm must be on your path"
 	exit 1
 fi
-
 echo ""
 
 
