@@ -37,18 +37,26 @@ fi
 
 
 #pull the arguments
-if [ $# -lt 2 ]
+if [ $# -lt 3 ]
 then
 	ARCH_NAME="java_dann-trunk"
 	SVN_ROOT="trunk/projects"
 else
-	ARCH_NAME=$2
+	ARCH_NAME=$3
 	SVN_ROOT="tags/$ARCH_NAME"
+fi
+
+if [ $# -lt 2 ]
+then
+	REV=HEAD
+else
+	REV=$2
 fi
 
 if [ $# -lt 1 ]
 then
-	echo "usage: $0 <output dir> [tag name]"
+	echo "usage: $0 <output dir> [revision] [tag name]"
+	exit 1
 else
 	OUT_DIR=$1
 fi
@@ -57,8 +65,8 @@ SVN_URL="svn://svn.syncleus.com/dANN"
 
 
 #check out tag
-svn co $SVN_URL/$SVN_ROOT ./tmp/$ARCH_NAME-co
-svn export $SVN_URL/$SVN_ROOT ./tmp/$ARCH_NAME
+svn co -r $REV $SVN_URL/$SVN_ROOT ./tmp/$ARCH_NAME-co
+svn export -r $REV $SVN_URL/$SVN_ROOT ./tmp/$ARCH_NAME
 
 #Generate ChangeLog
 svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$ARCH_NAME/java_dann/doc/ChangeLog ./tmp/$ARCH_NAME-co/java_dann
