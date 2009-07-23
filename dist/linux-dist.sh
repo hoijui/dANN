@@ -35,6 +35,8 @@ else
 	exit 1
 fi
 
+echo ""
+
 
 #pull the arguments
 if [ $# -lt 3 ]
