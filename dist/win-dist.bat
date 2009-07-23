@@ -49,6 +49,11 @@ cd .\tmp
 zip -r9 ..\%1-bin.zip .\%1
 cd ..
 
+REM ZIP up javadocs
+cd .\tmp\%1\java_dann\build\
+zip -r9 ..\%1-javadoc.zip .\javadoc
+cd ..\..\..\..
+
 REM remove the checked out files
 rmdir /S /Q .\tmp
 

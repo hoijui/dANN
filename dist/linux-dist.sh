@@ -78,6 +78,9 @@ rm -rf ./tmp/$1/java_dann_examples/build/classes
 # tarball binary distribution
 tar -czvf $1-bin.tar.gz -C ./tmp/ $1
 
+# tarball javadocs
+tar -czvf $1-javadoc.tar.gz -C ./tmp/$1/java_dann/build/ javadoc/
+
 #remove tmp directory
 rm -rf ./tmp
 
