@@ -29,7 +29,24 @@ else
 	echo "rm must be on your path"
 	exit 1
 fi
+if hash zip 2> /dev/null; then
+	echo "zip found, good..."
+else
+	echo "zip must be on your path"
+	exit 1
+fi
 echo ""
+
+
+if [ $# -lt 1 ]
+then
+	echo "usage: $0 <output dir> [revision] [tags|branches] [tag/branch name]"
+	echo "       $0 <output dir> [revision] [tag name]"
+	exit 1
+else
+	OUT_DIR=$1
+fi
+
 
 
 #pull the arguments
@@ -55,15 +72,6 @@ else
 	REV=$2
 fi
 
-if [ $# -lt 1 ]
-then
-	echo "usage: $0 <output dir> [revision] [tags|branches] [tag/branch name]"
-	echo "       $0 <output dir> [revision] [tag name]"
-	exit 1
-else
-	OUT_DIR=$1
-fi
-
 SVN_URL="svn://svn.syncleus.com/dANN"
 
 
@@ -77,6 +85,10 @@ svn2cl -i --group-by-day --authors authors.xml -o ./tmp/$ARCH_NAME/java_dann_exa
 
 # tarball source distribution
 tar -czvf $OUT_DIR/$ARCH_NAME-src.tar.gz -C ./tmp/ $ARCH_NAME
+#now produce zip file
+cd ./tmp
+zip -r9 ../$ARCH_NAME-src.zip ./$ARCH_NAME
+cd ..
 
 #remove dist dir for binary distribution
 rm -rf ./tmp/$ARCH_NAME/dist
@@ -100,9 +112,17 @@ rm -rf ./tmp/$ARCH_NAME/java_dann_examples/build/classes
 
 # tarball binary distribution
 tar -czvf $OUT_DIR/$ARCH_NAME-bin.tar.gz -C ./tmp/ $ARCH_NAME
+#now produce zip file
+cd ./tmp
+zip -r9 ../$ARCH_NAME-bin.zip ./$ARCH_NAME
+cd ..
 
 # tarball javadocs
 tar -czvf $OUT_DIR/$ARCH_NAME-javadoc.tar.gz -C ./tmp/$ARCH_NAME/java_dann/build/ javadoc/
+#now produce zip file
+cd ./tmp/$ARCH_NAME/java_dann/build
+zip -r9 ../../../../$ARCH_NAME-javadoc.zip ./javadoc
+cd ../../../..
 
 #remove tmp directory
 rm -rf ./tmp
