@@ -69,6 +69,20 @@
             </manifest>
         </jar>
     </target>
+    <target name="compile-warnings">
+        <delete dir="build/classes"/>
+        <mkdir dir="build/classes"/>
+        <javac destdir="build/classes" classpathref="classpath" debug="true">
+            <compilerarg value="-Xlint"/>
+            <src path="src/com"/>
+        </javac>
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+            </manifest>
+        </jar>
+    </target>
     <target name="all">
         <antcall target="clean"/>
         <antcall target="javadoc"/>
