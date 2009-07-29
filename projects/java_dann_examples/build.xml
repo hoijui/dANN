@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="dANN Examples" default="all" basedir=".">
 	<taskdef name="lint4j" classname="com.jutils.lint4j.ant.Lint4jAntTask">
-		<classpath><pathelement location="lib/lint4j.jar"/></classpath>
+		<classpath>
+			<pathelement location="lib/lint/lint4j.jar"/>
+		</classpath>
 	</taskdef>
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
 		<classpath>
@@ -71,6 +73,7 @@
 				<fileset dir="lib/">
 					<include name="**/*.jar" />
 				</fileset>
+				<pathelement location="../java_dann/build/jar/dann.jar"/>
 			</classpath>
 			<formatters>
 				<formatter type="text" />
@@ -209,7 +212,7 @@
 		</pmd>
 	</target>
 
-	<target name="tests-nocoverage">
+	<target name="tests">
 		<mkdir dir="build/tests"/>
 		<junit printsummary="yes" haltonfailure="no" showoutput="yes" >
 			<classpath>
