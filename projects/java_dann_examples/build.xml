@@ -40,9 +40,13 @@
         <fileset dir="lib" includes="**/*.jar"/>
         <fileset dir="../java_dann/build/jar" includes="**/dann.jar"/>
     </path>
+
+
     <target name="clean">
         <delete dir="build"/>
     </target>
+
+
     <target name="javadoc">
         <mkdir dir="build/javadoc"/>
         <delete includeemptydirs="true">
@@ -52,6 +56,8 @@
             <fileset dir="src/" includes="**/*.java"/>
         </javadoc>
     </target>
+
+
 	<target name="lint" description="Perform lint checks">
 		<mkdir dir="build/lint"/>
 		<lint4j packages="com.syncleus.*" level="5">
@@ -72,10 +78,11 @@
 			</formatters>
 		</lint4j>
 	</target>
+
+
     <target name="compile">
-        <delete dir="build/classes"/>
         <mkdir dir="build/classes"/>
-        <javac destdir="build/classes" classpathref="classpath" debug="true">
+        <javac destdir="build/classes" classpathref="classpath" debug="true" excludes="com/syncleus/tests/**">
             <compilerarg value="-Xlint:deprecation"/>
             <compilerarg value="-Xlint:unchecked"/>
             <src path="src/com"/>
@@ -86,11 +93,25 @@
                 <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
             </manifest>
         </jar>
+		
+        <mkdir dir="build/tests/classes"/>
+        <javac destdir="build/tests/classes" classpathref="classpath" debug="true">
+            <compilerarg value="-Xlint:deprecation"/>
+            <compilerarg value="-Xlint:unchecked"/>
+            <src path="src/com"/>
+        </javac>
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/dann_examples-tests.jar" basedir="build/tests/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+            </manifest>
+        </jar>
     </target>
+
+
     <target name="compile-warnings">
-        <delete dir="build/classes"/>
         <mkdir dir="build/classes"/>
-        <javac destdir="build/classes" classpathref="classpath" debug="true">
+        <javac destdir="build/classes" classpathref="classpath" debug="true" excludes="com/syncleus/tests/**">
             <compilerarg value="-Xlint"/>
             <src path="src/com"/>
         </javac>
@@ -100,7 +121,20 @@
                 <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
             </manifest>
         </jar>
+
+        <mkdir dir="build/tests/classes"/>
+        <javac destdir="build/tests/classes" classpathref="classpath" debug="true">
+            <compilerarg value="-Xlint"/>
+            <src path="src/com"/>
+        </javac>
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/dann_examples-tests.jar" basedir="build/tests/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+            </manifest>
+        </jar>
     </target>
+
     <target name="all">
         <antcall target="clean"/>
         <antcall target="javadoc"/>
@@ -173,6 +207,24 @@
 				<include name="**/*.java"/>
 			</fileset>
 		</pmd>
+	</target>
+
+	<target name="tests-nocoverage">
+		<mkdir dir="build/tests"/>
+		<junit printsummary="yes" haltonfailure="no" showoutput="yes" >
+			<classpath>
+				<path refid="classpath"/>
+				<pathelement location="build/jar/dann_examples-tests.jar"/>
+				<pathelement location="../java_dann/build/jar/dann.jar"/>
+			</classpath>
+			<formatter type="xml"/>
+			<batchtest fork="yes" todir="build/tests">
+				<fileset dir="src">
+					<include name="com/syncleus/tests/**/Test*.java"/>
+					<exclude name="**/AllTests.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
 	</target>
 
 </project>
