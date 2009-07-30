@@ -23,7 +23,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -51,7 +50,8 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 
 	private Timer progressTimer = new Timer(100, this);
 
-    public ColorMapDemo() {
+    public ColorMapDemo()
+	{
         initComponents();
 
 		this.iterationsSpinner.setValue(INITIAL_ITERATIONS);
@@ -178,9 +178,10 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
         jMenu1 = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SOM Color Map Demo");
 
         jLabel1.setText("Training Iterations:");
 
@@ -213,8 +214,13 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 
         jMenu2.setText("Help");
 
-        jMenuItem2.setText("About");
-        jMenu2.add(jMenuItem2);
+        aboutMenuItem.setText("About");
+        aboutMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                aboutMenuItemMouseReleased(evt);
+            }
+        });
+        jMenu2.add(aboutMenuItem);
 
         jMenuBar1.add(jMenu2);
 
@@ -307,6 +313,12 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 		this.trainDisplayButton.setEnabled(false);
 	}//GEN-LAST:event_trainDisplayButtonActionPerformed
 
+	private void aboutMenuItemMouseReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_aboutMenuItemMouseReleased
+	{//GEN-HEADEREND:event_aboutMenuItemMouseReleased
+        AboutDialog about = new AboutDialog(this, true);
+        about.setVisible(true);
+	}//GEN-LAST:event_aboutMenuItemMouseReleased
+
     public static void main(String args[])
 	{
         java.awt.EventQueue.invokeLater(new Runnable()
@@ -319,6 +331,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JComboBox dimentionalityComboBox;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JSpinner iterationsSpinner;
@@ -328,7 +341,6 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JSpinner learningRateSpinner;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JButton trainDisplayButton;
