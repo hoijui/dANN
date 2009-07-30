@@ -67,7 +67,7 @@ public class AboutDialog extends JDialog
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
         jTextArea1.setRows(5);
-        jTextArea1.setText("Instructions:\n\nFirst select the number of iterations to train train the som. Next select the\ninitial learning rate for training. Finally choose 1D or 2d output lattice.\n\nNow when you click \"Train & Display\" it will train a new SOM and render the\noutput lattice colors. If the SOM was successful colors should be displayed as\nsmoothly blended colors in 1D or 2D. If the colors do not render properly\nexperiment with different values.");
+        jTextArea1.setText("Instructions:\n\nFirst select the number of iterations to train train the som. Next select the\ninitial learning rate for training. Finally choose 1D or 2D output lattice.\n\nNow when you click \"Train & Display\" it will train a new SOM and render the\noutput lattice colors. If the SOM was successful colors should be displayed as\nsmoothly blended colors in 1D or 2D. If the colors do not render properly\nexperiment with different values.");
         jTextArea1.setWrapStyleWord(true);
         jScrollPane1.setViewportView(jTextArea1);
 

@@ -100,7 +100,7 @@
             <Property name="columns" type="int" value="20"/>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="Instructions:&#xa;&#xa;First select the number of iterations to train train the som. Next select the&#xa;initial learning rate for training. Finally choose 1D or 2d output lattice.&#xa;&#xa;Now when you click &quot;Train &amp; Display&quot; it will train a new SOM and render the&#xa;output lattice colors. If the SOM was successful colors should be displayed as&#xa;smoothly blended colors in 1D or 2D. If the colors do not render properly&#xa;experiment with different values."/>
+            <Property name="text" type="java.lang.String" value="Instructions:&#xa;&#xa;First select the number of iterations to train train the som. Next select the&#xa;initial learning rate for training. Finally choose 1D or 2D output lattice.&#xa;&#xa;Now when you click &quot;Train &amp; Display&quot; it will train a new SOM and render the&#xa;output lattice colors. If the SOM was successful colors should be displayed as&#xa;smoothly blended colors in 1D or 2D. If the colors do not render properly&#xa;experiment with different values."/>
             <Property name="wrapStyleWord" type="boolean" value="true"/>
           </Properties>
         </Component>
