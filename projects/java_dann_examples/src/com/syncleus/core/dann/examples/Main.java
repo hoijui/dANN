@@ -45,6 +45,10 @@ public class Main
                     com.syncleus.core.dann.examples.xor.Main.main(newArgs);
                 else if (selectorArg.compareTo("--nci") == 0)
                     com.syncleus.core.dann.examples.nci.ui.NciDemo.main(newArgs);
+                else if (selectorArg.compareTo("--colormap") == 0)
+                    com.syncleus.core.dann.examples.colormap.ColorMapDemo.main(newArgs);
+                else if (selectorArg.compareTo("--hyperassociativemap") == 0)
+                    com.syncleus.core.dann.examples.hyperassociativemap.visualization.ViewMap.main(newArgs);
 
                 return;
             }
@@ -61,6 +65,7 @@ public class Main
                     System.out.println("X) XOR Example");
                     System.out.println("I) Image Compression Example w/GUI");
                     System.out.println("V) Hyperassociative Map Visualizations");
+					System.out.println("C) SOM Color Map");
                     System.out.println("H) Command Line Help");
                     System.out.println("Q) quit");
                     System.out.println("\tEnter command: ");
@@ -82,6 +87,9 @@ public class Main
 
                 switch (currentCommand)
                 {
+				case 'c':
+					com.syncleus.core.dann.examples.colormap.ColorMapDemo.main(newArgs);
+					break;
                 case 'x':
                     com.syncleus.core.dann.examples.xor.Main.main(newArgs);
                     break;
