@@ -72,7 +72,11 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="dimentionalityComboBox" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="trainDisplayButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="progressBar" pref="332" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="trainDisplayButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -91,7 +95,10 @@
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="trainDisplayButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="progressBar" max="32767" attributes="1"/>
+                  <Component id="trainDisplayButton" alignment="1" max="32767" attributes="1"/>
+              </Group>
               <EmptySpace pref="219" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -134,6 +141,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trainDisplayButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JProgressBar" name="progressBar">
+      <Properties>
+        <Property name="stringPainted" type="boolean" value="true"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

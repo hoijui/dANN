@@ -21,27 +21,114 @@ package com.syncleus.core.dann.examples.colormap;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Time;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.Timer;
 
-public class ColorMapDemo extends javax.swing.JFrame
+public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 {
-	private SpinnerNumberModel iterationsModel = new SpinnerNumberModel(200, 1, 100000,1000);
-	private SpinnerNumberModel learningRateModel = new SpinnerNumberModel(0.5, 0.00000001, 1.0, 0.01);
+	private SpinnerNumberModel iterationsModel = new SpinnerNumberModel(INITIAL_ITERATIONS, 1, 10000,100);
+	private SpinnerNumberModel learningRateModel = new SpinnerNumberModel(INITIAL_LEARNING_RATE, 0.01, 1.0, 0.01);
 
 	private Color[] color1d;
 	private Color[][] color2d;
 
+	private Future<Color[]> future1d;
+	private Future<Color[][]> future2d;
+
+	private ColorMap1dCallable callable1d;
+	private ColorMap2dCallable callable2d;
+
+	private static final int INITIAL_ITERATIONS = 200;
+	private static final double INITIAL_LEARNING_RATE = 0.5;
+
+	private ExecutorService executor = Executors.newFixedThreadPool(1);
+
+	private Timer progressTimer = new Timer(100, this);
+
     public ColorMapDemo() {
         initComponents();
 
-		this.iterationsSpinner.setValue(200);
+		this.iterationsSpinner.setValue(INITIAL_ITERATIONS);
 		this.iterationsSpinner.setModel(this.iterationsModel);
-		this.learningRateSpinner.setValue(0.5);
+		this.learningRateSpinner.setValue(INITIAL_LEARNING_RATE);
 		this.learningRateSpinner.setModel(this.learningRateModel);
 		this.setResizable(false);
 		this.setSize(550, 150);
-		this.color1d = ColorMapper.mapColor1d(200, 0.5, 500);
+		this.color1d = ColorMapper.mapColor1d(INITIAL_ITERATIONS, INITIAL_LEARNING_RATE, 500);
     }
+
+	public void actionPerformed(ActionEvent evt)
+	{
+		if(this.callable1d != null)
+		{
+			this.progressBar.setMaximum(this.callable1d.getIterations());
+			this.progressBar.setMinimum(0);
+			this.progressBar.setValue(this.callable1d.getProgress());
+		}
+		else if(this.callable2d != null)
+		{
+			this.progressBar.setMaximum(this.callable2d.getIterations());
+			this.progressBar.setMinimum(0);
+			this.progressBar.setValue(this.callable2d.getProgress());
+		}
+
+
+		if(this.future1d != null)
+		{
+			if(! this.future1d.isDone())
+				return;
+			try
+			{
+				this.color2d = null;
+				this.color1d = this.future1d.get();
+				this.setSize(550, 150);
+				this.repaint();
+
+				this.future1d = null;
+				this.future2d = null;
+				this.progressTimer.stop();
+				this.trainDisplayButton.setEnabled(true);
+
+			}
+			catch(Exception caughtException)
+			{
+				throw new AssertionError("call to get shouldnt fail");
+			}
+		}
+		else if(this.future2d != null)
+		{
+			if(! this.future2d.isDone())
+				return;
+			try
+			{
+				this.color1d = null;
+				this.color2d = this.future2d.get();
+				this.setSize(550, 450);
+				this.repaint();
+
+				this.future1d = null;
+				this.future2d = null;
+				this.progressTimer.stop();
+				this.trainDisplayButton.setEnabled(true);
+			}
+			catch(Exception caughtException)
+			{
+				throw new AssertionError("call to get shouldnt fail");
+			}
+		}
+		else
+		{
+			this.progressTimer.stop();
+			this.trainDisplayButton.setEnabled(true);
+		}
+	}
+
 
 	@Override
 	public void paint(Graphics graphics)
@@ -86,6 +173,7 @@ public class ColorMapDemo extends javax.swing.JFrame
         jLabel3 = new javax.swing.JLabel();
         dimentionalityComboBox = new javax.swing.JComboBox();
         trainDisplayButton = new javax.swing.JButton();
+        progressBar = new javax.swing.JProgressBar();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -108,6 +196,8 @@ public class ColorMapDemo extends javax.swing.JFrame
                 trainDisplayButtonActionPerformed(evt);
             }
         });
+
+        progressBar.setStringPainted(true);
 
         jMenu1.setText("File");
 
@@ -149,7 +239,10 @@ public class ColorMapDemo extends javax.swing.JFrame
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dimentionalityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(trainDisplayButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(trainDisplayButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -164,7 +257,9 @@ public class ColorMapDemo extends javax.swing.JFrame
                     .addComponent(learningRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(trainDisplayButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(trainDisplayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(219, Short.MAX_VALUE))
         );
 
@@ -183,23 +278,41 @@ public class ColorMapDemo extends javax.swing.JFrame
 
 		if( this.dimentionalityComboBox.getSelectedIndex() == 0 )
 		{
-			this.color2d = null;
-			this.color1d = ColorMapper.mapColor1d(iterations, learningRate, 500);
-			this.setSize(550, 150);
+			if(this.future1d != null)
+				this.future1d.cancel(true);
+			if(this.future2d != null)
+				this.future2d.cancel(true);
+
+			this.callable2d = null;
+			this.future2d = null;
+
+			this.callable1d = new ColorMap1dCallable(iterations, learningRate, 500);
+			this.future1d = executor.submit(this.callable1d);
 		}
 		else
 		{
-			this.color1d = null;
-			this.color2d = ColorMapper.mapColor2d(iterations, learningRate, 50, 50);
-			this.setSize(550, 450);
+			if(this.future1d != null)
+				this.future1d.cancel(true);
+			if(this.future2d != null)
+				this.future2d.cancel(true);
+
+			this.callable1d = null;
+			this.future1d = null;
+
+			this.callable2d = new ColorMap2dCallable(iterations, learningRate, 50, 50);
+			this.future2d = executor.submit(this.callable2d);
 		}
 
-		this.repaint();
+		this.progressTimer.start();
+		this.trainDisplayButton.setEnabled(false);
 	}//GEN-LAST:event_trainDisplayButtonActionPerformed
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+    public static void main(String args[])
+	{
+        java.awt.EventQueue.invokeLater(new Runnable()
+		{
+            public void run()
+			{
                 new ColorMapDemo().setVisible(true);
             }
         });
@@ -217,6 +330,7 @@ public class ColorMapDemo extends javax.swing.JFrame
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JSpinner learningRateSpinner;
+    private javax.swing.JProgressBar progressBar;
     private javax.swing.JButton trainDisplayButton;
     // End of variables declaration//GEN-END:variables
 
