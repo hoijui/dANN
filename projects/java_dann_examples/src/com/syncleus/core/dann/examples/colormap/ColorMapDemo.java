@@ -59,7 +59,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 		this.learningRateSpinner.setValue(INITIAL_LEARNING_RATE);
 		this.learningRateSpinner.setModel(this.learningRateModel);
 		this.setResizable(false);
-		this.setSize(550, 150);
+		this.setSize(550, 175);
 		this.color1d = (new ColorMap1dCallable(INITIAL_ITERATIONS, INITIAL_LEARNING_RATE, 500)).call();
     }
 
@@ -87,7 +87,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 			{
 				this.color2d = null;
 				this.color1d = this.future1d.get();
-				this.setSize(550, 150);
+				this.setSize(550, 175);
 				this.repaint();
 
 				this.future1d = null;
@@ -109,7 +109,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 			{
 				this.color1d = null;
 				this.color2d = this.future2d.get();
-				this.setSize(550, 450);
+				this.setSize(550, 650);
 				this.repaint();
 
 				this.future1d = null;
@@ -156,7 +156,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 					graphics2d.setColor(color);
 					int xPos = colorXIndex*10;
 					int yPos = colorYIndex*10;
-					graphics2d.fillRect(5+xPos, 125+yPos, 15+xPos, 135+yPos);
+					graphics2d.fillRect(25+xPos, 125+yPos, 10, 10);
 				}
 			}
 		}
