@@ -60,7 +60,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 		this.learningRateSpinner.setModel(this.learningRateModel);
 		this.setResizable(false);
 		this.setSize(550, 150);
-		this.color1d = ColorMapper.mapColor1d(INITIAL_ITERATIONS, INITIAL_LEARNING_RATE, 500);
+		this.color1d = (new ColorMap1dCallable(INITIAL_ITERATIONS, INITIAL_LEARNING_RATE, 500)).call();
     }
 
 	public void actionPerformed(ActionEvent evt)
