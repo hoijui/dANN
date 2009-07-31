@@ -226,7 +226,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
 
 
         //propogate the output
-        this.propogate();
+        this.propagate();
 
 
         int[] finalRgbArray = new int[xSize * ySize];
@@ -259,7 +259,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
             return uncompressedImage;
 
         //now back propogate
-        this.backPropogate();
+        this.backPropagate();
 
         //all done
         return uncompressedImage;
@@ -302,7 +302,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
 
 
         //propogate the output
-		this.propogate();
+		this.propagate();
 
         int compressedDataIndex = 0;
         byte[] compressedData = new byte[this.compressedNeurons.size()];
@@ -326,7 +326,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
 
         this.compressionInputsSet = true;
 
-		this.propogate();
+		this.propagate();
 
         int[] finalRgbArray = new int[xSize * ySize];
         BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);

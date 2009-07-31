@@ -220,12 +220,12 @@ public class Main
 	
 	private static void propogateOutput()
 	{
-		brain.propogate();
+		brain.propagate();
 	}
 	
 	private static void backPropogateTraining()
 	{
-		brain.backPropogate();
+		brain.backPropagate();
 	}
 	
 	private static void setCurrentInput(double[] inputToSet)
