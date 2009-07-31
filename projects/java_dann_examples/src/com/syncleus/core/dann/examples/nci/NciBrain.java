@@ -20,11 +20,11 @@ package com.syncleus.core.dann.examples.nci;
 
 import com.syncleus.dann.neural.*;
 import com.syncleus.dann.neural.backprop.*;
+import com.syncleus.dann.neural.backprop.brain.*;
 import com.syncleus.dann.neural.activation.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Set;
-import java.util.concurrent.*;
 
 
 /**
@@ -32,81 +32,19 @@ import java.util.concurrent.*;
  * @author Syncleus, Inc.
  * @since 1.0
  */
-public class NciBrain extends AbstractLocalBrain implements java.io.Serializable
+public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements java.io.Serializable
 {
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
     private double actualCompression = 0.0;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
     private int xSize = 0;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
     private int ySize = 0;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
     private InputBackpropNeuron[][][] inputNeurons = null;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private BackpropNeuronGroup inputLayer = new BackpropNeuronGroup();
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private BackpropNeuron[] inputHiddenNeurons = null;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private BackpropNeuronGroup inputHiddenLayer = new BackpropNeuronGroup();
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private CompressionNeuron[] compressedNeurons = null;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private BackpropNeuronGroup compressedLayer = new BackpropNeuronGroup();
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private BackpropNeuron[] outputHiddenNeurons = null;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private BackpropNeuronGroup outputHiddenLayer = new BackpropNeuronGroup();
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
+    private ArrayList<CompressionNeuron> compressedNeurons = new ArrayList<CompressionNeuron>();
     private OutputBackpropNeuron[][][] outputNeurons = null;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private BackpropNeuronGroup outputLayer = new BackpropNeuronGroup();
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
     private boolean learning = true;
     private static final int CHANNELS = 3;
-    private ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
     private boolean compressionInputsSet = false;
+	private ActivationFunction activationFunction;
+	private double learningRate;
 
 
 
@@ -118,82 +56,50 @@ public class NciBrain extends AbstractLocalBrain implements java.io.Serializable
      */
     public NciBrain(double compression, int xSize, int ySize, boolean extraConnectivity)
     {
-        double learningRate = 0.001;
+		super();
+
+        this.learningRate = 0.001;
+		this.activationFunction = new SineActivationFunction();
 
 
         this.xSize = xSize;
         this.ySize = ySize;
         int compressedNeuronCount = ((int) Math.ceil((((double) xSize) * ((double) ySize) * ((double) CHANNELS)) * (1.0 - compression)));
-        int hiddenNeuronCount = xSize*ySize*CHANNELS;
-        //int hiddenNeuronCount = ((xSize * ySize * 3 - compressedNeuronCount) / 2) + compressedNeuronCount;
         this.inputNeurons = new InputBackpropNeuron[xSize][ySize][CHANNELS];
-        this.inputHiddenNeurons = new BackpropNeuron[hiddenNeuronCount];
-        this.compressedNeurons = new CompressionNeuron[compressedNeuronCount];
-        this.outputHiddenNeurons = new BackpropNeuron[hiddenNeuronCount];
         this.outputNeurons = new OutputBackpropNeuron[xSize][ySize][CHANNELS];
-        this.actualCompression = 1.0 - ((double) this.compressedNeurons.length) / (((double) xSize) * ((double) ySize) * ((double) CHANNELS));
+        this.actualCompression = 1.0 - ((double) compressedNeuronCount) / (((double) xSize) * ((double) ySize) * ((double) CHANNELS));
+		int blockSize = xSize*ySize*CHANNELS;
 
-        //create the input and output neurons and add it to the input layer
-        int hiddenIndex = 0;
-        ActivationFunction activationFunction = new SineActivationFunction();
+		this.initalizeNetwork(new int[]{blockSize, compressedNeuronCount, blockSize});
+
+        //assign inputs to pixels
+		ArrayList<InputNeuron> inputs = new ArrayList<InputNeuron>(this.getInputNeurons());
+		ArrayList<OutputNeuron> outputs = new ArrayList<OutputNeuron>(this.getOutputNeurons());
         for (int yIndex = 0; yIndex < ySize; yIndex++)
             for (int xIndex = 0; xIndex < xSize; xIndex++)
                 for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
                 {
-                    this.inputNeurons[xIndex][yIndex][rgbIndex] = new InputBackpropNeuron(activationFunction, learningRate);
-                    this.inputLayer.add(this.inputNeurons[xIndex][yIndex][rgbIndex]);
-
-                    this.inputHiddenNeurons[hiddenIndex] = new BackpropNeuron(activationFunction, learningRate);
-                    this.inputHiddenLayer.add(this.inputHiddenNeurons[hiddenIndex]);
-                    
-                    this.outputHiddenNeurons[hiddenIndex] = new BackpropNeuron(activationFunction, learningRate);
-                    this.outputHiddenLayer.add(this.outputHiddenNeurons[hiddenIndex]);
-                    
-                    this.outputNeurons[xIndex][yIndex][rgbIndex] = new OutputBackpropNeuron(activationFunction, learningRate);
-                    this.outputLayer.add(this.outputNeurons[xIndex][yIndex][rgbIndex]);
-                    
-                    hiddenIndex++;
+					int overallIndex = yIndex*xSize*CHANNELS + xIndex*CHANNELS + rgbIndex;
+					this.inputNeurons[xIndex][yIndex][rgbIndex] = (InputBackpropNeuron)inputs.get(overallIndex);
+					this.outputNeurons[xIndex][yIndex][rgbIndex] =(OutputBackpropNeuron)outputs.get(overallIndex);
                 }
-
-        //create the comrpession layer
-        for (int compressionIndex = 0; compressionIndex < this.compressedNeurons.length; compressionIndex++)
-        {
-            this.compressedNeurons[compressionIndex] = new CompressionNeuron(activationFunction, learningRate);
-            this.compressedLayer.add(this.compressedNeurons[compressionIndex]);
-        }
-
-		try
-		{
-			//connect the neurons together
-			this.inputLayer.connectAllTo(this.compressedLayer);
-			this.compressedLayer.connectAllTo(this.outputLayer);
-		}
-		catch(InvalidConnectionTypeDannException caughtException)
-		{
-			throw new Error("Could not connect layers", caughtException);
-		}
-        
-//        this.inputLayer.connectAllTo(this.inputHiddenLayer);
-//        this.inputHiddenLayer.connectAllTo(this.compressedLayer);
-//        this.compressedLayer.connectAllTo(this.outputHiddenLayer);
-//        this.outputHiddenLayer.connectAllTo(this.outputLayer);
-//        this.addChild(this.inputHiddenLayer);
-//        this.addChild(this.outputHiddenLayer);
-
-        this.addNeurons(this.inputLayer.getChildrenNeuronsRecursivly());
-        this.addNeurons(this.compressedLayer.getChildrenNeuronsRecursivly());
-        this.addNeurons(this.outputLayer.getChildrenNeuronsRecursivly());
-
-
-    //if you want to add an extra level of connectivity.
-        /*
-    if (extraConnectivity == true)
-    {
-    this.inputLayer.connectAllTo(this.compressedLayer);
-    this.compressedLayer.connectAllTo(this.outputLayer);
     }
-     */
-    }
+
+	protected BackpropNeuron createNeuron(int layer, int index)
+	{
+		if( layer == 0 )
+			return new InputBackpropNeuron(this.activationFunction, this.learningRate);
+		else if(layer >= (this.getLayerCount() - 1))
+			return new OutputBackpropNeuron(this.activationFunction, this.learningRate);
+		else if(layer == 1)
+		{
+			CompressionNeuron compressionNeuron = new CompressionNeuron(this.activationFunction, this.learningRate);
+			this.compressedNeurons.add(compressionNeuron);
+			return compressionNeuron;
+		}
+		else
+			return new BackpropNeuron(this.activationFunction, this.learningRate);
+	}
 
 
 
@@ -288,100 +194,6 @@ public class NciBrain extends AbstractLocalBrain implements java.io.Serializable
 
 
 
-    private void propagateLayer(BackpropNeuronGroup layer)
-    {
-        ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
-
-        Set<BackpropNeuron> units = layer.getChildrenNeuronsRecursivly();
-        for (BackpropNeuron unit : units)
-        {
-            PropagateRun propagateRun = new PropagateRun(unit);
-            FutureTask<Void> futurePropagateRun = new FutureTask<Void>(propagateRun, null);
-
-            processing.add(futurePropagateRun);
-            executor.execute(futurePropagateRun);
-        }
-
-        while (processing.peek() != null)
-            try
-            {
-                FutureTask currentRun = processing.take();
-                currentRun.get();
-            }
-            catch (Exception e)
-            {
-                System.out.println("Danger Will Robinson, Danger! : " + e);
-                e.printStackTrace();
-                return;
-            }
-    }
-
-
-
-	@SuppressWarnings("unchecked")
-    private void backPropagateLayer(NeuronGroup layer)
-    {
-        ArrayBlockingQueue<FutureTask> processing = new ArrayBlockingQueue<FutureTask>(this.xSize * this.ySize * CHANNELS, true);
-
-		try
-		{
-			Set<BackpropNeuron> units = layer.getChildrenNeuronsRecursivly();
-			for (BackpropNeuron unit : units)
-			{
-				BackPropagateRun backPropagateRun = new BackPropagateRun(unit);
-				FutureTask<Void> futureBackPropagateRun = new FutureTask<Void>(backPropagateRun, null);
-
-				processing.add(futureBackPropagateRun);
-				executor.execute(futureBackPropagateRun);
-			}
-		}
-		catch(ClassCastException caughtException)
-		{
-			throw new AssertionError(caughtException);
-		}
-
-        while (processing.peek() != null)
-            try
-            {
-                FutureTask currentRun = processing.take();
-                currentRun.get();
-            }
-            catch (Exception e)
-            {
-                System.out.println("Danger Will Robinson, Danger! : " + e);
-                e.printStackTrace();
-                return;
-            }
-    }
-
-
-
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private void propagate()
-    {
-        this.propagateLayer(this.inputLayer);
-        this.propagateLayer(this.compressedLayer);
-        this.propagateLayer(this.outputLayer);
-    }
-
-
-
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private void backPropagate()
-    {
-        this.backPropagateLayer(this.outputLayer);
-        this.backPropagateLayer(this.compressedLayer);
-        this.backPropagateLayer(this.inputLayer);
-    }
-
-
-
     public BufferedImage test(BufferedImage originalImage)
     {
         int[] originalRgbArray = new int[xSize * ySize];
@@ -414,7 +226,7 @@ public class NciBrain extends AbstractLocalBrain implements java.io.Serializable
 
 
         //propogate the output
-        this.propagate();
+        this.propogate();
 
 
         int[] finalRgbArray = new int[xSize * ySize];
@@ -442,15 +254,12 @@ public class NciBrain extends AbstractLocalBrain implements java.io.Serializable
         uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
 
 
-        //BufferedImage uncompressedImage = this.uncompress(this.compress(originalImage));
-
-
 
         if (this.learning == false)
             return uncompressedImage;
 
         //now back propogate
-        this.backPropagate();
+        this.backPropogate();
 
         //all done
         return uncompressedImage;
@@ -493,11 +302,10 @@ public class NciBrain extends AbstractLocalBrain implements java.io.Serializable
 
 
         //propogate the output
-        this.propagateLayer(this.inputLayer);
-        this.propagateLayer(this.compressedLayer);
+		this.propogate();
 
         int compressedDataIndex = 0;
-        byte[] compressedData = new byte[this.compressedNeurons.length];
+        byte[] compressedData = new byte[this.compressedNeurons.size()];
         for (CompressionNeuron compressionNeuron : this.compressedNeurons)
             compressedData[compressedDataIndex++] = compressionNeuron.getChannelOutput();
 
@@ -518,8 +326,7 @@ public class NciBrain extends AbstractLocalBrain implements java.io.Serializable
 
         this.compressionInputsSet = true;
 
-        this.propagateLayer(this.compressedLayer);
-        this.propagateLayer(this.outputLayer);
+		this.propogate();
 
         int[] finalRgbArray = new int[xSize * ySize];
         BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);
@@ -547,15 +354,4 @@ public class NciBrain extends AbstractLocalBrain implements java.io.Serializable
 
         return uncompressedImage;
     }
-
-	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
-	}
-
-	private void writeObject(java.io.ObjectOutputStream out) throws IOException
-	{
-		out.defaultWriteObject();
-	}
 }
