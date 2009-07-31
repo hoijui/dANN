@@ -20,7 +20,7 @@ package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
 import com.syncleus.dann.graph.hyperassociativemap.*;
 
-public class LayeredHyperassociativeMap extends HyperassociativeMap
+public class LayeredHyperassociativeMap extends AbstractHyperassociativeMap
 {
     private HyperassociativeNode layeredNodes[][];
     private static final int NODES_PER_LAYER = 16;

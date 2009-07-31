@@ -18,7 +18,6 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.colormap;
 
-import java.awt.Color;
 import java.util.concurrent.Callable;
 import java.util.Map;
 import java.util.Random;
