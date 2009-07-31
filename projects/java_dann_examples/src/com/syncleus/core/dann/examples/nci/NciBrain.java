@@ -32,7 +32,7 @@ import java.util.concurrent.*;
  * @author Syncleus, Inc.
  * @since 1.0
  */
-public class NciBrain extends Brain implements java.io.Serializable
+public class NciBrain extends LocalBrain implements java.io.Serializable
 {
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
