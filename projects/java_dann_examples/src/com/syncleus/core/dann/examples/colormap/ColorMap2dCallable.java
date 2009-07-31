@@ -18,7 +18,6 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.colormap;
 
-import java.awt.Color;
 import java.util.concurrent.Callable;
 import java.util.Map;
 import java.util.Random;
@@ -29,14 +28,14 @@ import java.awt.Color;
 
 public class ColorMap2dCallable implements Callable<Color[][]>
 {
-	private int iterations;
-	private double learningRate;
-	private int width;
-	private int height;
+	private volatile int iterations;
+	private volatile double learningRate;
+	private volatile int width;
+	private volatile int height;
 
 	private static Random random = new Random();
 
-	private int progress;
+	private volatile int progress;
 
 	public ColorMap2dCallable(int iterations, double learningRate, int width, int height)
 	{
