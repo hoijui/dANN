@@ -27,7 +27,7 @@ package com.syncleus.dann;
  * @since 1.0
  *
  */
-public class DannException extends java.lang.Exception
+public class DannException extends Exception
 {
 	/**
 	 * Creates a blank default exception.

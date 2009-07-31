@@ -20,8 +20,10 @@ package com.syncleus.core.dann.examples.xor;
 
 import java.io.*;
 import com.syncleus.dann.neural.backprop.*;
+import com.syncleus.dann.neural.backprop.brain.*;
 import com.syncleus.dann.neural.*;
 import com.syncleus.dann.neural.activation.*;
+import java.util.ArrayList;
 
 
 /**
@@ -38,9 +40,10 @@ public class Main
 	private static InputBackpropNeuron inputA = null;
 	private static InputBackpropNeuron inputB = null;
 	private static InputBackpropNeuron inputC = null;
-	private static BackpropNeuronGroup firstLayer = null;
-	private static BackpropNeuronGroup secondLayer = null;
+//	private static BackpropNeuronGroup firstLayer = null;
+//	private static BackpropNeuronGroup secondLayer = null;
 	private static OutputBackpropNeuron output = null;
+	private static FullyConnectedFeedforwardBrain brain;
 	private static String saveLocation = "default.dann";
 			
 	public static void main(String args[])
@@ -55,29 +58,37 @@ public class Main
 			//Adjust the learning rate
 			double learningRate = 0.0175;
 			ActivationFunction activationFunction = new SineActivationFunction();
+
+			brain = new FullyConnectedFeedforwardBrain(new int[]{3, 3, 1}, learningRate, activationFunction);
+			ArrayList<InputNeuron> inputs = new ArrayList<InputNeuron>(brain.getInputNeurons());
+			inputA = (InputBackpropNeuron) inputs.get(0);
+			inputB = (InputBackpropNeuron) inputs.get(1);
+			inputC = (InputBackpropNeuron) inputs.get(2);
+			ArrayList<OutputNeuron> outputs = new ArrayList<OutputNeuron>(brain.getOutputNeurons());
+			output = (OutputBackpropNeuron) outputs.get(0);
 			
 			//creates the first layer which holds all the input neurons
-			inputA = new InputBackpropNeuron(activationFunction, learningRate);
-			inputB = new InputBackpropNeuron(activationFunction, learningRate);
-			inputC = new InputBackpropNeuron(activationFunction, learningRate);
-			firstLayer = new BackpropNeuronGroup();
-			firstLayer.add(inputA);
-			firstLayer.add(inputB);
-			firstLayer.add(inputC);
+//			inputA = new InputBackpropNeuron(activationFunction, learningRate);
+//			inputB = new InputBackpropNeuron(activationFunction, learningRate);
+//			inputC = new InputBackpropNeuron(activationFunction, learningRate);
+//			firstLayer = new BackpropNeuronGroup();
+//			firstLayer.add(inputA);
+//			firstLayer.add(inputB);
+//			firstLayer.add(inputC);
 
 			//creates the second layer of neurons containing 10 neurons.
-			secondLayer = new BackpropNeuronGroup();
-			for( int lcv = 0; lcv < 3; lcv++ )
-			{
-				secondLayer.add(new BackpropNeuron(activationFunction, learningRate));
-			}
+//			secondLayer = new BackpropNeuronGroup();
+//			for( int lcv = 0; lcv < 3; lcv++ )
+//			{
+//				secondLayer.add(new BackpropNeuron(activationFunction, learningRate));
+//			}
 
 			//the output layer is just a single neuron
-			output = new OutputBackpropNeuron(activationFunction, learningRate);
+//			output = new OutputBackpropNeuron(activationFunction, learningRate);
 
 			//connects the network in a feedforward fasion.
-			firstLayer.connectAllTo(secondLayer);
-			secondLayer.connectAllTo(output);
+//			firstLayer.connectAllTo(secondLayer);
+//			secondLayer.connectAllTo(output);
 
 			//now that we have created the neural network lets put it to use.
 			System.out.println("dANN nXOR Example");
@@ -163,8 +174,7 @@ public class Main
 		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveLocation));
 		try
 		{
-			out.writeObject(firstLayer);
-			out.writeObject(secondLayer);
+			out.writeObject(brain);
 			out.writeObject(output);
 			out.writeObject(inputA);
 			out.writeObject(inputB);
@@ -194,8 +204,7 @@ public class Main
 		
 		try
 		{
-			firstLayer = (BackpropNeuronGroup) in.readObject();
-			secondLayer = (BackpropNeuronGroup) in.readObject();
+			brain = (FullyConnectedFeedforwardBrain) in.readObject();
 			output = (OutputBackpropNeuron) in.readObject();
 			inputA = (InputBackpropNeuron) in.readObject();
 			inputB = (InputBackpropNeuron) in.readObject();
@@ -211,16 +220,12 @@ public class Main
 	
 	private static void propogateOutput()
 	{
-		firstLayer.propagate();
-		secondLayer.propagate();
-		output.propagate();
+		brain.propogate();
 	}
 	
 	private static void backPropogateTraining()
 	{
-		output.backPropagate();
-		secondLayer.backPropagate();
-		firstLayer.backPropagate();
+		brain.backPropogate();
 	}
 	
 	private static void setCurrentInput(double[] inputToSet)
@@ -239,50 +244,50 @@ public class Main
         System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 1;
-		  curInput[1] = 0;
-		  curInput[2] = 0;
+		curInput[1] = 0;
+		curInput[2] = 0;
         setCurrentInput(curInput);
         propogateOutput();
         System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 0;
-		  curInput[1] = 1;
-		  curInput[2] = 0;
+		curInput[1] = 1;
+		curInput[2] = 0;
         setCurrentInput(curInput);
         propogateOutput();
         System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 0;
-		  curInput[1] = 0;
-		  curInput[2] = 1;
+		curInput[1] = 0;
+		curInput[2] = 1;
         setCurrentInput(curInput);
         propogateOutput();
         System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 1;
-		  curInput[1] = 1;
-		  curInput[2] = 0;
+		curInput[1] = 1;
+		curInput[2] = 0;
         setCurrentInput(curInput);
         propogateOutput();
         System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 0;
-		  curInput[1] = 1;
-		  curInput[2] = 1;
+		curInput[1] = 1;
+		curInput[2] = 1;
         setCurrentInput(curInput);
         propogateOutput();
         System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 1;
-		  curInput[1] = 0;
-		  curInput[2] = 1;
+		curInput[1] = 0;
+		curInput[2] = 1;
         setCurrentInput(curInput);
         propogateOutput();
         System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 		  
         curInput[0] = 1;
-		  curInput[1] = 1;
-		  curInput[2] = 1;
+		curInput[1] = 1;
+		curInput[2] = 1;
         setCurrentInput(curInput);
         propogateOutput();
         System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
@@ -300,8 +305,8 @@ public class Main
             backPropogateTraining();
 				
             curInput[0] = 1;
-				curInput[1] = 0;
-				curInput[2] = 0;
+			curInput[1] = 0;
+			curInput[2] = 0;
             curTrain = 1;
             setCurrentInput(curInput);
             propogateOutput();
@@ -309,8 +314,8 @@ public class Main
             backPropogateTraining();
 				
             curInput[0] = 0;
-				curInput[1] = 1;
-				curInput[2] = 0;
+			curInput[1] = 1;
+			curInput[2] = 0;
             curTrain = 1;
             setCurrentInput(curInput);
             propogateOutput();
@@ -318,8 +323,8 @@ public class Main
             backPropogateTraining();
 				
             curInput[0] = 0;
-				curInput[1] = 0;
-				curInput[2] = 1;
+			curInput[1] = 0;
+			curInput[2] = 1;
             curTrain = 1;
             setCurrentInput(curInput);
             propogateOutput();
@@ -327,8 +332,8 @@ public class Main
             backPropogateTraining();
 				
             curInput[0] = 1;
-				curInput[1] = 1;
-				curInput[2] = 0;
+			curInput[1] = 1;
+			curInput[2] = 0;
             curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
@@ -336,8 +341,8 @@ public class Main
             backPropogateTraining();
 				
             curInput[0] = 0;
-				curInput[1] = 1;
-				curInput[2] = 1;
+			curInput[1] = 1;
+			curInput[2] = 1;
             curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
@@ -345,8 +350,8 @@ public class Main
             backPropogateTraining();
 				
             curInput[0] = 1;
-				curInput[1] = 0;
-				curInput[2] = 1;
+			curInput[1] = 0;
+			curInput[2] = 1;
             curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
@@ -354,8 +359,8 @@ public class Main
             backPropogateTraining();
 				
             curInput[0] = 1;
-				curInput[1] = 1;
-				curInput[2] = 1;
+			curInput[1] = 1;
+			curInput[2] = 1;
             curTrain = -1;
             setCurrentInput(curInput);
             propogateOutput();
