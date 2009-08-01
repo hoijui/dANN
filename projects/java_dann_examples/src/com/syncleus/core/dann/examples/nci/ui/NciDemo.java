@@ -557,23 +557,18 @@ private void refreshOriginalImage()
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem aboutMenuItem1;
     private javax.swing.JMenuItem brainViewMenu;
-    private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu fileMenu1;
-    private javax.swing.JMenu helpMenu;
     private javax.swing.JMenu helpMenu1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JButton originalImageSelect;
     private javax.swing.JTextField originalImageText;
     private javax.swing.JButton processButton;
     private javax.swing.JProgressBar progress;
-    private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JMenuItem quitMenuItem1;
     private javax.swing.JSeparator separator;
     private javax.swing.JLabel statusLabel;
