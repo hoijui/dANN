@@ -123,12 +123,12 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 			catch(InterruptedException caught)
 			{
 				LOGGER.error("ColorMap was unexpectidy interupted", caught);
-				throw new InternalError("Unexpected interuption. Get should block indefinately");
+				throw new AssertionError("Unexpected interuption. Get should block indefinately");
 			}
 			catch(ExecutionException caught)
 			{
 				LOGGER.error("ColorMap had an unexcepted problem executing.", caught);
-				throw new InternalError("Unexpected execution exception. Get should block indefinately");
+				throw new AssertionError("Unexpected execution exception. Get should block indefinately");
 			}
 		}
 		else
