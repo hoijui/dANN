@@ -19,13 +19,13 @@
 package com.syncleus.core.dann.examples.nci;
 
 import java.awt.image.BufferedImage;
-
-
+import org.apache.log4j.Logger;
 
 public class TrainRun implements Runnable
 {
     private NciBrain brain;
     private BufferedImage trainImage;
+	private final static Logger LOGGER = Logger.getLogger(TrainRun.class);
     
     public TrainRun(NciBrain brain, BufferedImage trainImage)
     {
@@ -35,7 +35,20 @@ public class TrainRun implements Runnable
     
     public void run()
     {
-        this.brain.setLearning(true);
-        this.brain.test(trainImage);
+		try
+		{
+			this.brain.setLearning(true);
+			this.brain.test(trainImage);
+		}
+		catch(Exception caught)
+		{
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Throwable was caught", caught);
+		}
+		catch(Error caught)
+		{
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Throwable was caught");
+		}
     }
 }

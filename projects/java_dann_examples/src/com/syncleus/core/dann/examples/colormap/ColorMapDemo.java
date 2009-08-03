@@ -18,19 +18,16 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.colormap;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.concurrent.*;
+import javax.swing.*;
+import org.apache.log4j.Logger;
 
 public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 {
+	private final static Logger LOGGER = Logger.getLogger(ColorMapDemo.class);
+
 	private SpinnerNumberModel iterationsModel = new SpinnerNumberModel(INITIAL_ITERATIONS, 1, 10000,100);
 	private SpinnerNumberModel learningRateModel = new SpinnerNumberModel(INITIAL_LEARNING_RATE, 0.01, 1.0, 0.01);
 
@@ -96,9 +93,15 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 				this.trainDisplayButton.setEnabled(true);
 
 			}
-			catch(Exception caughtException)
+			catch(InterruptedException caught)
 			{
-				throw new AssertionError("call to get shouldnt fail");
+				LOGGER.error("ColorMap was unexpectidy interupted", caught);
+				throw new AssertionError("Unexpected interuption. Get should block indefinately");
+			}
+			catch(ExecutionException caught)
+			{
+				LOGGER.error("ColorMap had an unexcepted problem executing.", caught);
+				throw new AssertionError("Unexpected execution exception. Get should block indefinately");
 			}
 		}
 		else if(this.future2d != null)
@@ -117,9 +120,15 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 				this.progressTimer.stop();
 				this.trainDisplayButton.setEnabled(true);
 			}
-			catch(Exception caughtException)
+			catch(InterruptedException caught)
 			{
-				throw new AssertionError("call to get shouldnt fail");
+				LOGGER.error("ColorMap was unexpectidy interupted", caught);
+				throw new InternalError("Unexpected interuption. Get should block indefinately");
+			}
+			catch(ExecutionException caught)
+			{
+				LOGGER.error("ColorMap had an unexcepted problem executing.", caught);
+				throw new InternalError("Unexpected execution exception. Get should block indefinately");
 			}
 		}
 		else
@@ -321,13 +330,39 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 
     public static void main(String args[])
 	{
-        java.awt.EventQueue.invokeLater(new Runnable()
+		try
 		{
-            public void run()
+			java.awt.EventQueue.invokeLater(new Runnable()
 			{
-                new ColorMapDemo().setVisible(true);
-            }
-        });
+				public void run()
+				{
+					try
+					{
+						new ColorMapDemo().setVisible(true);
+					}
+					catch(Exception caught)
+					{
+						LOGGER.error("Exception was caught", caught);
+						throw new RuntimeException("Exception was caught", caught);
+					}
+					catch(Error caught)
+					{
+						LOGGER.error("Error was caught", caught);
+						throw new RuntimeException("Error was caught", caught);
+					}
+				}
+			});
+		}
+		catch(Exception caught)
+		{
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Exception was caught", caught);
+		}
+		catch(Error caught)
+		{
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Error was caught", caught);
+		}
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

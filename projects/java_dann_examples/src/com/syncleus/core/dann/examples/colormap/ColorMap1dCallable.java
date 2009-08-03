@@ -25,16 +25,16 @@ import com.syncleus.dann.math.Hyperpoint;
 import com.syncleus.dann.neural.som.brain.ExponentialDecaySomBrain;
 import java.util.Map.Entry;
 import java.awt.Color;
+import org.apache.log4j.Logger;
 
-public class ColorMap1dCallable implements Callable<Color[]>
+public final class ColorMap1dCallable implements Callable<Color[]>
 {
 	private volatile int iterations;
 	private volatile double learningRate;
 	private volatile int width;
-
-	private static Random random = new Random();
-
+	private final static Random RANDOM = new Random();
 	private volatile int progress;
+	private final static Logger LOGGER = Logger.getLogger(ColorMap1dCallable.class);
 
 	public ColorMap1dCallable(int iterations, double learningRate, int width)
 	{
@@ -45,44 +45,57 @@ public class ColorMap1dCallable implements Callable<Color[]>
 
 	public Color[] call()
 	{
-		//initialize brain
-		ExponentialDecaySomBrain brain = new ExponentialDecaySomBrain(3, 1,getIterations(), getLearningRate());
-
-		//create the output latice
-		for(double x = 0; x < getWidth(); x++)
-			brain.createOutput(new Hyperpoint(new double[]{x}));
-
-		//run through random training data for all iterations
-		for(int iteration = 0; iteration < getIterations(); iteration++)
+		try
 		{
-			this.progress++;
-			
-			brain.setInput(0, random.nextDouble());
-			brain.setInput(1, random.nextDouble());
-			brain.setInput(2, random.nextDouble());
+			//initialize brain
+			ExponentialDecaySomBrain brain = new ExponentialDecaySomBrain(3, 1,getIterations(), getLearningRate());
 
-			brain.getBestMatchingUnit(true);
+			//create the output latice
+			for(double x = 0; x < getWidth(); x++)
+				brain.createOutput(new Hyperpoint(new double[]{x}));
+
+			//run through random training data for all iterations
+			for(int iteration = 0; iteration < getIterations(); iteration++)
+			{
+				this.progress++;
+
+				brain.setInput(0, RANDOM.nextDouble());
+				brain.setInput(1, RANDOM.nextDouble());
+				brain.setInput(2, RANDOM.nextDouble());
+
+				brain.getBestMatchingUnit(true);
+			}
+
+			//pull the output weight vectors
+			Map<Hyperpoint, double[]> outputWeightVectors = brain.getOutputWeightVectors();
+
+			//construct the color array
+			Color[] colorPositions = new Color[getWidth()];
+			for(Entry<Hyperpoint, double[]> weightVector : outputWeightVectors.entrySet())
+			{
+				Hyperpoint currentPoint = weightVector.getKey();
+				double[] currentVector = weightVector.getValue();
+
+				//convert the current Vector to a color.
+				Color currentColor = new Color((float)currentVector[0], (float)currentVector[1], (float)currentVector[2]);
+
+				//add the current color to the colorPositions
+				colorPositions[(int)Math.floor(currentPoint.getCoordinate(1))] = currentColor;
+			}
+
+			//return the color positions
+			return colorPositions;
 		}
-
-		//pull the output weight vectors
-		Map<Hyperpoint, double[]> outputWeightVectors = brain.getOutputWeightVectors();
-
-		//construct the color array
-		Color[] colorPositions = new Color[getWidth()];
-		for(Entry<Hyperpoint, double[]> weightVector : outputWeightVectors.entrySet())
+		catch(Exception caught)
 		{
-			Hyperpoint currentPoint = weightVector.getKey();
-			double[] currentVector = weightVector.getValue();
-
-			//convert the current Vector to a color.
-			Color currentColor = new Color((float)currentVector[0], (float)currentVector[1], (float)currentVector[2]);
-
-			//add the current color to the colorPositions
-			colorPositions[(int)Math.floor(currentPoint.getCoordinate(1))] = currentColor;
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Throwable was caught", caught);
 		}
-
-		//return the color positions
-		return colorPositions;
+		catch(Error caught)
+		{
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Throwable was caught");
+		}
 	}
 
 
@@ -90,8 +103,7 @@ public class ColorMap1dCallable implements Callable<Color[]>
 	/**
 	 * @return the iterations
 	 */
-	public
-	int getIterations()
+	public int getIterations()
 	{
 		return iterations;
 	}
@@ -101,8 +113,7 @@ public class ColorMap1dCallable implements Callable<Color[]>
 	/**
 	 * @return the learningRate
 	 */
-	public
-	double getLearningRate()
+	public double getLearningRate()
 	{
 		return learningRate;
 	}
@@ -112,8 +123,7 @@ public class ColorMap1dCallable implements Callable<Color[]>
 	/**
 	 * @return the width
 	 */
-	public
-	int getWidth()
+	public int getWidth()
 	{
 		return width;
 	}
@@ -123,8 +133,7 @@ public class ColorMap1dCallable implements Callable<Color[]>
 	/**
 	 * @return the progress
 	 */
-	public
-	int getProgress()
+	public int getProgress()
 	{
 		return progress;
 	}

@@ -31,8 +31,10 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import com.syncleus.dann.graph.hyperassociativemap.*;
 import com.syncleus.dann.graph.hyperassociativemap.visualization.*;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.apache.log4j.Logger;
 
 
 public class NciDemo extends JFrame implements ActionListener, BrainListener
@@ -52,6 +54,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
     int trainingRemaining;
     int currentTrainingCycles = 100000;
     private ViewBrain viewBrain;
+	private final static Logger LOGGER = Logger.getLogger(NciDemo.class);
 
 
 
@@ -61,10 +64,9 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
-        catch (Exception e)
+        catch(Exception caught)
         {
-            System.out.println("Danger Will Robinson, Danger! Can not set native look and feel! " + e);
-            e.printStackTrace();
+            LOGGER.warn("Could not set the UI to native look and feel", caught);
         }
 
         initComponents();
@@ -387,39 +389,28 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
         this.trainingDirectoryText.setText(chooser.getSelectedFile().getAbsolutePath());
         this.trainingDirectory = chooser.getSelectedFile();
 
+		File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
+		if(trainingFiles.length <= 0)
+		{
+			this.trainingDirectory = null;
+			this.trainingDirectoryText.setText("");
 
-        try
-        {
+			JOptionPane.showMessageDialog(this, "The selected training directory does not contain *.png files! Select a new directory", "Invalid Training Directory", JOptionPane.ERROR_MESSAGE);
 
-            File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
-			if(trainingFiles.length <= 0)
-			{
-				this.trainingDirectory = null;
-				this.trainingDirectoryText.setText("");
+			return;
+		}
 
-				JOptionPane.showMessageDialog(this, "The selected training directory does not contain *.png files! Select a new directory", "Invalid Training Directory", JOptionPane.ERROR_MESSAGE);
+		this.brainRunner = new BrainRunner(this, trainingFiles, 0.875, BLOCK_WIDTH, BLOCK_HEIGHT, true);
+		this.brainRunnerThread = new Thread(this.brainRunner);
+		this.brainRunnerThread.start();
 
-				return;
-			}
-			
-            this.brainRunner = new BrainRunner(this, trainingFiles, 0.875, BLOCK_WIDTH, BLOCK_HEIGHT, true);
-            this.brainRunnerThread = new Thread(this.brainRunner);
-            this.brainRunnerThread.start();
+		if (this.originalImageLocation != null)
+		{
+			this.processButton.setEnabled(true);
+			this.trainButton.setEnabled(true);
 
-            if (this.originalImageLocation != null)
-            {
-                this.processButton.setEnabled(true);
-                this.trainButton.setEnabled(true);
-
-				this.statusLabel.setText("Ready!");
-            }
-        }
-        catch (Exception e)
-        {
-            System.out.println("Danger will robinson, Danger: " + e);
-            e.printStackTrace();
-            return;
-        }
+			this.statusLabel.setText("Ready!");
+		}
     }
 }//GEN-LAST:event_trainingDirectorySelectActionPerformed
 
@@ -481,16 +472,14 @@ private void refreshOriginalImage()
     if( this.originalImageLocation == null)
         return;
     
-    //originalImage = Toolkit.getDefaultToolkit().getImage(this.originalImageLocation.getAbsolutePath());
     try
     {
         originalImage = ImageIO.read(this.originalImageLocation);
     }
-    catch(Exception e)
+    catch(IOException caught)
     {
-        System.out.println("Danger will robinson, Danger: " + e);
-        e.printStackTrace();
-        return;
+        LOGGER.warn("IO Exception when reading image", caught);
+		return;
     }
     this.originalImagePanel.setImage(this.originalImage);
     this.finalImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -506,14 +495,6 @@ private void refreshOriginalImage()
     {
         this.brainVisual = new HyperassociativeMapCanvas(this.brainRunner.getBrainMap());
         this.brainViewMenu.setEnabled(true);
-        
-        
-        /*
-        this.add(this.brainVisual);
-        this.brainVisual.setLocation(0, 0);
-        this.brainVisual.setSize(800, 600);
-        this.brainVisual.setVisible(true);
-         */
     }
     
     public void brainSampleProcessed(BufferedImage finalImage)
@@ -547,13 +528,39 @@ private void refreshOriginalImage()
 
     public static void main(String args[]) throws Exception
     {
-        java.awt.EventQueue.invokeAndWait(new Runnable()
-                                        {
-                                            public void run()
-                                            {
-                                                new NciDemo().setVisible(true);
-                                            }
-                                        });
+		try
+		{
+			java.awt.EventQueue.invokeAndWait(new Runnable()
+											{
+												public void run()
+												{
+													try
+													{
+														new NciDemo().setVisible(true);
+													}
+													catch(Exception caught)
+													{
+														LOGGER.error("Exception was caught", caught);
+														throw new RuntimeException("Throwable was caught", caught);
+													}
+													catch(Error caught)
+													{
+														LOGGER.error("Error was caught", caught);
+														throw new Error("Throwable was caught");
+													}
+												}
+											});
+		}
+		catch(Exception caught)
+		{
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Throwable was caught", caught);
+		}
+		catch(Error caught)
+		{
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Throwable was caught");
+		}
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

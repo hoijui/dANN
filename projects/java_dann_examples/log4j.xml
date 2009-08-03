@@ -7,9 +7,17 @@
         <layout class="org.apache.log4j.SimpleLayout"/>
     </appender>
 
+	<appender name="appender" class="org.apache.log4j.FileAppender">
+		<param name="File" value="log.html"/>
+		<param name="Append" value="false"/>
+		<layout class="org.apache.log4j.HTMLLayout"/>
+	</appender>
+
+
     <root>
         <priority value ="warn" />
         <appender-ref ref="ConsoleAppender"/>
+		<appender-ref ref="appender"/>
     </root>
 
 </log4j:configuration>

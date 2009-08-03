@@ -24,6 +24,7 @@ import com.syncleus.dann.neural.backprop.brain.*;
 import com.syncleus.dann.neural.*;
 import com.syncleus.dann.neural.activation.*;
 import java.util.ArrayList;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -31,7 +32,8 @@ import java.util.ArrayList;
  * is a circuit that returns true (1) when only one of its inputs is true. It
  * returns false (-1) if none all of its inputs are false or if more then one
  * of its inputs are true.
- * <!-- Author: Jeffrey Phillips Freeman -->
+ *
+ * @since 0.1
  * @author Syncleus, Inc.
  */
 public class Main
@@ -40,11 +42,10 @@ public class Main
 	private static InputBackpropNeuron inputA = null;
 	private static InputBackpropNeuron inputB = null;
 	private static InputBackpropNeuron inputC = null;
-//	private static BackpropNeuronGroup firstLayer = null;
-//	private static BackpropNeuronGroup secondLayer = null;
 	private static OutputBackpropNeuron output = null;
 	private static FullyConnectedFeedforwardBrain brain;
 	private static String saveLocation = "default.dann";
+	private final static Logger LOGGER = Logger.getLogger(Main.class);
 			
 	public static void main(String args[])
 	{
@@ -66,29 +67,6 @@ public class Main
 			inputC = (InputBackpropNeuron) inputs.get(2);
 			ArrayList<OutputNeuron> outputs = new ArrayList<OutputNeuron>(brain.getOutputNeurons());
 			output = (OutputBackpropNeuron) outputs.get(0);
-			
-			//creates the first layer which holds all the input neurons
-//			inputA = new InputBackpropNeuron(activationFunction, learningRate);
-//			inputB = new InputBackpropNeuron(activationFunction, learningRate);
-//			inputC = new InputBackpropNeuron(activationFunction, learningRate);
-//			firstLayer = new BackpropNeuronGroup();
-//			firstLayer.add(inputA);
-//			firstLayer.add(inputB);
-//			firstLayer.add(inputC);
-
-			//creates the second layer of neurons containing 10 neurons.
-//			secondLayer = new BackpropNeuronGroup();
-//			for( int lcv = 0; lcv < 3; lcv++ )
-//			{
-//				secondLayer.add(new BackpropNeuron(activationFunction, learningRate));
-//			}
-
-			//the output layer is just a single neuron
-//			output = new OutputBackpropNeuron(activationFunction, learningRate);
-
-			//connects the network in a feedforward fasion.
-//			firstLayer.connectAllTo(secondLayer);
-//			secondLayer.connectAllTo(output);
 
 			//now that we have created the neural network lets put it to use.
 			System.out.println("dANN nXOR Example");
@@ -157,15 +135,15 @@ public class Main
 				}
 			} while( (currentCommand != 'q')&&(currentCommand >= 0) );
 		}
-		catch(RuntimeException caughtException)
+		catch(Exception caught)
 		{
-			caughtException.printStackTrace();
-			throw new InternalError("Unhandled RuntimeException: " + caughtException);
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Throwable was caught", caught);
 		}
-		catch(Exception caughtException)
+		catch(Error caught)
 		{
-			caughtException.printStackTrace();
-			throw new InternalError("Unhandled Exception: " + caughtException);
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Throwable was caught");
 		}
 	}
 	
@@ -185,7 +163,8 @@ public class Main
 		{
 			out.close();
 		}
-		
+
+		LOGGER.debug("File Saved");
 		System.out.println("File Saved");
 	}
 	
@@ -196,9 +175,9 @@ public class Main
 		{
 			in = new ObjectInputStream(new FileInputStream(saveLocation));
 		}
-		catch(FileNotFoundException caughtException)
+		catch(FileNotFoundException caught)
 		{
-			System.out.println("the specified file does not exist!");
+			LOGGER.warn("the specified file does not exist!", caught);
 			return;
 		}
 		
@@ -214,7 +193,8 @@ public class Main
 		{
 			in.close();
 		}
-		
+
+		LOGGER.debug("File Loaded");
 		System.out.println("File Loaded");
 	}
 	

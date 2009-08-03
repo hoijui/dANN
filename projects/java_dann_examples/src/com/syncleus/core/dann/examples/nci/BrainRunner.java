@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.Random;
 import java.util.concurrent.*;
 import javax.imageio.ImageIO;
+import org.apache.log4j.Logger;
 
 
 public class BrainRunner implements Runnable
@@ -39,11 +40,12 @@ public class BrainRunner implements Runnable
     private BufferedImage sampleImage;
     private volatile File sampleFile;
     private BrainListener listener;
-    private static Random random = new Random();
+    private final static Random RANDOM = new Random();
     private volatile boolean shutdown = false;
     private volatile int trainingRemaining = 0;
     private volatile int sampleRemaining;
     private volatile int sampleTotal;
+	private final static Logger LOGGER = Logger.getLogger(BrainRunner.class);
 
 
 
@@ -267,12 +269,16 @@ public class BrainRunner implements Runnable
 
 
         }
-        catch (Exception e)
-        {
-            System.out.println("Danger will robinson, Danger: " + e);
-            e.printStackTrace();
-            return;
-        }
+		catch(Exception caught)
+		{
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Throwable was caught", caught);
+		}
+		catch(Error caught)
+		{
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Throwable was caught");
+		}
         finally
         {
             if (executor != null)
@@ -286,8 +292,8 @@ public class BrainRunner implements Runnable
     {
         BufferedImage randomImage = this.getRandomTrainingImage();
 
-        int randomX = this.random.nextInt(randomImage.getWidth() - width);
-        int randomY = this.random.nextInt(randomImage.getHeight() - height);
+        int randomX = this.RANDOM.nextInt(randomImage.getWidth() - width);
+        int randomY = this.RANDOM.nextInt(randomImage.getHeight() - height);
         return randomImage.getSubimage(randomX, randomY, width, height);
     }
 
@@ -295,6 +301,6 @@ public class BrainRunner implements Runnable
 
     private BufferedImage getRandomTrainingImage() throws Exception
     {
-        return this.trainingImages[this.random.nextInt(this.trainingImages.length)];
+        return this.trainingImages[RANDOM.nextInt(this.trainingImages.length)];
     }
 }

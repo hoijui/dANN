@@ -90,6 +90,7 @@
             <compilerarg value="-Xlint:unchecked"/>
             <src path="src/com"/>
         </javac>
+		<copy file="log4j.xml" todir="build/classes"/>
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
             <manifest>
@@ -103,6 +104,7 @@
             <compilerarg value="-Xlint:unchecked"/>
             <src path="src/com"/>
         </javac>
+		<copy file="log4j.xml" todir="build/tests/classes"/>
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/dann_examples-tests.jar" basedir="build/tests/classes">
             <manifest>
@@ -118,6 +120,7 @@
             <compilerarg value="-Xlint"/>
             <src path="src/com"/>
         </javac>
+		<copy file="log4j.xml" todir="build/classes"/>
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
             <manifest>
@@ -130,6 +133,7 @@
             <compilerarg value="-Xlint"/>
             <src path="src/com"/>
         </javac>
+		<copy file="log4j.xml" todir="build/tests/classes"/>
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/dann_examples-tests.jar" basedir="build/tests/classes">
             <manifest>
@@ -143,6 +147,7 @@
         <antcall target="javadoc"/>
         <antcall target="compile"/>
     </target>
+
     <target name="run">
         <java fork="true" classname="com.syncleus.core.dann.examples.Main">
             <jvmarg value="-Xmx512m" />
@@ -152,6 +157,7 @@
             </classpath>
         </java>
     </target>
+
     <target name="run-tests">
         <java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d">
             <jvmarg value="-Xmx512m" />
@@ -161,6 +167,7 @@
             </classpath>
         </java>
     </target>
+	
     <target name="profile">
         <nbprofiledirect>
             <classpath>

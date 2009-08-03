@@ -19,13 +19,21 @@
 package com.syncleus.core.dann.examples;
 
 import java.io.*;
+import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.log4j.Logger;
 
 public class Main
 {
+	private final static Logger LOGGER = Logger.getLogger(Main.class);
+
     public static void main(String args[])
     {
         try
         {
+			DOMConfigurator.configure(ClassLoader.getSystemResource("log4j.xml"));
+
+			LOGGER.info("program started...");
+
             BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
 
             String[] newArgs = (args.length <= 1 ? new String[0] : new String[args.length - 1]);
@@ -113,11 +121,15 @@ public class Main
             }
             while ((currentCommand != 'q') && (currentCommand >= 0));
         }
-        catch (Exception caughtException)
+        catch (Exception caught)
         {
-            caughtException.printStackTrace();
-            System.out.println();
-            throw new InternalError("CaughtException: " + caughtException);
+			LOGGER.error("A throwable was caught in the main execution thread", caught);
+			throw new RuntimeException("An exception was caught", caught);
+        }
+        catch (Error caught)
+        {
+			LOGGER.error("A throwable was caught in the main execution thread", caught);
+			throw new Error("Error caught", caught);
         }
     }
 }

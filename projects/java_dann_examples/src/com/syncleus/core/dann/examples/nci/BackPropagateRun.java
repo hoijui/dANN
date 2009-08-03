@@ -19,11 +19,13 @@
 package com.syncleus.core.dann.examples.nci;
 
 import com.syncleus.dann.neural.backprop.*;
+import org.apache.log4j.Logger;
 
 
 public class BackPropagateRun implements Runnable
 {
     private BackpropNeuron processor;
+	private final static Logger LOGGER = Logger.getLogger(BackPropagateRun.class);
     
     public BackPropagateRun(BackpropNeuron processor)
     {
@@ -32,6 +34,19 @@ public class BackPropagateRun implements Runnable
     
     public void run()
     {
-        this.processor.backPropagate();
+		try
+		{
+			this.processor.backPropagate();
+		}
+		catch(Exception caught)
+		{
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Throwable was caught", caught);
+		}
+		catch(Error caught)
+		{
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Throwable was caught");
+		}
     }
 }
