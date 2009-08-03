@@ -30,7 +30,10 @@ public class Main
     {
         try
         {
-			DOMConfigurator.configure(ClassLoader.getSystemResource("log4j.xml"));
+			if(new File("log4j.xml").exists())
+				DOMConfigurator.configure("log4j.xml");
+			else
+				DOMConfigurator.configure(ClassLoader.getSystemResource("log4j.xml"));
 
 			LOGGER.info("program started...");
 
