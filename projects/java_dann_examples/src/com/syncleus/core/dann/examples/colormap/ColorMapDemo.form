@@ -110,6 +110,9 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JSpinner" name="iterationsSpinner">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="iterationsSpinner" noResource="true"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -122,6 +125,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="learningRateSpinner">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="learningRateSpinner" noResource="true"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
@@ -136,11 +142,13 @@
             <StringItem index="1" value="2D"/>
           </StringArray>
         </Property>
+        <Property name="name" type="java.lang.String" value="dimentionalityComboBox" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="trainDisplayButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Train &amp; Display"/>
+        <Property name="name" type="java.lang.String" value="trainDisplayButton" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trainDisplayButtonActionPerformed"/>

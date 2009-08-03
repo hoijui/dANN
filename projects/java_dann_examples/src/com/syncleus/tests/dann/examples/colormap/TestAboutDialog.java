@@ -16,16 +16,14 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.tests.dann.examples.nci.ui;
+package com.syncleus.tests.dann.examples.colormap;
 
-
-import com.syncleus.core.dann.examples.nci.ui.AboutDialog;
+import com.syncleus.core.dann.examples.colormap.AboutDialog;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiActionRunner;
 import org.junit.*;
-
 
 public class TestAboutDialog
 {

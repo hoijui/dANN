@@ -29,7 +29,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 	private final static Logger LOGGER = Logger.getLogger(ColorMapDemo.class);
 
 	private SpinnerNumberModel iterationsModel = new SpinnerNumberModel(INITIAL_ITERATIONS, 1, 10000,100);
-	private SpinnerNumberModel learningRateModel = new SpinnerNumberModel(INITIAL_LEARNING_RATE, 0.01, 1.0, 0.01);
+	private SpinnerNumberModel learningRateModel = new SpinnerNumberModel(INITIAL_LEARNING_RATE, Double.MIN_VALUE, 1.0, 0.01);
 
 	private Color[] color1d;
 	private Color[][] color2d;
@@ -192,15 +192,21 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SOM Color Map Demo");
 
+        iterationsSpinner.setName("iterationsSpinner"); // NOI18N
+
         jLabel1.setText("Training Iterations:");
 
         jLabel2.setText("Learning Rate:");
 
+        learningRateSpinner.setName("learningRateSpinner"); // NOI18N
+
         jLabel3.setText("Dimentionality:");
 
         dimentionalityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1D", "2D" }));
+        dimentionalityComboBox.setName("dimentionalityComboBox"); // NOI18N
 
         trainDisplayButton.setText("Train & Display");
+        trainDisplayButton.setName("trainDisplayButton"); // NOI18N
         trainDisplayButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trainDisplayButtonActionPerformed(evt);
