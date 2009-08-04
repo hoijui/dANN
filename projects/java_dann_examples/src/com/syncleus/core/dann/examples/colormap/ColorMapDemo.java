@@ -96,12 +96,12 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 			catch(InterruptedException caught)
 			{
 				LOGGER.error("ColorMap was unexpectidy interupted", caught);
-				throw new AssertionError("Unexpected interuption. Get should block indefinately");
+				throw new Error("Unexpected interuption. Get should block indefinately", caught);
 			}
 			catch(ExecutionException caught)
 			{
 				LOGGER.error("ColorMap had an unexcepted problem executing.", caught);
-				throw new AssertionError("Unexpected execution exception. Get should block indefinately");
+				throw new Error("Unexpected execution exception. Get should block indefinately", caught);
 			}
 		}
 		else if(this.future2d != null)
@@ -123,12 +123,12 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 			catch(InterruptedException caught)
 			{
 				LOGGER.error("ColorMap was unexpectidy interupted", caught);
-				throw new AssertionError("Unexpected interuption. Get should block indefinately");
+				throw new Error("Unexpected interuption. Get should block indefinately", caught);
 			}
 			catch(ExecutionException caught)
 			{
 				LOGGER.error("ColorMap had an unexcepted problem executing.", caught);
-				throw new AssertionError("Unexpected execution exception. Get should block indefinately");
+				throw new Error("Unexpected execution exception. Get should block indefinately", caught);
 			}
 		}
 		else
