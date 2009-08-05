@@ -60,6 +60,8 @@ public class Main
                     com.syncleus.core.dann.examples.colormap.ColorMapDemo.main(newArgs);
                 else if (selectorArg.compareTo("--hyperassociativemap") == 0)
                     com.syncleus.core.dann.examples.hyperassociativemap.visualization.ViewMap.main(newArgs);
+                else if (selectorArg.compareTo("--tsp") == 0)
+                    com.syncleus.core.dann.examples.tsp.TravellingSalesmanDemo.main(newArgs);
 
                 return;
             }
@@ -77,6 +79,7 @@ public class Main
                     System.out.println("I) Image Compression Example w/GUI");
                     System.out.println("V) Hyperassociative Map Visualizations");
 					System.out.println("C) SOM Color Map");
+					System.out.println("T) Travelling Salesman");
                     System.out.println("H) Command Line Help");
                     System.out.println("Q) quit");
                     System.out.println("\tEnter command: ");
@@ -116,6 +119,9 @@ public class Main
                 case 'v':
                     com.syncleus.core.dann.examples.hyperassociativemap.visualization.ViewMap.main(newArgs);
                     break;
+				case 't':
+					com.syncleus.core.dann.examples.tsp.TravellingSalesmanDemo.main(newArgs);
+					break;
                 case 'q':
                     break;
                 default:

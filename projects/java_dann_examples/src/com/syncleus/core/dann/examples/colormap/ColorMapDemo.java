@@ -28,8 +28,8 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 {
 	private final static Logger LOGGER = Logger.getLogger(ColorMapDemo.class);
 
-	private SpinnerNumberModel iterationsModel = new SpinnerNumberModel(INITIAL_ITERATIONS, 1, 10000,100);
-	private SpinnerNumberModel learningRateModel = new SpinnerNumberModel(INITIAL_LEARNING_RATE, Double.MIN_VALUE, 1.0, 0.01);
+	private final SpinnerNumberModel iterationsModel = new SpinnerNumberModel(INITIAL_ITERATIONS, 1, 10000,100);
+	private final SpinnerNumberModel learningRateModel = new SpinnerNumberModel(INITIAL_LEARNING_RATE, Double.MIN_VALUE, 1.0, 0.01);
 
 	private Color[] color1d;
 	private Color[][] color2d;
@@ -43,12 +43,21 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 	private static final int INITIAL_ITERATIONS = 200;
 	private static final double INITIAL_LEARNING_RATE = 0.5;
 
-	private ExecutorService executor = Executors.newFixedThreadPool(1);
+	private final ExecutorService executor = Executors.newFixedThreadPool(1);
 
-	private Timer progressTimer = new Timer(100, this);
+	private final Timer progressTimer = new Timer(100, this);
 
     public ColorMapDemo()
 	{
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch(Exception caught)
+        {
+            LOGGER.warn("Could not set the UI to native look and feel", caught);
+        }
+		
         initComponents();
 
 		this.iterationsSpinner.setValue(INITIAL_ITERATIONS);

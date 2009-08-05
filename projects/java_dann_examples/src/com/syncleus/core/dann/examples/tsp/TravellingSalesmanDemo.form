@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Menu class="javax.swing.JMenuBar" name="menuBar">
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="fileMenuItem">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="File"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="quitMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Quit"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="quitMenuItemMouseReleased"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="helpMenuItem">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Help"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="About"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Menu>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="Travelling Salesman Demo"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="menuBar"/>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="citiesLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="citiesSpinner" min="-2" pref="40" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="populationLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="populationSpinner" min="-2" pref="51" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="mutabilityLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="mutabilitySpinner" min="-2" pref="45" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="crossoverLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="crossoverSpinner" min="-2" pref="47" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="dieOffLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="dieOffSpinner" min="-2" pref="46" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="progressBar" pref="369" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <Component id="evolveDisplayButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="citiesLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="citiesSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="populationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="populationSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="mutabilityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="mutabilitySpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="crossoverLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="crossoverSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dieOffLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dieOffSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="progressBar" alignment="3" min="-2" max="-2" attributes="1"/>
+                  <Component id="evolveDisplayButton" alignment="3" max="32767" attributes="1"/>
+              </Group>
+              <EmptySpace pref="520" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="citiesLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cities:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="citiesSpinner">
+    </Component>
+    <Component class="javax.swing.JLabel" name="populationLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Population:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="populationSpinner">
+    </Component>
+    <Component class="javax.swing.JLabel" name="mutabilityLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mutability:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="mutabilitySpinner">
+    </Component>
+    <Component class="javax.swing.JLabel" name="crossoverLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Crossover:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="crossoverSpinner">
+    </Component>
+    <Component class="javax.swing.JLabel" name="dieOffLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Die Off:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="dieOffSpinner">
+    </Component>
+    <Component class="javax.swing.JButton" name="evolveDisplayButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Evolve &amp; Display"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="evolveDisplayButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JProgressBar" name="progressBar">
+      <Properties>
+        <Property name="stringPainted" type="boolean" value="true"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

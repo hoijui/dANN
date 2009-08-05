@@ -48,7 +48,7 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 		try
 		{
 			//initialize brain
-			ExponentialDecaySomBrain brain = new ExponentialDecaySomBrain(3, 1,getIterations(), getLearningRate());
+			ExponentialDecaySomBrain brain = new ExponentialDecaySomBrain(3, 1, getIterations(), getLearningRate());
 
 			//create the output latice
 			for(double x = 0; x < getWidth(); x++)
