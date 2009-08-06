@@ -40,6 +40,12 @@
 
     <path id="classpath">
         <fileset dir="lib" includes="**/*.jar"/>
+		<fileset dir="lib" includes="dann.jar"/>
+        <fileset dir="../java_dann/build/jar" includes="**/dann.jar"/>
+    </path>
+    <path id="classpath.run">
+        <fileset dir="lib" includes="*.jar"/>
+		<fileset dir="lib" includes="dann.jar"/>
         <fileset dir="../java_dann/build/jar" includes="**/dann.jar"/>
     </path>
 
@@ -92,9 +98,23 @@
         </javac>
 		<copy file="log4j.xml" todir="build/classes"/>
         <mkdir dir="build/jar"/>
+		<manifestclasspath property="manifest.classpath" jarfile="./dann_examples.jar" maxParentLevels="100">
+			<classpath refid="classpath.run" />
+		</manifestclasspath>
         <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
             <manifest>
                 <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+				<attribute name="Product-Name" value="dANN"/>
+				<attribute name="Package-Title" value="com.syncleus.dann"/>
+				<attribute name="Package-Version" value="2.0"/>
+				<attribute name="Specification-Title" value="An Artificial Intelligence library."/>
+				<attribute name="Specification-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Specification-Version" value="2.0"/>
+				<attribute name="Implementation-Title" value="An Artificial Intelligence library."/>
+				<attribute name="Implementation-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Implementation-Vendor-Id" value="com.syncleus.dann"/>
+				<attribute name="Implementation-Version" value="2.0"/>
             </manifest>
         </jar>
 		
@@ -109,6 +129,17 @@
         <jar destfile="build/jar/dann_examples-tests.jar" basedir="build/tests/classes">
             <manifest>
                 <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+				<attribute name="Product-Name" value="dANN"/>
+				<attribute name="Package-Title" value="com.syncleus.dann"/>
+				<attribute name="Package-Version" value="2.0"/>
+				<attribute name="Specification-Title" value="An Artificial Intelligence library."/>
+				<attribute name="Specification-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Specification-Version" value="2.0"/>
+				<attribute name="Implementation-Title" value="An Artificial Intelligence library."/>
+				<attribute name="Implementation-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Implementation-Vendor-Id" value="com.syncleus.dann"/>
+				<attribute name="Implementation-Version" value="2.0"/>
             </manifest>
         </jar>
     </target>
@@ -122,9 +153,24 @@
         </javac>
 		<copy file="log4j.xml" todir="build/classes"/>
         <mkdir dir="build/jar"/>
+		<manifestclasspath property="manifest.classpath" jarfile="./dann_examples.jar" maxParentLevels="100">
+			<classpath refid="classpath.run" />
+		</manifestclasspath>
         <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
             <manifest>
                 <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+				<attribute name="Product-Name" value="dANN"/>
+				<attribute name="Package-Title" value="com.syncleus.dann"/>
+				<attribute name="Package-Version" value="2.0"/>
+				<attribute name="Specification-Title" value="An Artificial Intelligence library."/>
+				<attribute name="Specification-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Specification-Version" value="2.0"/>
+				<attribute name="Implementation-Title" value="An Artificial Intelligence library."/>
+				<attribute name="Implementation-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Implementation-Vendor-Id" value="com.syncleus.dann"/>
+				<attribute name="Implementation-Version" value="2.0"/>
             </manifest>
         </jar>
 
@@ -138,6 +184,17 @@
         <jar destfile="build/jar/dann_examples-tests.jar" basedir="build/tests/classes">
             <manifest>
                 <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+				<attribute name="Product-Name" value="dANN"/>
+				<attribute name="Package-Title" value="com.syncleus.dann"/>
+				<attribute name="Package-Version" value="2.0"/>
+				<attribute name="Specification-Title" value="An Artificial Intelligence library."/>
+				<attribute name="Specification-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Specification-Version" value="2.0"/>
+				<attribute name="Implementation-Title" value="An Artificial Intelligence library."/>
+				<attribute name="Implementation-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Implementation-Vendor-Id" value="com.syncleus.dann"/>
+				<attribute name="Implementation-Version" value="2.0"/>
             </manifest>
         </jar>
     </target>
@@ -152,7 +209,7 @@
         <java fork="true" classname="com.syncleus.core.dann.examples.Main">
             <jvmarg value="-Xmx512m" />
             <classpath>
-                <path refid="classpath"/>
+                <path refid="classpath.run"/>
                 <path location="build/jar/dann_examples.jar"/>
             </classpath>
         </java>
@@ -162,7 +219,7 @@
         <java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d">
             <jvmarg value="-Xmx512m" />
             <classpath>
-                <path refid="classpath"/>
+                <path refid="classpath.run"/>
                 <path location="build/jar/dann_examples.jar"/>
             </classpath>
         </java>
@@ -171,7 +228,7 @@
     <target name="profile">
         <nbprofiledirect>
             <classpath>
-                <path refid="classpath"/>
+                <path refid="classpath.run"/>
                 <path location="build/jar/dann_examples.jar"/>
             </classpath>
         </nbprofiledirect>
@@ -179,7 +236,7 @@
             <jvmarg value="${profiler.info.jvmargs.agent}"/>
             <jvmarg value="-Xmx512m" />
             <classpath>
-                <path refid="classpath"/>
+                <path refid="classpath.run"/>
                 <path location="build/jar/dann_examples.jar"/>
             </classpath>
         </java>
