@@ -80,9 +80,13 @@
                       <Component id="dieOffLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="dieOffSpinner" min="-2" pref="46" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="generationsLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="generationsSpinner" pref="62" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="progressBar" pref="369" max="32767" attributes="0"/>
+                      <Component id="progressBar" pref="501" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Component id="evolveDisplayButton" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -106,6 +110,8 @@
                   <Component id="crossoverSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="dieOffLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="dieOffSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="generationsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="generationsSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -165,6 +171,13 @@
       <Properties>
         <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="generationsLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Generations:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="generationsSpinner">
     </Component>
   </SubComponents>
 </Form>

@@ -23,10 +23,11 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 	private final SpinnerNumberModel populationModel = new SpinnerNumberModel(100, 4, 1000, 10);
 	private final SpinnerNumberModel crossoverModel = new SpinnerNumberModel(0.1, Double.MIN_VALUE, 1.0, 0.01);
 	private final SpinnerNumberModel dieOffModel = new SpinnerNumberModel(0.4, Double.MIN_VALUE, 1.0, 0.01);
+	private final SpinnerNumberModel generationsModel = new SpinnerNumberModel(1000, 1, 100000, 100);
 
 	private static final int MAP_X = 12;
 	private static final int MAP_Y = 130;
-	private static final int MAP_WIDTH = 500;
+	private static final int MAP_WIDTH = 635;
 	private static final int MAP_HEIGHT = 500;
 
 	private final ExecutorService executor = Executors.newFixedThreadPool(1);
@@ -106,6 +107,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 		this.populationSpinner.setModel(this.populationModel);
 		this.crossoverSpinner.setModel(this.crossoverModel);
 		this.dieOffSpinner.setModel(this.dieOffModel);
+		this.generationsSpinner.setModel(this.generationsModel);
 
 		this.setResizable(false);
 		this.repaint();
@@ -235,6 +237,8 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
         dieOffSpinner = new javax.swing.JSpinner();
         evolveDisplayButton = new javax.swing.JButton();
         progressBar = new javax.swing.JProgressBar();
+        generationsLabel = new javax.swing.JLabel();
+        generationsSpinner = new javax.swing.JSpinner();
         menuBar = new javax.swing.JMenuBar();
         fileMenuItem = new javax.swing.JMenu();
         quitMenuItem = new javax.swing.JMenuItem();
@@ -262,6 +266,8 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
         });
 
         progressBar.setStringPainted(true);
+
+        generationsLabel.setText("Generations:");
 
         fileMenuItem.setText("File");
 
@@ -310,9 +316,13 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dieOffLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(generationsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(generationsSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                        .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
                         .addGap(10, 10, 10)
                         .addComponent(evolveDisplayButton)))
                 .addContainerGap())
@@ -331,7 +341,9 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
                     .addComponent(crossoverLabel)
                     .addComponent(crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dieOffLabel)
-                    .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generationsLabel)
+                    .addComponent(generationsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -356,14 +368,15 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 		final double mutability = this.mutabilityModel.getNumber().doubleValue();
 		final double crossover = this.crossoverModel.getNumber().doubleValue();
 		final double dieOff = this.dieOffModel.getNumber().doubleValue();
+		final int generations = this.generationsModel.getNumber().intValue();
 
 		final TravellingSalesmanPopulation population = new TravellingSalesmanPopulation(this.cities, mutability, crossover, dieOff);
 		population.initializePopulation(populationSize);
 
-		this.populationCallable = new PopulationEvolveCallable(population, 1000);
+		this.populationCallable = new PopulationEvolveCallable(population, generations);
 		this.futureWinner = this.executor.submit(this.populationCallable);
 
-		this.progressBar.setMaximum(1000);
+		this.progressBar.setMaximum(generations);
 
 		this.evolveDisplayButton.setEnabled(false);
 		this.progressTimer.start();
@@ -393,6 +406,8 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
     private javax.swing.JSpinner dieOffSpinner;
     private javax.swing.JButton evolveDisplayButton;
     private javax.swing.JMenu fileMenuItem;
+    private javax.swing.JLabel generationsLabel;
+    private javax.swing.JSpinner generationsSpinner;
     private javax.swing.JMenu helpMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JLabel mutabilityLabel;
