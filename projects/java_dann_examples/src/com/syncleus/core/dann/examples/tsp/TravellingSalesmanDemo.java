@@ -23,7 +23,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 	private final SpinnerNumberModel populationModel = new SpinnerNumberModel(100, 4, 1000, 10);
 	private final SpinnerNumberModel crossoverModel = new SpinnerNumberModel(0.1, Double.MIN_VALUE, 1.0, 0.01);
 	private final SpinnerNumberModel dieOffModel = new SpinnerNumberModel(0.4, Double.MIN_VALUE, 1.0, 0.01);
-	private final SpinnerNumberModel generationsModel = new SpinnerNumberModel(1000, 1, 100000, 100);
+	private final SpinnerNumberModel generationsModel = new SpinnerNumberModel(100, 1, 100000, 100);
 
 	private static final int MAP_X = 12;
 	private static final int MAP_Y = 130;
