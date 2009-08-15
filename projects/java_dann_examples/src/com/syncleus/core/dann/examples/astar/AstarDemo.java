@@ -16,65 +16,21 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.dann.neural;
-import com.syncleus.dann.*;
+package com.syncleus.core.dann.examples.astar;
 
-/**
- * This indicates that a required synapse does not exist.
- *
- *
- * @author Syncleus, Inc.
- * @since 1.0
- *
- */
-public class SynapseDoesNotExistException extends DannException
+import com.syncleus.dann.graph.pathfinding.astar.*;
+import java.awt.Point;
+
+public class AstarDemo
 {
-	/**
-	 * Creates a blank default exception.
-	 *
-	 * 
-	 * @since 1.0
-	 */
-	public SynapseDoesNotExistException()
+	public static void main(String[] args)
 	{
-	}
-
-	/**
-	 * Creates an exception with a message describing the cause.
-	 *
-	 * 
-	 * @param msg A string describing the cause of the exception
-	 * @since 1.0
-	 */
-	public SynapseDoesNotExistException(String msg)
-	{
-		super(msg);
-	}
-
-	/**
-	 * Creates an exception with a message describing the cause as well as the
-	 * throwable which caused this exception to be thrown.
-	 *
-	 * 
-	 * @param msg A string describing the cause of the exception
-	 * @param cause The throwable which caused this exception
-	 * @since 1.0
-	 */
-	public SynapseDoesNotExistException(String msg, Throwable cause)
-	{
-		super(msg, cause);
-	}
-
-	/**
-	 * Creates an exception containing the throwable which caused this exception
-	 * to be thrown.
-	 *
-	 * 
-	 * @param cause The throwable which caused this exception
-	 * @since 1.0
-	 */
-	public SynapseDoesNotExistException(Throwable cause)
-	{
-		super(cause);
+		NodeMap2D map = new NodeMap2D(new Point(0, 0), new Point(9, 0));
+		Node[] path = map.getPath();
+		for( Node step : path )
+		{
+			System.out.println("step: " + map.getCoords(step));
+		}
+		System.out.println("done");
 	}
 }

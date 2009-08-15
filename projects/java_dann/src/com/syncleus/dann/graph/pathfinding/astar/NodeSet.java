@@ -16,64 +16,50 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.dann.neural;
-import com.syncleus.dann.*;
-/**
- * This means a synapse is not a connected synpase.
- *
- *
- * @author Syncleus, Inc.
- * @since 1.0
- *
- */
-public class SynapseNotConnectedException extends DannException
+package com.syncleus.dann.graph.pathfinding.astar;
+
+import java.util.ArrayList;
+
+public class NodeSet
 {
-	/**
-	 * Creates a blank default exception.
-	 *
-	 * 
-	 * @since 1.0
-	 */
-	public SynapseNotConnectedException()
+	ArrayList<Node> nodes = new ArrayList<Node>();
+	
+	public Node peek()
 	{
+		Node lowestNode = null;
+		for(Node node : nodes )
+		{
+			if(lowestNode == null)
+				lowestNode = node;
+			else
+			{
+				if( lowestNode.getPathCost() > node.getPathCost())
+					lowestNode = node;
+			}
+		}
+		return lowestNode;
 	}
-
-	/**
-	 * Creates an exception with a message describing the cause.
-	 *
-	 * 
-	 * @param msg A string describing the cause of the exception
-	 * @since 1.0
-	 */
-	public SynapseNotConnectedException(String msg)
+	
+	public Node pop()
 	{
-		super(msg);
+		Node returnValue = this.peek();
+		this.nodes.remove(returnValue);
+		return returnValue;
 	}
-
-	/**
-	 * Creates an exception with a message describing the cause as well as the
-	 * throwable which caused this exception to be thrown.
-	 *
-	 * 
-	 * @param msg A string describing the cause of the exception
-	 * @param cause The throwable which caused this exception
-	 * @since 1.0
-	 */
-	public SynapseNotConnectedException(String msg, Throwable cause)
+	
+	public void add(Node node)
 	{
-		super(msg, cause);
+		if( this.nodes.contains(node) == false)
+			this.nodes.add(node);
 	}
-
-	/**
-	 * Creates an exception containing the throwable which caused this exception
-	 * to be thrown.
-	 *
-	 * 
-	 * @param cause The throwable which caused this exception
-	 * @since 1.0
-	 */
-	public SynapseNotConnectedException(Throwable cause)
+	
+	public boolean contains(Node node)
 	{
-		super(cause);
+		return this.nodes.contains(node);
+	}
+	
+	public boolean isEmpty()
+	{
+		return this.nodes.isEmpty();
 	}
 }

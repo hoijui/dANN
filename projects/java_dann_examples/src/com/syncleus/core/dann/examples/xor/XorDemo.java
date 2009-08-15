@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * @since 0.1
  * @author Syncleus, Inc.
  */
-public class Main
+public class XorDemo
 {
 	private static BufferedReader inReader = null;
 	private static InputBackpropNeuron inputA = null;
@@ -45,7 +45,7 @@ public class Main
 	private static OutputBackpropNeuron output = null;
 	private static FullyConnectedFeedforwardBrain brain;
 	private static String saveLocation = "default.dann";
-	private final static Logger LOGGER = Logger.getLogger(Main.class);
+	private final static Logger LOGGER = Logger.getLogger(XorDemo.class);
 			
 	public static void main(String args[])
 	{

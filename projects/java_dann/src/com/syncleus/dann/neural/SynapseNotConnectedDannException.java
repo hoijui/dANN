@@ -16,34 +16,64 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.tests.dann.neural;
-
-import com.syncleus.dann.neural.SynapseNotConnectedDannException;
-import org.junit.*;
-
-public class TestSynapseNotConnectedException
+package com.syncleus.dann.neural;
+import com.syncleus.dann.*;
+/**
+ * This means a synapse is not a connected synpase.
+ *
+ *
+ * @author Syncleus, Inc.
+ * @since 1.0
+ *
+ */
+public class SynapseNotConnectedDannException extends DannException
 {
-	@Test(expected=SynapseNotConnectedDannException.class)
-	public void testDefault() throws SynapseNotConnectedDannException
+	/**
+	 * Creates a blank default exception.
+	 *
+	 * 
+	 * @since 1.0
+	 */
+	public SynapseNotConnectedDannException()
 	{
-		throw new SynapseNotConnectedDannException();
 	}
 
-	@Test(expected=SynapseNotConnectedDannException.class)
-	public void testString() throws SynapseNotConnectedDannException
+	/**
+	 * Creates an exception with a message describing the cause.
+	 *
+	 * 
+	 * @param msg A string describing the cause of the exception
+	 * @since 1.0
+	 */
+	public SynapseNotConnectedDannException(String msg)
 	{
-		throw new SynapseNotConnectedDannException("This is just a test");
+		super(msg);
 	}
 
-	@Test(expected=SynapseNotConnectedDannException.class)
-	public void testCause() throws SynapseNotConnectedDannException
+	/**
+	 * Creates an exception with a message describing the cause as well as the
+	 * throwable which caused this exception to be thrown.
+	 *
+	 * 
+	 * @param msg A string describing the cause of the exception
+	 * @param cause The throwable which caused this exception
+	 * @since 1.0
+	 */
+	public SynapseNotConnectedDannException(String msg, Throwable cause)
 	{
-		throw new SynapseNotConnectedDannException(new Exception());
+		super(msg, cause);
 	}
 
-	@Test(expected=SynapseNotConnectedDannException.class)
-	public void testStringCause() throws SynapseNotConnectedDannException
+	/**
+	 * Creates an exception containing the throwable which caused this exception
+	 * to be thrown.
+	 *
+	 * 
+	 * @param cause The throwable which caused this exception
+	 * @since 1.0
+	 */
+	public SynapseNotConnectedDannException(Throwable cause)
 	{
-		throw new SynapseNotConnectedDannException("This is just a test", new Exception());
+		super(cause);
 	}
 }

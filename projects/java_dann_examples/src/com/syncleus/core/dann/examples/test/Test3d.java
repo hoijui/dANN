@@ -69,9 +69,10 @@ public class Test3d extends JFrame
 				processor = processor.mutate(1.0, signalY);
 				processor = processor.mutate(1.0);
 			}
-			catch(CloneNotSupportedException caughtException)
+			catch(CloneNotSupportedException caught)
 			{
-				throw new AssertionError("processor should be clonable");
+				caught.printStackTrace();
+				System.exit(0);
 			}
         }
 
