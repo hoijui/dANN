@@ -16,23 +16,21 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.nci.ui;
+package com.syncleus.dann.graph;
 
-import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
+import java.util.List;
 
-
-
-public class UpdateViewRun implements Runnable
+public interface Walk<N extends Node<? extends E>, E extends Edge<? extends Node>>
 {
-    private HyperassociativeMapCanvas view;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view)
-    {
-        this.view = view;
-    }
-    
-    public void run()
-    {
-        this.view.refresh();
-    }
+	List<? extends E> getSteps();
+	N getFirstNode();
+	N getLastNode();
+	boolean isClosed();
+	boolean isOpen();
+	int getLength();
+	boolean isTrail();
+	boolean isTour();
+	boolean isPath();
+	boolean isCycle();
+	boolean isIndependent(Walk<? extends N, ? extends E> walk);
 }

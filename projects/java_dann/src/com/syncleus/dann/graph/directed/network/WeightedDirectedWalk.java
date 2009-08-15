@@ -16,23 +16,14 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.nci.ui;
+package com.syncleus.dann.graph.directed.network;
 
-import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
+import com.syncleus.dann.graph.directed.DirectedWalk;
+import java.util.List;
 
-
-
-public class UpdateViewRun implements Runnable
+public interface WeightedDirectedWalk<N extends WeightedDirectedNode<? extends E>, E extends WeightedDirectedEdge<? extends N>> extends DirectedWalk<N,E>, WeightedBidirectedWalk<N,E>
 {
-    private HyperassociativeMapCanvas view;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view)
-    {
-        this.view = view;
-    }
-    
-    public void run()
-    {
-        this.view.refresh();
-    }
+	List<? extends E> getSteps();
+	N getFirstNode();
+	N getLastNode();
 }

@@ -16,23 +16,18 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.nci.ui;
+package com.syncleus.dann.graph.directed;
 
-import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
+import com.syncleus.dann.graph.*;
+import java.util.List;
+import java.util.Set;
 
-
-
-public class UpdateViewRun implements Runnable
+public interface BidirectedGraph<G extends BidirectedGraph<? extends G, ? extends N, ? extends E, ? extends W>, N extends BidirectedNode<? extends E>, E extends BidirectedEdge<? extends N>, W extends BidirectedWalk<? extends N, ? extends E>> extends Graph<G, N, E, W>
 {
-    private HyperassociativeMapCanvas view;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view)
-    {
-        this.view = view;
-    }
-    
-    public void run()
-    {
-        this.view.refresh();
-    }
+	Set<? extends N> getNodes();
+	List<? extends E> getEdges();
+	Set<? extends G> getConnectedComponents();
+	boolean isStronglyConnected();
+	Set<? extends G> getStrongComponents();
+	boolean isPolytree();
 }

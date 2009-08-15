@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.syncleus.tests.dann.graph.hyperassociativemap;
 
-import com.syncleus.dann.graph.hyperassociativemap.NeighborNotFoundException;
+import com.syncleus.dann.graph.drawing.hyperassociativemap.NeighborNotFoundException;
 import org.junit.*;
 
 public class TestNeighborNotFoundException

@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
-import com.syncleus.dann.graph.hyperassociativemap.visualization.*;
+import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
 
 
 

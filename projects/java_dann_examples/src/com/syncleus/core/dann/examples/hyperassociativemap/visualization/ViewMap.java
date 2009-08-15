@@ -19,8 +19,8 @@
 package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
 import com.syncleus.dann.*;
-import com.syncleus.dann.graph.hyperassociativemap.*;
-import com.syncleus.dann.graph.hyperassociativemap.visualization.*;
+import com.syncleus.dann.graph.drawing.hyperassociativemap.*;
+import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
 import java.awt.event.*;
 import java.util.concurrent.*;
 import javax.swing.*;

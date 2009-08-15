@@ -16,23 +16,13 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.nci.ui;
+package com.syncleus.dann.graph.directed;
 
-import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
+import com.syncleus.dann.graph.NodePair;
 
-
-
-public class UpdateViewRun implements Runnable
+public interface DirectedEdge<N extends DirectedNode> extends BidirectedEdge<N>
 {
-    private HyperassociativeMapCanvas view;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view)
-    {
-        this.view = view;
-    }
-    
-    public void run()
-    {
-        this.view.refresh();
-    }
+	NodePair<? extends N> getNodes();
+	N getSourceNode();
+	N getDestinationNode();
 }

@@ -16,23 +16,29 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.nci.ui;
+package com.syncleus.dann.graph;
 
-import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
-
-
-
-public class UpdateViewRun implements Runnable
+public final class NodePair<N extends Node>
 {
-    private HyperassociativeMapCanvas view;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view)
-    {
-        this.view = view;
-    }
-    
-    public void run()
-    {
-        this.view.refresh();
-    }
+	private N left;
+	private N right;
+
+	NodePair(N left, N right)
+	{
+		if((left == null)||(right == null))
+			throw new IllegalArgumentException("Neither left nor right can be null.");
+
+		this.left = left;
+		this.right = right;
+	}
+
+	N getLeftNode()
+	{
+		return this.left;
+	}
+
+	N getRightNode()
+	{
+		return this.right;
+	}
 }
