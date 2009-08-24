@@ -64,6 +64,8 @@ public class Main
                     com.syncleus.core.dann.examples.tsp.TravellingSalesmanDemo.main(newArgs);
                 else if (selectorArg.compareTo("--astar") == 0)
                     com.syncleus.core.dann.examples.astar.AstarDemo.main(newArgs);
+                else if (selectorArg.compareTo("--fft") == 0)
+                    com.syncleus.core.dann.examples.fft.FftDemo.main(newArgs);
 
                 return;
             }
@@ -83,6 +85,7 @@ public class Main
 					System.out.println("C) SOM Color Map");
 					System.out.println("T) Travelling Salesman");
 					System.out.println("A) A* Path Finding Demo");
+					System.out.println("F) Fast Fourier Transform Demo");
                     System.out.println("H) Command Line Help");
                     System.out.println("Q) quit");
                     System.out.println("\tEnter command: ");
@@ -127,6 +130,9 @@ public class Main
 					break;
 				case 'a':
 					com.syncleus.core.dann.examples.astar.AstarDemo.main(newArgs);
+					break;
+				case 'f':
+					com.syncleus.core.dann.examples.fft.FftDemo.main(newArgs);
 					break;
                 case 'q':
                     break;
