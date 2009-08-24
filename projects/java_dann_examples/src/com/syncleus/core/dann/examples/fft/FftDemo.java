@@ -117,6 +117,7 @@ public class FftDemo extends JFrame implements ActionListener
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Fast Fourier Transform Demo");
 
         frequencyBar1.setForeground(new java.awt.Color(0, 0, 255));
         frequencyBar1.setOrientation(1);
