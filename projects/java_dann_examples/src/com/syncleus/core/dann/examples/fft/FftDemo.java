@@ -42,6 +42,9 @@ public class FftDemo extends JFrame implements ActionListener
     public FftDemo()
 	{
         initComponents();
+
+		this.setResizable(false);
+		
 		this.frequencyBars = new JProgressBar[]{frequencyBar1, frequencyBar2,
 												frequencyBar3, frequencyBar4,
 												frequencyBar5, frequencyBar6,
