@@ -346,8 +346,8 @@ public class FftDemo extends JFrame implements ActionListener
 			final double bandSize = maximumFrequency/((double)this.frequencyBars.length);
 			for(int frequencyBarIndex = 0; frequencyBarIndex < this.frequencyBars.length; frequencyBarIndex++)
 			{
-				double bandPower = transform.getBandAmplitude(((double)frequencyBarIndex)*bandSize, ((double)frequencyBarIndex+1)*bandSize);
-				this.frequencyBars[frequencyBarIndex].setValue((int) (bandPower*50.0));
+				double bandPower = transform.getBandGeometricMean(((double)frequencyBarIndex)*bandSize, ((double)frequencyBarIndex+1)*bandSize);
+				this.frequencyBars[frequencyBarIndex].setValue((int) (bandPower*500.0));
 			}
 		}
 	}
