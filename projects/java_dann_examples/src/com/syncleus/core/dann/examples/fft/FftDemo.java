@@ -329,16 +329,16 @@ public class FftDemo extends JFrame implements ActionListener
 
 	public void actionPerformed(ActionEvent evt)
 	{
-		if(this.transformer.getBlockSize()*4 <= this.targetDataLine.available())
+		if(this.transformer.getBlockSize()*2 <= this.targetDataLine.available())
 		{
-			final byte[] signalBytes = new byte[this.transformer.getBlockSize()*4];
+			final byte[] signalBytes = new byte[this.transformer.getBlockSize()*2];
 			this.targetDataLine.read(signalBytes, 0, signalBytes.length);
 
 			final double[] signal = new double[this.transformer.getBlockSize()];
 			for(int signalIndex = 0; signalIndex < signal.length; signalIndex++)
 			{
-				final int signalBytesIndex = signalIndex * 4;
-				signal[signalIndex] = bytesToDouble(signalBytes[signalBytesIndex], signalBytes[signalBytesIndex+1], signalBytes[signalBytesIndex+2], signalBytes[signalBytesIndex+3]);
+				final int signalBytesIndex = signalIndex * 2;
+				signal[signalIndex] = bytesToDouble(signalBytes[signalBytesIndex], signalBytes[signalBytesIndex+1]);
 			}
 
 
