@@ -19,16 +19,16 @@
 package com.syncleus.core.dann.examples.tsp;
 
 import com.syncleus.dann.genetics.*;
-import com.syncleus.dann.math.Hyperpoint;
+import com.syncleus.dann.math.Vector;
 import java.util.List;
 import java.util.SortedSet;
 
 public class TravellingSalesmanFitnessFunction extends AbstractGeneticAlgorithmFitnessFunction<TravellingSalesmanFitnessFunction>
 {
-	final private Hyperpoint cities[];
+	final private Vector cities[];
 	private double totalDistance = 0.0;
 
-	public TravellingSalesmanFitnessFunction(final TravellingSalesmanChromosome chromosome, final Hyperpoint[] cities)
+	public TravellingSalesmanFitnessFunction(final TravellingSalesmanChromosome chromosome, final Vector[] cities)
 	{
 		super(chromosome);
 
@@ -83,11 +83,11 @@ public class TravellingSalesmanFitnessFunction extends AbstractGeneticAlgorithmF
 
 		//calculate the distance going through the genes sorted by city priority
 		double currentDistance = 0.0;
-		Hyperpoint firstPosition = null;
-		Hyperpoint lastPosition = null;
+		Vector firstPosition = null;
+		Vector lastPosition = null;
 		for(AbstractValueGene sortedGene : sortedGenes)
 		{
-			final Hyperpoint currentPosition = this.cities[indexedGenes.indexOf(sortedGene)];
+			final Vector currentPosition = this.cities[indexedGenes.indexOf(sortedGene)];
 			if(lastPosition == null)
 			{
 				lastPosition = currentPosition;

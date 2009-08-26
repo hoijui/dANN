@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.*;
 import org.apache.log4j.Logger;
-import com.syncleus.dann.math.Hyperpoint;
+import com.syncleus.dann.math.Vector;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -55,7 +55,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 	private PopulationEvolveCallable populationCallable = null;
 	private Future<TravellingSalesmanChromosome> futureWinner = null;
 	private TravellingSalesmanChromosome currentWinner = null;
-	private Hyperpoint cities[] = null;
+	private Vector cities[] = null;
 
 	private static class PopulationEvolveCallable implements Callable<TravellingSalesmanChromosome>
 	{
@@ -139,7 +139,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 
 		if(this.cities != null)
 		{
-			for(Hyperpoint city : this.cities)
+			for(Vector city : this.cities)
 			{
 				int currentX = (int) city.getCoordinate(1);
 				int currentY = (int) city.getCoordinate(2);
@@ -151,16 +151,16 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 		if((this.cities != null)&&(this.currentWinner != null))
 		{
 			int ordering[] = this.currentWinner.getCitiesOrder();
-			Hyperpoint[] orderedPoints = new Hyperpoint[ordering.length];
+			Vector[] orderedPoints = new Vector[ordering.length];
 			for(int cityIndex = 0; cityIndex < this.cities.length; cityIndex++)
 			{
 				orderedPoints[ordering[cityIndex]] = this.cities[cityIndex];
 			}
 
 			//draw the points
-			Hyperpoint firstPoint = null;
-			Hyperpoint lastPoint = null;
-			for(Hyperpoint point : orderedPoints)
+			Vector firstPoint = null;
+			Vector lastPoint = null;
+			for(Vector point : orderedPoints)
 			{
 				if(lastPoint == null)
 				{
@@ -194,16 +194,16 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 
 	}
 
-	private static Hyperpoint[] getRandomPoints(int cityCount)
+	private static Vector[] getRandomPoints(int cityCount)
 	{
 		if(cityCount < 4)
 			throw new IllegalArgumentException("cityCount must have atleast 4 elements");
 
-		HashSet<Hyperpoint> pointsSet = new HashSet<Hyperpoint>();
+		HashSet<Vector> pointsSet = new HashSet<Vector>();
 		while(pointsSet.size() < cityCount)
-			pointsSet.add(new Hyperpoint(new double[]{RANDOM.nextDouble() * MAP_WIDTH, RANDOM.nextDouble() * MAP_HEIGHT}));
+			pointsSet.add(new Vector(new double[]{RANDOM.nextDouble() * MAP_WIDTH, RANDOM.nextDouble() * MAP_HEIGHT}));
 
-		Hyperpoint[] points = new Hyperpoint[cityCount];
+		Vector[] points = new Vector[cityCount];
 		pointsSet.toArray(points);
 
 		return points;

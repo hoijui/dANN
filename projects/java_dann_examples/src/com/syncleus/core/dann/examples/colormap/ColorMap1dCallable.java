@@ -21,7 +21,7 @@ package com.syncleus.core.dann.examples.colormap;
 import java.util.concurrent.Callable;
 import java.util.Map;
 import java.util.Random;
-import com.syncleus.dann.math.Hyperpoint;
+import com.syncleus.dann.math.Vector;
 import com.syncleus.dann.neural.som.brain.ExponentialDecaySomBrain;
 import java.util.Map.Entry;
 import java.awt.Color;
@@ -52,7 +52,7 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 
 			//create the output latice
 			for(double x = 0; x < getWidth(); x++)
-				brain.createOutput(new Hyperpoint(new double[]{x}));
+				brain.createOutput(new Vector(new double[]{x}));
 
 			//run through random training data for all iterations
 			for(int iteration = 0; iteration < getIterations(); iteration++)
@@ -67,13 +67,13 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 			}
 
 			//pull the output weight vectors
-			Map<Hyperpoint, double[]> outputWeightVectors = brain.getOutputWeightVectors();
+			Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
 
 			//construct the color array
 			Color[] colorPositions = new Color[getWidth()];
-			for(Entry<Hyperpoint, double[]> weightVector : outputWeightVectors.entrySet())
+			for(Entry<Vector, double[]> weightVector : outputWeightVectors.entrySet())
 			{
-				Hyperpoint currentPoint = weightVector.getKey();
+				Vector currentPoint = weightVector.getKey();
 				double[] currentVector = weightVector.getValue();
 
 				//convert the current Vector to a color.

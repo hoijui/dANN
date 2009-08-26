@@ -22,13 +22,13 @@ import com.syncleus.dann.genetics.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadPoolExecutor;
-import com.syncleus.dann.math.Hyperpoint;
+import com.syncleus.dann.math.Vector;
 
 public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopulation
 {
-	private final Hyperpoint cities[];
+	private final Vector cities[];
 	
-	public TravellingSalesmanPopulation(final Hyperpoint cities[], final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage)
+	public TravellingSalesmanPopulation(final Vector cities[], final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage)
 	{
 		super(mutationDeviation, crossoverPercentage, dieOffPercentage);
 
@@ -40,7 +40,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 		this.cities = cities.clone();
 	}
 
-	public TravellingSalesmanPopulation(final Hyperpoint cities[], final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage, final ThreadPoolExecutor threadExecutor)
+	public TravellingSalesmanPopulation(final Vector cities[], final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage, final ThreadPoolExecutor threadExecutor)
 	{
 		super(mutationDeviation, crossoverPercentage, dieOffPercentage, threadExecutor);
 
@@ -88,7 +88,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 		return (TravellingSalesmanChromosome) winner;
 	}
 
-	public Hyperpoint[] getCities()
+	public Vector[] getCities()
 	{
 		return cities.clone();
 	}
