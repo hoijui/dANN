@@ -29,7 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 import java.awt.event.ActionEvent;
 import javax.swing.Timer;
-import com.syncleus.dann.math.transform.*;
+import com.syncleus.dann.dataprocessing.signal.transform.*;
 
 public class FftDemo extends JFrame implements ActionListener
 {
