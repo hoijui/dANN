@@ -78,7 +78,7 @@ public class FftDemo extends JFrame implements ActionListener
 			System.exit(0);
 		}
 
-		this.transformer = new CooleyTukeyFastFourierTransformer(1024, 8000, 1);
+		this.transformer = new CooleyTukeyFastFourierTransformer(1024, 8000);
     }
 
     @SuppressWarnings("unchecked")
