@@ -19,7 +19,6 @@
 package com.syncleus.core.dann.examples.astar;
 
 import com.syncleus.dann.graph.pathfinding.astar.*;
-import java.awt.Point;
 
 public class AstarDemo
 {
