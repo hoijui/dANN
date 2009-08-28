@@ -25,12 +25,5 @@ public class AstarDemo
 {
 	public static void main(String[] args)
 	{
-		NodeMap2D map = new NodeMap2D(new Point(0, 0), new Point(9, 0));
-		Node[] path = map.getPath();
-		for( Node step : path )
-		{
-			System.out.println("step: " + map.getCoords(step));
-		}
-		System.out.println("done");
 	}
 }
