@@ -48,9 +48,9 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 1.0
      */
-    public CompressionNeuron()
+    public CompressionNeuron(Brain brain)
     {
-        super();
+        super(brain);
     }
     
     /**
@@ -58,19 +58,19 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 1.0
      */
-    public CompressionNeuron(ActivationFunction activationFunction)
+    public CompressionNeuron(Brain brain, ActivationFunction activationFunction)
     {
-        super(activationFunction);
+        super(brain, activationFunction);
     }
 
-	public CompressionNeuron(double learningRate)
+	public CompressionNeuron(Brain brain, double learningRate)
 	{
-		super(learningRate);
+		super(brain, learningRate);
 	}
 
-	public CompressionNeuron(ActivationFunction activationFunction, double learningRate)
+	public CompressionNeuron(Brain brain, ActivationFunction activationFunction, double learningRate)
 	{
-		super(activationFunction, learningRate);
+		super(brain, activationFunction, learningRate);
 	}
 
 
@@ -126,6 +126,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
      * <!-- Author: Jeffrey Phillips Freeman -->
      * @since 1.0
      */
+	@Override
     protected void setOutput(double newOutput)
     {
         if (this.inputSet == false)
@@ -134,7 +135,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
         {
             super.output = this.getDoubleInput();
 
-            for (Synapse current : this.destinations)
+            for (Synapse current : this.getBrain().getOutEdges(this))
                 current.setInput(newOutput);
         }
     }

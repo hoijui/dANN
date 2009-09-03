@@ -24,6 +24,7 @@ import com.syncleus.dann.neural.backprop.brain.*;
 import com.syncleus.dann.neural.activation.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -88,17 +89,17 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
 	protected BackpropNeuron createNeuron(int layer, int index)
 	{
 		if( layer == 0 )
-			return new InputBackpropNeuron(this.activationFunction, this.learningRate);
+			return new InputBackpropNeuron(this, this.activationFunction, this.learningRate);
 		else if(layer >= (this.getLayerCount() - 1))
-			return new OutputBackpropNeuron(this.activationFunction, this.learningRate);
+			return new OutputBackpropNeuron(this, this.activationFunction, this.learningRate);
 		else if(layer == 1)
 		{
-			CompressionNeuron compressionNeuron = new CompressionNeuron(this.activationFunction, this.learningRate);
+			CompressionNeuron compressionNeuron = new CompressionNeuron(this, this.activationFunction, this.learningRate);
 			this.compressedNeurons.add(compressionNeuron);
 			return compressionNeuron;
 		}
 		else
-			return new BackpropNeuron(this.activationFunction, this.learningRate);
+			return new BackpropNeuron(this, this.activationFunction, this.learningRate);
 	}
 
 
@@ -136,17 +137,16 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
 
 
 
-	@SuppressWarnings("unchecked")
     public double getAverageWeight()
     {
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        for (Neuron child : this.getNeurons())
+        for (Neuron child : this.getNodes())
         {
 			try
 			{
-				Set<Synapse> childSynapses = child.getDestinations();
+				List<Synapse> childSynapses = this.getOutEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{
@@ -165,17 +165,16 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
 
 
 
-	@SuppressWarnings("unchecked")
     public double getAverageAbsoluteWeight()
     {
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        for (Neuron child : this.getNeurons())
+        for (Neuron child : this.getNodes())
         {
 			try
 			{
-				Set<Synapse> childSynapses = child.getDestinations();
+				List<Synapse> childSynapses = this.getOutEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{
