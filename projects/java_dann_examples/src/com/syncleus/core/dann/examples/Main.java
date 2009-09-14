@@ -62,8 +62,6 @@ public class Main
                     com.syncleus.core.dann.examples.hyperassociativemap.visualization.ViewMap.main(newArgs);
                 else if (selectorArg.compareTo("--tsp") == 0)
                     com.syncleus.core.dann.examples.tsp.TravellingSalesmanDemo.main(newArgs);
-                else if (selectorArg.compareTo("--astar") == 0)
-                    com.syncleus.core.dann.examples.astar.AstarDemo.main(newArgs);
                 else if (selectorArg.compareTo("--fft") == 0)
                     com.syncleus.core.dann.examples.fft.FftDemo.main(newArgs);
 
@@ -84,7 +82,6 @@ public class Main
                     System.out.println("V) Hyperassociative Map Visualizations");
 					System.out.println("C) SOM Color Map");
 					System.out.println("T) Travelling Salesman");
-					System.out.println("A) A* Path Finding Demo");
 					System.out.println("F) Fast Fourier Transform Demo");
                     System.out.println("H) Command Line Help");
                     System.out.println("Q) quit");
@@ -127,9 +124,6 @@ public class Main
                     break;
 				case 't':
 					com.syncleus.core.dann.examples.tsp.TravellingSalesmanDemo.main(newArgs);
-					break;
-				case 'a':
-					com.syncleus.core.dann.examples.astar.AstarDemo.main(newArgs);
 					break;
 				case 'f':
 					com.syncleus.core.dann.examples.fft.FftDemo.main(newArgs);
