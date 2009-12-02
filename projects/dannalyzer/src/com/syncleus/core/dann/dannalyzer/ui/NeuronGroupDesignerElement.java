@@ -8,7 +8,7 @@ package com.syncleus.core.dann.dannalyzer.ui;
 
 /**
  *
- * @author  Administrator
+ * @author  Jeffrey Phillips Freeman
  */
 public class NeuronGroupDesignerElement extends DesignerElement {
 
