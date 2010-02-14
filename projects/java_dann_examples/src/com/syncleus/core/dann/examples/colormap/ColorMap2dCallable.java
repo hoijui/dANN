@@ -83,6 +83,21 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 				double[] currentVector = weightVector.getValue();
 
 				//convert the current Vector to a color.
+				if( (float)currentVector[0] < 0f )
+				{
+					LOGGER.warn("Incorrect red component: " + currentVector[0]);
+					currentVector[0] *= -1f;
+				}
+				if( (float)currentVector[1] < 0f )
+				{
+					LOGGER.warn("Incorrect green compoent: " + currentVector[1]);
+					currentVector[1] *= -1f;
+				}
+				if( (float)currentVector[2] < 0f )
+				{
+					LOGGER.warn("Incorrect blue compoent: " + currentVector[1]);
+					currentVector[2] *= -1f;
+				}
 				Color currentColor = new Color((float)currentVector[0], (float)currentVector[1], (float)currentVector[2]);
 
 				//add the current color to the colorPositions
