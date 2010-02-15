@@ -18,14 +18,11 @@
  ******************************************************************************/
 package com.syncleus.tests.dann.examples.fft;
 
-import com.syncleus.core.dann.examples.colormap.ColorMapDemo;
 import com.syncleus.core.dann.examples.fft.FftDemo;
-import org.fest.swing.exception.UnexpectedException;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.timing.Timeout;
 import org.junit.*;
 
 public class TestFftDemo
