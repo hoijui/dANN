@@ -123,6 +123,7 @@ public class FftDemo extends JFrame implements ActionListener
         frequencyBar1.setOrientation(1);
 
         listenButton.setText("Listen");
+        listenButton.setName("listenButton"); // NOI18N
         listenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 listenButtonActionPerformed(evt);
