@@ -22,6 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.Map;
 import java.util.Random;
 import com.syncleus.dann.math.Vector;
+import com.syncleus.dann.neural.Synapse;
 import com.syncleus.dann.neural.som.brain.ExponentialDecaySomBrain;
 import java.util.Map.Entry;
 import java.awt.Color;
@@ -59,6 +60,11 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 			for(double x = 0; x < getWidth(); x++)
 				for(double y = 0; y < getHeight(); y++)
 					brain.createOutput(new Vector(new double[]{x, y}));
+
+			//makes sure all the weights are randomly distributed within the
+			//output bounds.
+			for(Synapse synapse : brain.getEdges())
+				synapse.setWeight(random.nextDouble());
 
 			//run through random training data
 			for(int iteration = 0; iteration < getIterations(); iteration++)
