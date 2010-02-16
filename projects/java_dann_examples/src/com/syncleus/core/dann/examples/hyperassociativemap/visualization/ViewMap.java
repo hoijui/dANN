@@ -73,9 +73,29 @@ public class ViewMap extends JFrame implements ActionListener
     }
 
 
+	private static boolean checkClasses()
+	{
+		try
+		{
+			Class.forName("javax.media.j3d.NativePipeline");
+		}
+		catch(ClassNotFoundException caughtException)
+		{
+			System.out.println("java3D isnt installed!");
+			return false;
+		}
+
+		return true;
+	}
+
+
 
     public static void main(String args[]) throws Exception
     {
+		//check that the java3D drivers are present
+		if( !checkClasses() )
+			return;
+
         java.awt.EventQueue.invokeLater(new Runnable()
                                       {
                                           public void run()
