@@ -88,24 +88,13 @@ public class ViewMap extends JFrame implements ActionListener
 		if(!checkClasses())
 			return;
 
-		try
+		java.awt.EventQueue.invokeLater(new Runnable()
 		{
-			java.awt.EventQueue.invokeLater(new Runnable()
+			public void run()
 			{
-				public void run()
-				{
-					new ViewMap().setVisible(true);
-				}
-			});
-		}
-		catch(UnsatisfiedLinkError caughtError)
-		{
-			if(caughtError.toString().contains("j3dcore"))
-				System.out.println("The following exception seems to be due to an incorrect or nonexistant install of Java3D!");
-
-			throw caughtError;
-
-		}
+				new ViewMap().setVisible(true);
+			}
+		});
 	}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
