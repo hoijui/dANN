@@ -25,53 +25,47 @@ import java.awt.event.*;
 import java.util.concurrent.*;
 import javax.swing.*;
 
-
 public class ViewMap extends JFrame implements ActionListener
 {
-    private HyperassociativeMapCanvas mapVisual;
-    private ExecutorService executor = Executors.newFixedThreadPool(1);
-    private FutureTask<Void> lastRun;
+	private HyperassociativeMapCanvas mapVisual;
+	private ExecutorService executor = Executors.newFixedThreadPool(1);
+	private FutureTask<Void> lastRun;
 
+	public ViewMap()
+	{
+		LayeredHyperassociativeMap associativeMap = new LayeredHyperassociativeMap(8);
 
+		this.mapVisual = new HyperassociativeMapCanvas(associativeMap, 0.07F);
 
-    public ViewMap()
-    {
-        LayeredHyperassociativeMap associativeMap = new LayeredHyperassociativeMap(8);
+		initComponents();
 
-        this.mapVisual = new HyperassociativeMapCanvas(associativeMap, 0.07F);
+		this.add(this.mapVisual);
+		this.mapVisual.setLocation(0, 0);
+		this.mapVisual.setSize(800, 600);
+		this.mapVisual.setVisible(true);
 
-        initComponents();
+		this.setSize(800, 600);
 
-        this.add(this.mapVisual);
-        this.mapVisual.setLocation(0, 0);
-        this.mapVisual.setSize(800, 600);
-        this.mapVisual.setVisible(true);
+		this.mapVisual.refresh();
 
-        this.setSize(800, 600);
+		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual), null);
+		this.executor.execute(this.lastRun);
 
-        this.mapVisual.refresh();
+		new Timer(100, this).start();
 
-        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual), null);
-        this.executor.execute(this.lastRun);
+	}
 
-        new Timer(100, this).start();
+	public void actionPerformed(ActionEvent evt)
+	{
+		if((this.lastRun != null) && (this.lastRun.isDone() == false))
+			return;
 
-    }
+		if(this.isVisible() == false)
+			return;
 
-
-
-    public void actionPerformed(ActionEvent evt)
-    {
-        if ((this.lastRun != null) && (this.lastRun.isDone() == false))
-            return;
-
-        if (this.isVisible() == false)
-            return;
-
-        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual), null);
-        this.executor.execute(this.lastRun);
-    }
-
+		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual), null);
+		this.executor.execute(this.lastRun);
+	}
 
 	private static boolean checkClasses()
 	{
@@ -81,29 +75,38 @@ public class ViewMap extends JFrame implements ActionListener
 		}
 		catch(ClassNotFoundException caughtException)
 		{
-			System.out.println("java3D isnt installed!");
+			System.out.println("java3D library isnt in classpath!");
 			return false;
 		}
 
 		return true;
 	}
 
-
-
-    public static void main(String args[]) throws Exception
-    {
+	public static void main(String args[]) throws Exception
+	{
 		//check that the java3D drivers are present
-		if( !checkClasses() )
+		if(!checkClasses())
 			return;
 
-        java.awt.EventQueue.invokeLater(new Runnable()
-                                      {
-                                          public void run()
-                                          {
-                                              new ViewMap().setVisible(true);
-                                          }
-                                      });
-    }
+		try
+		{
+			java.awt.EventQueue.invokeLater(new Runnable()
+			{
+				public void run()
+				{
+					new ViewMap().setVisible(true);
+				}
+			});
+		}
+		catch(UnsatisfiedLinkError caughtError)
+		{
+			if(caughtError.toString().contains("j3dcore"))
+				System.out.println("The following exception seems to be due to an incorrect or nonexistant install of Java3D!");
+
+			throw caughtError;
+
+		}
+	}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
