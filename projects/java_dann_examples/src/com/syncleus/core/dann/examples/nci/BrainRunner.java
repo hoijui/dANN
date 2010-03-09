@@ -26,7 +26,6 @@ import java.util.concurrent.*;
 import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 
-
 public class BrainRunner implements Runnable
 {
     private NciBrain brain;
@@ -148,8 +147,8 @@ public class BrainRunner implements Runnable
         {
             executor = Executors.newFixedThreadPool(1);
 
-            //this.brain = new NciBrain(this.compression, this.xSize, this.ySize, this.extraConnectivity);
-            this.brainMap = new BrainHyperassociativeMap(/*brain,*/ 3);
+            this.brain = new NciBrain(this.compression, this.xSize, this.ySize, this.extraConnectivity);
+            this.brainMap = new BrainHyperassociativeMap(brain, 3);
             this.setTrainingImages(trainingFiles);
             
 

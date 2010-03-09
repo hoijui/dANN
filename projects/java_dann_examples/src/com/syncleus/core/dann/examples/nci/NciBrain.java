@@ -25,14 +25,14 @@ import com.syncleus.dann.neural.activation.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
 
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
  * @author Syncleus, Inc.
  * @since 1.0
  */
-public class NciBrain<N extends BackpropNeuron, S extends Synapse<? extends N>> extends AbstractFullyConnectedFeedforwardBrain<N,S> implements java.io.Serializable
+public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements java.io.Serializable
 {
     private double actualCompression = 0.0;
     private int xSize = 0;
@@ -85,21 +85,22 @@ public class NciBrain<N extends BackpropNeuron, S extends Synapse<? extends N>> 
                 }
     }
 
-    @Override
-    protected N createNeuron(int layer, int index) {
+	protected BackpropNeuron createNeuron(int layer, int index)
+	{
 		if( layer == 0 )
-			return (N)(new InputBackpropNeuron(this, this.activationFunction, this.learningRate));
+			return new InputBackpropNeuron(this, this.activationFunction, this.learningRate);
 		else if(layer >= (this.getLayerCount() - 1))
-			return (N)(new OutputBackpropNeuron(this, this.activationFunction, this.learningRate));
+			return new OutputBackpropNeuron(this, this.activationFunction, this.learningRate);
 		else if(layer == 1)
 		{
 			CompressionNeuron compressionNeuron = new CompressionNeuron(this, this.activationFunction, this.learningRate);
 			this.compressedNeurons.add(compressionNeuron);
-			return (N)compressionNeuron;
+			return compressionNeuron;
 		}
 		else
-			return (N)(new BackpropNeuron(this, this.activationFunction, this.learningRate));
-    }
+			return new BackpropNeuron(this, this.activationFunction, this.learningRate);
+	}
+
 
 
     /**
@@ -140,13 +141,13 @@ public class NciBrain<N extends BackpropNeuron, S extends Synapse<? extends N>> 
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        for (N child : this.getNodes())
+        for (Neuron child : this.getNodes())
         {
 			try
 			{
-				List<S> childSynapses = this.getOutEdges(child);
+				List<Synapse> childSynapses = this.getOutEdges(child);
 
-				for (S childSynapse : childSynapses)
+				for (Synapse childSynapse : childSynapses)
 				{
 					weightSum += childSynapse.getWeight();
 					weightCount++;
@@ -168,11 +169,11 @@ public class NciBrain<N extends BackpropNeuron, S extends Synapse<? extends N>> 
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        for (N child : this.getNodes())
+        for (Neuron child : this.getNodes())
         {
 			try
 			{
-				List<S> childSynapses = this.getOutEdges(child);
+				List<Synapse> childSynapses = this.getOutEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{
