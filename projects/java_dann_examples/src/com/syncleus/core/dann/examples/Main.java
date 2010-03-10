@@ -18,13 +18,22 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples;
 
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.log4j.Logger;
 
+
+/** Runs dANN demos from a console menu.
+ *  @author Syncleus, Inc.
+ */
 public class Main
 {
-	private final static Logger LOGGER = Logger.getLogger(Main.class);
+	private static final Logger LOGGER = Logger.getLogger(Main.class);
+
+    private static final long inputSleepMs = 100;
 
     public static void main(String args[])
     {
@@ -83,6 +92,7 @@ public class Main
 					System.out.println("C) SOM Color Map");
 					System.out.println("T) Travelling Salesman");
 					System.out.println("F) Fast Fourier Transform Demo");
+                    System.out.println("P) Path Finding Demo");
                     System.out.println("H) Command Line Help");
                     System.out.println("Q) quit");
                     System.out.println("\tEnter command: ");
@@ -90,8 +100,8 @@ public class Main
                     received = true;
                     try
                     {
-                        while( inReader.ready() != true )
-                            Thread.sleep(100);
+                        while( inReader.ready() == false )
+                            Thread.sleep(inputSleepMs);
                         currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
                     }
                     catch (ArrayIndexOutOfBoundsException caughtException)
@@ -127,6 +137,9 @@ public class Main
 					break;
 				case 'f':
 					com.syncleus.core.dann.examples.fft.FftDemo.main(newArgs);
+					break;
+				case 'p':
+					com.syncleus.core.dann.examples.pathfind.PathFindDemoPanel.main(newArgs);
 					break;
                 case 'q':
                     break;
