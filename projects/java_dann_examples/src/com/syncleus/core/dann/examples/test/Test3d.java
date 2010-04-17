@@ -56,13 +56,13 @@ public class Test3d extends JFrame
         GlobalSignalConcentration signalY = new GlobalSignalConcentration();
         GlobalSignalConcentration signalZ = new GlobalSignalConcentration();
         SignalProcessingWavelet processor = new SignalProcessingWavelet(/*new Cell(),*/ signalX, signalZ);
-        for(int index = 0;index < 500 ;index++)
+        for(int index = 0;(index < 500)||(processor.getSignals().size() < 3) ;index++)
         {
 			try
 			{
-				processor = processor.mutate(10000.0, signalX);
-				processor = processor.mutate(10000.0, signalY);
-				processor = processor.mutate(10000.0);
+				processor = processor.mutate(100000.0, signalX);
+				processor = processor.mutate(100000.0, signalY);
+				processor = processor.mutate(100000.0);
 			}
 			catch(CloneNotSupportedException caught)
 			{
