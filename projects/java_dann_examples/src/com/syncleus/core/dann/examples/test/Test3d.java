@@ -60,9 +60,9 @@ public class Test3d extends JFrame
         {
 			try
 			{
-				processor = processor.mutate(1.0, signalX);
-				processor = processor.mutate(1.0, signalY);
-				processor = processor.mutate(1.0);
+				processor = processor.mutate(10000.0, signalX);
+				processor = processor.mutate(10000.0, signalY);
+				processor = processor.mutate(10000.0);
 			}
 			catch(CloneNotSupportedException caught)
 			{
