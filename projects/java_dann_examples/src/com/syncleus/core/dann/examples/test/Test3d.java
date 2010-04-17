@@ -79,8 +79,8 @@ public class Test3d extends JFrame
 
 		MathFunctionCanvas plotCanvas = new MathFunctionCanvas(
             processor.getWavelet(),
-            signalX.getId().toString(),
-            signalY.getId().toString(),
+            signalX.getId() + "",
+            signalY.getId() + "",
             -200.0f,
             200.0f,
             -200.0f,
