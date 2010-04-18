@@ -16,27 +16,20 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
-
-import com.syncleus.dann.graph.drawing.hyperassociativemap.HyperassociativeMap;
-import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
+package com.syncleus.tests.dann.graph.drawing.hyperassociativemap;
 
 
-
-public class UpdateViewRun implements Runnable
+public class SimpleNode
 {
-    private HyperassociativeMapCanvas view;
-	private HyperassociativeMap map;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view, HyperassociativeMap map)
-    {
-        this.view = view;
-		this.map = map;
-    }
-    
-    public void run()
-    {
-        this.map.align();
-        this.view.refresh();
-    }
+	final int layer;
+
+	public SimpleNode(int layer)
+	{
+		this.layer = layer;
+	}
+
+	public int getLayer()
+	{
+		return this.layer;
+	}
 }

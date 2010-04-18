@@ -28,14 +28,15 @@ import javax.swing.*;
 public class ViewMap extends JFrame implements ActionListener
 {
 	private HyperassociativeMapCanvas mapVisual;
+	private LayeredHyperassociativeMap associativeMap;
 	private ExecutorService executor = Executors.newFixedThreadPool(1);
 	private FutureTask<Void> lastRun;
 
 	public ViewMap()
 	{
-		LayeredHyperassociativeMap associativeMap = new LayeredHyperassociativeMap(8);
+		this.associativeMap = new LayeredHyperassociativeMap(8);
 
-		this.mapVisual = new HyperassociativeMapCanvas(associativeMap, 0.07F);
+		this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
 
 		initComponents();
 
@@ -48,7 +49,7 @@ public class ViewMap extends JFrame implements ActionListener
 
 		this.mapVisual.refresh();
 
-		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual), null);
+		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, associativeMap), null);
 		this.executor.execute(this.lastRun);
 
 		new Timer(100, this).start();
@@ -63,7 +64,7 @@ public class ViewMap extends JFrame implements ActionListener
 		if(this.isVisible() == false)
 			return;
 
-		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual), null);
+		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, this.associativeMap), null);
 		this.executor.execute(this.lastRun);
 	}
 

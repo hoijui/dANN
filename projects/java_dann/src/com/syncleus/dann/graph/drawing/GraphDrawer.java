@@ -16,27 +16,18 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
+package com.syncleus.dann.graph.drawing;
 
-import com.syncleus.dann.graph.drawing.hyperassociativemap.HyperassociativeMap;
-import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
+import com.syncleus.dann.graph.*;
+import com.syncleus.dann.math.Vector;
+import java.util.Map;
 
-
-
-public class UpdateViewRun implements Runnable
+public interface GraphDrawer<G extends Graph<N, E, W>, N, E extends Edge<? extends N>, W extends Walk<? extends N, ? extends E>>
 {
-    private HyperassociativeMapCanvas view;
-	private HyperassociativeMap map;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view, HyperassociativeMap map)
-    {
-        this.view = view;
-		this.map = map;
-    }
-    
-    public void run()
-    {
-        this.map.align();
-        this.view.refresh();
-    }
+	public G getGraph();
+	public boolean isAlignable();
+	public boolean isAligned();
+	public void align();
+	public int getDimensions();
+	public Map<N, Vector> getCoordinates();
 }

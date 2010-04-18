@@ -18,55 +18,16 @@
  ******************************************************************************/
 package com.syncleus.tests.dann.graph.drawing.hyperassociativemap;
 
+import com.syncleus.dann.graph.BidirectedEdge;
+import com.syncleus.dann.graph.BidirectedWalk;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.*;
 
-public class LayeredHyperassociativeMap extends AbstractHyperassociativeMap
+public class LayeredHyperassociativeMap extends HyperassociativeMap<SimpleGraph, SimpleNode, BidirectedEdge<SimpleNode>, BidirectedWalk<SimpleNode, BidirectedEdge<SimpleNode>>>
 {
-    private HyperassociativeNode layeredNodes[][];
-    private static final int NODES_PER_LAYER = 4;
+    private static final int NODES_PER_LAYER = 16;
     
     LayeredHyperassociativeMap(int layers)
     {
-		super(3);
-		
-        this.layeredNodes = new HyperassociativeNode[layers][NODES_PER_LAYER];
-        
-        //create the nodes
-        for(int layerIndex = 0; layerIndex < layers; layerIndex++)
-            for(int nodeIndex = 0; nodeIndex < NODES_PER_LAYER; nodeIndex++)
-            {
-                this.layeredNodes[layerIndex][nodeIndex] = new HyperassociativeNode(this, HyperassociativeNode.randomCoordinates(3), 0.02);
-                this.nodes.add(this.layeredNodes[layerIndex][nodeIndex]);
-            }
-        
-        //connect the nodes
-        for(int layerIndex = 0; layerIndex < layers; layerIndex++)
-        {
-            for(int nodeIndex = 0; nodeIndex < NODES_PER_LAYER; nodeIndex++)
-            {
-                HyperassociativeNode currentNode = this.layeredNodes[layerIndex][nodeIndex];
-                for(int toNodeIndex = 0; toNodeIndex < NODES_PER_LAYER; toNodeIndex++)
-                {
-                    if(layerIndex < (layers-1))
-                    {
-                        currentNode.associate(this.layeredNodes[layerIndex+1][toNodeIndex], 1.0);
-                        this.layeredNodes[layerIndex+1][toNodeIndex].associate(currentNode, 1.0);
-                    }
-                    else
-                    {
-                        currentNode.associate(this.layeredNodes[0][toNodeIndex], 1.0);
-                        this.layeredNodes[0][toNodeIndex].associate(currentNode, 1.0);
-                    }
-                }
-            }
-        }
-        
-        //connect the last layer to itself
+		super(new SimpleGraph(layers,NODES_PER_LAYER), 3);
     }
-
-
-	public HyperassociativeNode[][] getLayers()
-	{
-		return (HyperassociativeNode[][]) this.layeredNodes.clone();
-	}
 }
