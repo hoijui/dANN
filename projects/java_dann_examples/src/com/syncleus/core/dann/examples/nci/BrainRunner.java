@@ -148,7 +148,7 @@ public class BrainRunner implements Runnable
             executor = Executors.newFixedThreadPool(1);
 
             this.brain = new NciBrain(this.compression, this.xSize, this.ySize, this.extraConnectivity);
-            this.brainMap = new HyperassociativeMap(brain, 3);
+            this.brainMap = new BrainHyperassociativeMap(brain, 3);
             this.setTrainingImages(trainingFiles);
             
 
