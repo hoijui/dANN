@@ -58,17 +58,9 @@ public class Test3d extends JFrame
         SignalProcessingWavelet processor = new SignalProcessingWavelet(/*new Cell(),*/ signalX, signalZ);
         for(int index = 0;(index < 500)||(processor.getSignals().size() < 3) ;index++)
         {
-			try
-			{
-				processor = processor.mutate(100000.0, signalX);
-				processor = processor.mutate(100000.0, signalY);
-				processor = processor.mutate(100000.0);
-			}
-			catch(CloneNotSupportedException caught)
-			{
-				caught.printStackTrace();
-				System.exit(0);
-			}
+			processor = processor.mutate(100000.0, signalX);
+			processor = processor.mutate(100000.0, signalY);
+			processor = processor.mutate(100000.0);
         }
 
         System.out.println("The current equation contains " + processor.getWaveCount() + " waves:");
