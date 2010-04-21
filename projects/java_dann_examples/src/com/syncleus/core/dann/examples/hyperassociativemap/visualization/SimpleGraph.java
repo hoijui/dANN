@@ -18,17 +18,8 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
-import com.syncleus.dann.graph.AbstractBidirectedGraph;
-import com.syncleus.dann.graph.BidirectedEdge;
-import com.syncleus.dann.graph.BidirectedWalk;
-import com.syncleus.dann.graph.SimpleUndirectedEdge;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.syncleus.dann.graph.*;
+import java.util.*;
 
 public class SimpleGraph extends AbstractBidirectedGraph<SimpleNode, BidirectedEdge<SimpleNode>, BidirectedWalk<SimpleNode, BidirectedEdge<SimpleNode>>>
 {
@@ -88,27 +79,27 @@ public class SimpleGraph extends AbstractBidirectedGraph<SimpleNode, BidirectedE
 	}
 
 	@Override
-	public List<BidirectedEdge<SimpleNode>> getEdges()
+	public Set<BidirectedEdge<SimpleNode>> getEdges()
 	{
-		return Collections.unmodifiableList(new ArrayList<BidirectedEdge<SimpleNode>>(this.edges));
+		return Collections.unmodifiableSet(this.edges);
 	}
 
-	public List<BidirectedEdge<SimpleNode>> getEdges(SimpleNode node)
+	public Set<BidirectedEdge<SimpleNode>> getEdges(SimpleNode node)
 	{
-		return Collections.unmodifiableList(new ArrayList<BidirectedEdge<SimpleNode>>(this.neighborEdges.get(node)));
+		return Collections.unmodifiableSet(this.neighborEdges.get(node));
 	}
 
-	public List<BidirectedEdge<SimpleNode>> getTraversableEdges(SimpleNode node)
-	{
-		return this.getEdges(node);
-	}
-
-	public List<BidirectedEdge<SimpleNode>> getOutEdges(SimpleNode node)
+	public Set<BidirectedEdge<SimpleNode>> getTraversableEdges(SimpleNode node)
 	{
 		return this.getEdges(node);
 	}
 
-	public List<BidirectedEdge<SimpleNode>> getInEdges(SimpleNode node)
+	public Set<BidirectedEdge<SimpleNode>> getOutEdges(SimpleNode node)
+	{
+		return this.getEdges(node);
+	}
+
+	public Set<BidirectedEdge<SimpleNode>> getInEdges(SimpleNode node)
 	{
 		return this.getEdges(node);
 	}

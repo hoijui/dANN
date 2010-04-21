@@ -18,15 +18,8 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.pathfind;
 
-import com.syncleus.dann.graph.AbstractBidirectedGraph;
-import com.syncleus.dann.graph.BidirectedWalk;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.syncleus.dann.graph.*;
+import java.util.*;
 
 /**
  * A 2D mesh with individual weights for nodes and edges.  Each node is linked to its four neighbors by weighted undirected edges.
@@ -138,9 +131,9 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      * @return the set of all edges in this grid
      */
     @Override
-    public List<SimpleWeightedUndirectedEdge<GridNode>> getEdges()
+    public Set<SimpleWeightedUndirectedEdge<GridNode>> getEdges()
     {
-        return Collections.unmodifiableList(new ArrayList<SimpleWeightedUndirectedEdge<GridNode>>(this.edges));
+        return Collections.unmodifiableSet(this.edges);
     }
 
     /**
@@ -148,9 +141,9 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      * @param node the node to find the edges surrounding it
      * @return a list of all edges surrounding a specific grid node
      */
-    public List<SimpleWeightedUndirectedEdge<GridNode>> getEdges(final GridNode node)
+    public Set<SimpleWeightedUndirectedEdge<GridNode>> getEdges(final GridNode node)
     {
-        return Collections.unmodifiableList(new ArrayList<SimpleWeightedUndirectedEdge<GridNode>>(this.neighborEdges.get(node)));
+        return Collections.unmodifiableSet(this.neighborEdges.get(node));
     }
 
     /**
@@ -158,7 +151,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      * @param node the node to find edges surrounding it
      * @return all traversable edges
      */
-    public List<SimpleWeightedUndirectedEdge<GridNode>> getTraversableEdges(final GridNode node)
+    public Set<SimpleWeightedUndirectedEdge<GridNode>> getTraversableEdges(final GridNode node)
     {
         return this.getEdges(node);
     }
@@ -168,7 +161,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      * @param node the node to find edges surrounding it
      * @return all edges surrounding it
      */
-    public List<SimpleWeightedUndirectedEdge<GridNode>> getOutEdges(final GridNode node)
+    public Set<SimpleWeightedUndirectedEdge<GridNode>> getOutEdges(final GridNode node)
     {
         return this.getEdges(node);
     }
@@ -178,7 +171,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      * @param node the node to find edges surrounding it
      * @return all edges surrounding it
      */
-    public List<SimpleWeightedUndirectedEdge<GridNode>> getInEdges(final GridNode node)
+    public Set<SimpleWeightedUndirectedEdge<GridNode>> getInEdges(final GridNode node)
     {
         return this.getEdges(node);
     }

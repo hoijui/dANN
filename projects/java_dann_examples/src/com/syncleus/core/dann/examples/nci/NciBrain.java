@@ -23,9 +23,7 @@ import com.syncleus.dann.neural.backprop.*;
 import com.syncleus.dann.neural.backprop.brain.*;
 import com.syncleus.dann.neural.activation.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
@@ -145,7 +143,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
         {
 			try
 			{
-				List<Synapse> childSynapses = this.getOutEdges(child);
+				Set<Synapse> childSynapses = this.getOutEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{
@@ -173,7 +171,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
         {
 			try
 			{
-				List<Synapse> childSynapses = this.getOutEdges(child);
+				Set<Synapse> childSynapses = this.getOutEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{
