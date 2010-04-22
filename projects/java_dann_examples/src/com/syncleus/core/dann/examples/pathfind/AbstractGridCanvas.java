@@ -18,19 +18,14 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.pathfind;
 
-import com.syncleus.dann.graph.BidirectedEdge;
-import com.syncleus.dann.graph.WeightedBidirectedEdge;
-import com.syncleus.dann.graph.WeightedWalk;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import com.syncleus.dann.graph.*;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import javax.swing.JPanel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.LinkedList;
-import javax.swing.JPanel;
 
 /**
  * Displays a WeightedGrid as a Swing component, with support for hiliting individual nodes and edges (borders between nodes).
@@ -42,7 +37,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
     private final WeightedGrid grid;
     private int nodeSize;
     private int edgeSize;
-    private WeightedWalk<GridNode, SimpleWeightedUndirectedEdge<GridNode>> path;
+    private List<SimpleWeightedUndirectedEdge<GridNode>> path;
     private int pathThickness;
     private GridNode touchedNode = null;
     private SimpleWeightedUndirectedEdge<GridNode> touchedEdge = null;
@@ -60,7 +55,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * @param initialNodeSize size (in pixels) of each displayed node square
      * @param initialEdgeSize size (in pixels) of the width or height of each edge surrounding each node square
      */
-    public AbstractGridCanvas(final WeightedGrid shownGrid, final WeightedWalk<GridNode, SimpleWeightedUndirectedEdge<GridNode>> initialPath, final int initialNodeSize, final int initialEdgeSize)
+    public AbstractGridCanvas(final WeightedGrid shownGrid, final List<SimpleWeightedUndirectedEdge<GridNode>> initialPath, final int initialNodeSize, final int initialEdgeSize)
     {
         super();
 
@@ -163,7 +158,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 
             int centerOffset = (edgeSize + nodeSize / 2);
 
-            for (BidirectedEdge<GridNode> edge : path.getSteps())
+            for (BidirectedEdge<GridNode> edge : path)
             {
                 int lastX = edge.getLeftNode().getX();
                 int lastY = edge.getLeftNode().getY();
@@ -406,7 +401,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * Sets a different path to draw when the component is redrawn, and then repaint()'s.
      * @param nextPath the next path to draw
      */
-    void setPath(final WeightedWalk<GridNode, SimpleWeightedUndirectedEdge<GridNode>> nextPath)
+    void setPath(final List<SimpleWeightedUndirectedEdge<GridNode>> nextPath)
     {
         this.path = nextPath;
         repaint();

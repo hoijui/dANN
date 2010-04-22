@@ -21,7 +21,7 @@ package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 import com.syncleus.dann.graph.*;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.*;
 
-public class LayeredHyperassociativeMap extends HyperassociativeMap<SimpleGraph, SimpleNode, BidirectedEdge<SimpleNode>, BidirectedWalk<SimpleNode, BidirectedEdge<SimpleNode>>>
+public class LayeredHyperassociativeMap extends HyperassociativeMap<SimpleGraph, SimpleNode>
 {
     private static final int NODES_PER_LAYER = 16;
     

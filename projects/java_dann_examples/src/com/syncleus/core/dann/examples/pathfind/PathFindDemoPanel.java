@@ -18,30 +18,13 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.pathfind;
 
+import com.syncleus.dann.graph.search.pathfinding.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
 import com.syncleus.dann.graph.WeightedBidirectedEdge;
-import com.syncleus.dann.graph.WeightedWalk;
-import com.syncleus.dann.graph.search.pathfinding.AstarPathFinder;
-import com.syncleus.dann.graph.search.pathfinding.HeuristicPathCost;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.LinkedList;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JToggleButton;
-import javax.swing.UIManager;
 
 /**
  * Demonstrates Path Finding across a Weighted Grid.  The Grid's node and edge weights can be adjusted by clicking.
@@ -57,7 +40,7 @@ public class PathFindDemoPanel extends JPanel
     private int h;
     private WeightedGrid grid;
     private PathFindControlPanel controlPanel;
-    private WeightedWalk<GridNode, SimpleWeightedUndirectedEdge<GridNode>> path;
+    private List<SimpleWeightedUndirectedEdge<GridNode>> path;
     private GridNode endNode;
     private GridNode startNode;
     private double paintWeight = 0;
@@ -386,7 +369,7 @@ public class PathFindDemoPanel extends JPanel
      */
     protected void updatePath()
     {
-        AstarPathFinder<WeightedGrid, GridNode, SimpleWeightedUndirectedEdge<GridNode>> pathFinder = new AstarPathFinder<WeightedGrid, GridNode, SimpleWeightedUndirectedEdge<GridNode>>(grid, new DistanceHeuristic());
+        AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>> pathFinder = new AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>>(grid, new DistanceHeuristic());
         path = pathFinder.getBestPath(startNode, endNode);
         if (gridCanvas != null)
         {
