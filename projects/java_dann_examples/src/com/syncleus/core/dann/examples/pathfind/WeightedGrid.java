@@ -141,7 +141,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      * @param node the node to find the edges surrounding it
      * @return a list of all edges surrounding a specific grid node
      */
-    public Set<SimpleWeightedUndirectedEdge<GridNode>> getEdges(final GridNode node)
+    public Set<SimpleWeightedUndirectedEdge<GridNode>> getAdjacentEdges(final GridNode node)
     {
         return Collections.unmodifiableSet(this.neighborEdges.get(node));
     }
@@ -153,7 +153,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      */
     public Set<SimpleWeightedUndirectedEdge<GridNode>> getTraversableEdges(final GridNode node)
     {
-        return this.getEdges(node);
+        return this.getAdjacentEdges(node);
     }
 
     /**
@@ -163,7 +163,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      */
     public Set<SimpleWeightedUndirectedEdge<GridNode>> getOutEdges(final GridNode node)
     {
-        return this.getEdges(node);
+        return this.getAdjacentEdges(node);
     }
 
     /**
@@ -173,7 +173,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      */
     public Set<SimpleWeightedUndirectedEdge<GridNode>> getInEdges(final GridNode node)
     {
-        return this.getEdges(node);
+        return this.getAdjacentEdges(node);
     }
 
     /**
@@ -212,7 +212,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      * @param node to find neighbors surrounding it
      * @return list of nodes that can be traversed into
      */
-    public List<GridNode> getNeighbors(final GridNode node)
+    public List<GridNode> getAdjacentNodes(final GridNode node)
     {
         return Collections.unmodifiableList(new ArrayList<GridNode>(this.neighborNodes.get(node)));
     }
@@ -222,9 +222,9 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
      * @param node to find neighbors surrounding it
      * @return list of nodes that can be traversed into
      */
-    public List<GridNode> getTraversableNeighbors(final GridNode node)
+    public List<GridNode> getTraversableNodes(final GridNode node)
     {
-        return this.getNeighbors(node);
+        return this.getAdjacentNodes(node);
     }
 
     /**
@@ -260,7 +260,7 @@ public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeight
         }
 
         final GridNode gn = getNode(firstX, firstY);
-        for (SimpleWeightedUndirectedEdge<GridNode> edge : getEdges(gn))
+        for (SimpleWeightedUndirectedEdge<GridNode> edge : getAdjacentEdges(gn))
         {
             final GridNode left = edge.getLeftNode();
             final GridNode right = edge.getRightNode();

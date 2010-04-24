@@ -254,19 +254,19 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
                     {
 
                         LinkedList<SimpleWeightedUndirectedEdge<GridNode>> thisEdges, otherEdges;
-                        thisEdges = new LinkedList(grid.getEdges(grid.getNode(nx, ny)));
+                        thisEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx, ny)));
                         //System.err.println(nx + " " + ny + " : " + thisEdges);
 
                         if (upOrLeft)
                         {
                             //up
-                            otherEdges = new LinkedList(grid.getEdges(grid.getNode(nx, ny - 1)));
+                            otherEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx, ny - 1)));
                             //System.err.println(nx + " " + (ny-1) + " : " + otherEdges);
                         }
                         else
                         {
                             //left
-                            otherEdges = new LinkedList(grid.getEdges(grid.getNode(nx - 1, ny)));
+                            otherEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx - 1, ny)));
                             //System.err.println((nx-1) + " " + ny + " : " + otherEdges);
                         }
 
