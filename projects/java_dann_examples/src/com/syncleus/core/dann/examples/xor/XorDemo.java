@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
  * of its inputs are true.
  *
  * @since 0.1
- * @author Syncleus, Inc.
+ * @author Jeffrey Phillips Freeman
  */
 public class XorDemo
 {

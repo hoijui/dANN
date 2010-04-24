@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 
 
 /** Runs dANN demos from a console menu.
- *  @author Syncleus, Inc.
+ *  @author Jeffrey Phillips Freeman
  */
 public class Main
 {

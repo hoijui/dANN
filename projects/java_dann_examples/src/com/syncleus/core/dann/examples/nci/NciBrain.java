@@ -27,7 +27,7 @@ import java.util.*;
 
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
- * @author Syncleus, Inc.
+ * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
 public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements java.io.Serializable

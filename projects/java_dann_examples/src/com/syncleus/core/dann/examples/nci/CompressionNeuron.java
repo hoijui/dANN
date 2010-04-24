@@ -25,7 +25,7 @@ import com.syncleus.dann.neural.activation.*;
 
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
- * @author Syncleus, Inc.
+ * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
 public class CompressionNeuron extends BackpropNeuron implements java.io.Serializable
