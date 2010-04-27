@@ -163,7 +163,7 @@ public class BrainRunner implements Runnable
                     
                     this.sampleImage = ImageIO.read(sampleFile);
 
-                    ArrayBlockingQueue<FutureTask<BufferedImage>> processingSampleSegments = new ArrayBlockingQueue<FutureTask<BufferedImage>>(10000, true);
+                    ArrayBlockingQueue<FutureTask<BufferedImage>> processingSampleSegments = new ArrayBlockingQueue<FutureTask<BufferedImage>>(12000, true);
 
                     this.sampleTotal = 0;
                     stopProcessing:

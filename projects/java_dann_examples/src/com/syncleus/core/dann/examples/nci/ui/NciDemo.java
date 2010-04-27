@@ -39,8 +39,8 @@ import org.apache.log4j.Logger;
 
 public class NciDemo extends JFrame implements ActionListener, BrainListener
 {
-    private final static int BLOCK_WIDTH = 8;
-    private final static int BLOCK_HEIGHT = 8;
+    private final static int BLOCK_WIDTH = 7;
+    private final static int BLOCK_HEIGHT = 7;
     private BrainRunner brainRunner;
     private HyperassociativeMapCanvas brainVisual;
     private Thread brainRunnerThread;
