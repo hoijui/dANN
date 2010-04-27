@@ -21,6 +21,7 @@ package com.syncleus.core.dann.examples.nci;
 import com.syncleus.dann.neural.*;
 import com.syncleus.dann.neural.backprop.*;
 import com.syncleus.dann.neural.activation.*;
+import java.io.Serializable;
 
 
 /**
@@ -28,7 +29,7 @@ import com.syncleus.dann.neural.activation.*;
  * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
-public class CompressionNeuron extends BackpropNeuron implements java.io.Serializable
+public class CompressionNeuron extends SimpleBackpropNeuron implements Serializable
 {
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
@@ -120,23 +121,17 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
         return ((double) this.input) / 127.5;
     }
 
-
-
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
 	@Override
-    protected void setOutput(double newOutput)
-    {
+	public void propagate()
+	{
         if (this.inputSet == false)
-            super.setOutput(newOutput);
-        else
-        {
-            super.output = this.getDoubleInput();
-
+            super.propagate();
+		else
+		{
+			// TODO we shouldnt be calling setOutput, try getting rid of the protected in the parent and instead make some abstracts
+            this.setOutput(this.getDoubleInput());
             for (Synapse current : this.getBrain().getTraversableEdges(this))
-                current.setInput(newOutput);
-        }
-    }
+                current.setInput(this.getOutput());
+		}
+	}
 }
