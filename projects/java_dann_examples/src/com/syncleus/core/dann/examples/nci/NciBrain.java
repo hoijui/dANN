@@ -86,7 +86,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
 	protected BackpropNeuron createNeuron(int layer, int index)
 	{
 		if( layer == 0 )
-			return new InputBackpropNeuron(this, this.activationFunction);
+			return new InputBackpropNeuron(this);
 		else if(layer >= (this.getLayerCount() - 1))
 			return new OutputBackpropNeuron(this, this.activationFunction, this.learningRate);
 		else if(layer == 1)
