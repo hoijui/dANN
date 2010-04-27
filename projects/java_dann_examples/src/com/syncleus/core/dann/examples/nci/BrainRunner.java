@@ -262,7 +262,7 @@ public class BrainRunner implements Runnable
                     this.listener.brainTrainingComplete();
                 }
                 else
-                    this.brainMap.align(); 
+                    this.brainMap.align();
             }
 
 

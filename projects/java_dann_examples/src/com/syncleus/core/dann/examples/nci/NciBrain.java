@@ -225,40 +225,40 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
         this.propagate();
 
 
-        int[] finalRgbArray = new int[xSize * ySize];
-        BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);
-        for (int yIndex = 0; (yIndex < ySize) && (yIndex < uncompressedImage.getHeight()); yIndex++)
-            for (int xIndex = 0; (xIndex < xSize) && (xIndex < uncompressedImage.getWidth()); xIndex++)
-            {
-                //int rgbCurrent = imageToCompress.getRGB(xIndex, yIndex);
-                int rgbCurrent = 0;
-                for (int rgbIndex = 0; rgbIndex < 4; rgbIndex++)
-                {
-                    double output;
+		if (this.learning == false)
+		{
+			int[] finalRgbArray = new int[xSize * ySize];
+			BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);
+			for (int yIndex = 0; (yIndex < ySize) && (yIndex < uncompressedImage.getHeight()); yIndex++)
+				for (int xIndex = 0; (xIndex < xSize) && (xIndex < uncompressedImage.getWidth()); xIndex++)
+				{
+					//int rgbCurrent = imageToCompress.getRGB(xIndex, yIndex);
+					int rgbCurrent = 0;
+					for (int rgbIndex = 0; rgbIndex < 4; rgbIndex++)
+					{
+						double output;
 
-                    if (rgbIndex >= CHANNELS)
-                        output = this.outputNeurons[xIndex][yIndex][0].getOutput();
-                    else
-                        output = this.outputNeurons[xIndex][yIndex][rgbIndex].getOutput();
+						if (rgbIndex >= CHANNELS)
+							output = this.outputNeurons[xIndex][yIndex][0].getOutput();
+						else
+							output = this.outputNeurons[xIndex][yIndex][rgbIndex].getOutput();
 
-                    int channel = (int)((output + 1.0d) * 127.5d);
+						int channel = (int)((output + 1.0d) * 127.5d);
 
-                    rgbCurrent |= (((int) channel) & 0x000000FF) << (rgbIndex * 8);
-                }
-                finalRgbArray[xSize * yIndex + (xIndex)] = rgbCurrent;
-            }
-        uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
+						rgbCurrent |= (((int) channel) & 0x000000FF) << (rgbIndex * 8);
+					}
+					finalRgbArray[xSize * yIndex + (xIndex)] = rgbCurrent;
+				}
+			uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
 
-
-
-        if (this.learning == false)
             return uncompressedImage;
+		}
 
         //now back propogate
         this.backPropagate();
 
         //all done
-        return uncompressedImage;
+        return null;
     }
 
 

@@ -18,22 +18,15 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.nci.ui;
 
-import com.syncleus.core.dann.examples.nci.BrainRunner;
-import com.syncleus.core.dann.examples.nci.BrainListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.syncleus.core.dann.examples.nci.*;
+import java.awt.event.*;
+import javax.swing.*;
+import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import com.syncleus.dann.graph.drawing.hyperassociativemap.*;
-import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
 import java.io.IOException;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 
