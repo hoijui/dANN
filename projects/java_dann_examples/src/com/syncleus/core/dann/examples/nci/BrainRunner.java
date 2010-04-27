@@ -148,16 +148,15 @@ public class BrainRunner implements Runnable
             executor = Executors.newFixedThreadPool(1);
 
             this.brain = new NciBrain(this.compression, this.xSize, this.ySize, this.extraConnectivity);
-            this.brainMap = new BrainHyperassociativeMap(brain, 3);
+            this.brainMap = new LayeredBrainHyperassociativeMap(brain, 3);
             this.setTrainingImages(trainingFiles);
             
 
 
             this.listener.brainFinishedBuffering();
-            while (this.shutdown == false)
+			while(this.shutdown == false)
             {
                   
-                File sampleFile = this.sampleFile;
                 if (this.sampleFile != null)
                 {
                     this.brain.setLearning(false);
@@ -262,7 +261,7 @@ public class BrainRunner implements Runnable
                     
                     this.listener.brainTrainingComplete();
                 }
-                else if(this.getTrainingCycles() <= 0)
+                else
                     this.brainMap.align(); 
             }
 
