@@ -207,7 +207,7 @@
 
     <target name="run">
         <java fork="true" classname="com.syncleus.core.dann.examples.Main">
-            <jvmarg value="-Xmx1024m" />
+            <jvmarg value="-Xmx512m" />
             <classpath>
                 <path refid="classpath.run"/>
                 <path location="build/jar/dann_examples.jar"/>
