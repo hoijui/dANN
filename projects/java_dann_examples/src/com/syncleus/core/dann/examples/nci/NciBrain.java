@@ -143,7 +143,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
         {
 			try
 			{
-				Set<Synapse> childSynapses = this.getOutEdges(child);
+				Set<Synapse> childSynapses = this.getTraversableEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{
@@ -171,7 +171,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
         {
 			try
 			{
-				Set<Synapse> childSynapses = this.getOutEdges(child);
+				Set<Synapse> childSynapses = this.getTraversableEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{

@@ -135,7 +135,7 @@ public class CompressionNeuron extends BackpropNeuron implements java.io.Seriali
         {
             super.output = this.getDoubleInput();
 
-            for (Synapse current : this.getBrain().getOutEdges(this))
+            for (Synapse current : this.getBrain().getTraversableEdges(this))
                 current.setInput(newOutput);
         }
     }
