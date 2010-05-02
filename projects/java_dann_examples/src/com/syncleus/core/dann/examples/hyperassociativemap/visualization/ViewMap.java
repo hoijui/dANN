@@ -18,8 +18,6 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
-import com.syncleus.dann.*;
-import com.syncleus.dann.graph.drawing.hyperassociativemap.*;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
 import java.awt.event.*;
 import java.util.concurrent.*;
@@ -29,12 +27,13 @@ public class ViewMap extends JFrame implements ActionListener
 {
 	private HyperassociativeMapCanvas mapVisual;
 	private LayeredHyperassociativeMap associativeMap;
-	private ExecutorService executor = Executors.newFixedThreadPool(1);
+	private final ExecutorService executor;
 	private FutureTask<Void> lastRun;
 
-	public ViewMap()
+	public ViewMap(final ExecutorService executor)
 	{
-		this.associativeMap = new LayeredHyperassociativeMap(8);
+		this.executor = executor;
+		this.associativeMap = new LayeredHyperassociativeMap(8, executor);
 
 		this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
 
@@ -89,13 +88,21 @@ public class ViewMap extends JFrame implements ActionListener
 		if(!checkClasses())
 			return;
 
-		java.awt.EventQueue.invokeLater(new Runnable()
+		final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		try
 		{
-			public void run()
+			java.awt.EventQueue.invokeLater(new Runnable()
 			{
-				new ViewMap().setVisible(true);
-			}
-		});
+				public void run()
+				{
+					new ViewMap(executor).setVisible(true);
+				}
+			});
+		}
+		finally
+		{
+			executor.shutdown();
+		}
 	}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

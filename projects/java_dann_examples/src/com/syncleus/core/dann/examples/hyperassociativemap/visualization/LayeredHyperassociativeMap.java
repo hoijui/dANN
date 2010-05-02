@@ -18,15 +18,15 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
-import com.syncleus.dann.graph.*;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.*;
+import java.util.concurrent.ExecutorService;
 
 public class LayeredHyperassociativeMap extends HyperassociativeMap<SimpleGraph, SimpleNode>
 {
     private static final int NODES_PER_LAYER = 16;
     
-    LayeredHyperassociativeMap(int layers)
+    LayeredHyperassociativeMap(int layers, ExecutorService executor)
     {
-		super(new SimpleGraph(layers,NODES_PER_LAYER), 3);
+		super(new SimpleGraph(layers,NODES_PER_LAYER), 3, executor);
     }
 }

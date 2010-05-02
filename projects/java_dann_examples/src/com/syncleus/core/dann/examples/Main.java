@@ -142,12 +142,14 @@ public class Main
 					com.syncleus.core.dann.examples.pathfind.PathFindDemoPanel.main(newArgs);
 					break;
                 case 'q':
+					System.out.print("Quiting...");
                     break;
                 default:
                     System.out.println("Invalid command");
                 }
             }
             while ((currentCommand != 'q') && (currentCommand >= 0));
+			System.out.println("Quit");
         }
         catch (Exception caught)
         {

@@ -24,6 +24,9 @@ import com.syncleus.dann.neural.backprop.brain.*;
 import com.syncleus.dann.neural.*;
 import com.syncleus.dann.neural.activation.*;
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 
@@ -60,80 +63,90 @@ public class XorDemo
 			double learningRate = 0.0175;
 			ActivationFunction activationFunction = new SineActivationFunction();
 
-			brain = new FullyConnectedFeedforwardBrain(new int[]{3, 3, 1}, learningRate, activationFunction);
-			ArrayList<InputNeuron> inputs = new ArrayList<InputNeuron>(brain.getInputNeurons());
-			inputA = (InputBackpropNeuron) inputs.get(0);
-			inputB = (InputBackpropNeuron) inputs.get(1);
-			inputC = (InputBackpropNeuron) inputs.get(2);
-			ArrayList<OutputNeuron> outputs = new ArrayList<OutputNeuron>(brain.getOutputNeurons());
-			output = (OutputBackpropNeuron) outputs.get(0);
-
-			//now that we have created the neural network lets put it to use.
-			System.out.println("dANN nXOR Example");
-
-			int currentCommand = 'q';
-			do
+			final int cores = Runtime.getRuntime().availableProcessors();
+			ThreadPoolExecutor executer = new ThreadPoolExecutor(cores+1, cores*2, 20, TimeUnit.SECONDS, new LinkedBlockingQueue());
+			try
 			{
-				boolean received = false;
-				while( received == false )
-				{
-					System.out.println();
-					System.out.println("D) display current circuit pin-out");
-					System.out.println("T) train the current circuit");
-					System.out.println("S) save");
-					System.out.println("L) load");
-					System.out.println("Q) quit");
-					System.out.println("\tEnter command: ");
-				
-					received = true;
-					try
-					{
-						String lastInput = inReader.readLine();
-						if( lastInput != null)
-							currentCommand = lastInput.toLowerCase().toCharArray()[0];
-						else
-							currentCommand = 'q';
-					}
-					catch(ArrayIndexOutOfBoundsException caughtException)
-					{
-						received = false;
-					}
-				}
-				
-				System.out.println();
+				brain = new FullyConnectedFeedforwardBrain(new int[]{3, 3, 1}, learningRate, activationFunction, executer);
+				ArrayList<InputNeuron> inputs = new ArrayList<InputNeuron>(brain.getInputNeurons());
+				inputA = (InputBackpropNeuron) inputs.get(0);
+				inputB = (InputBackpropNeuron) inputs.get(1);
+				inputC = (InputBackpropNeuron) inputs.get(2);
+				ArrayList<OutputNeuron> outputs = new ArrayList<OutputNeuron>(brain.getOutputNeurons());
+				output = (OutputBackpropNeuron) outputs.get(0);
 
-				switch( currentCommand )
+				//now that we have created the neural network lets put it to use.
+				System.out.println("dANN nXOR Example");
+
+				int currentCommand = 'q';
+				do
 				{
-					case 'd':
-						testOutput();
-						break;
-					case 't':
-						int cycles = 750;
-						System.out.println("How many training cycles [Default: " + cycles + "]: ");
+					boolean received = false;
+					while( received == false )
+					{
+						System.out.println();
+						System.out.println("D) display current circuit pin-out");
+						System.out.println("T) train the current circuit");
+						System.out.println("S) save");
+						System.out.println("L) load");
+						System.out.println("Q) quit");
+						System.out.println("\tEnter command: ");
+
+						received = true;
 						try
 						{
-							cycles = Integer.parseInt(inReader.readLine());
+							String lastInput = inReader.readLine();
+							if( lastInput != null)
+								currentCommand = lastInput.toLowerCase().toCharArray()[0];
+							else
+								currentCommand = 'q';
 						}
-						catch(NumberFormatException caughtException)
+						catch(ArrayIndexOutOfBoundsException caughtException)
 						{
+							received = false;
 						}
-						System.out.println();
-						train(cycles);
-						System.out.println("Training Complete!");
-						break;
-					case 's':
-						save();
-						break;
-					case 'l':
-						load();
-						break;
-					case 'q':
-						System.out.println("Quiting...");
-						break;
-					default:
-						System.out.println("Invalid command");
-				}
-			} while( (currentCommand != 'q')&&(currentCommand >= 0) );
+					}
+
+					System.out.println();
+
+					switch( currentCommand )
+					{
+						case 'd':
+							testOutput();
+							break;
+						case 't':
+							int cycles = 750;
+							System.out.println("How many training cycles [Default: " + cycles + "]: ");
+							try
+							{
+								cycles = Integer.parseInt(inReader.readLine());
+							}
+							catch(NumberFormatException caughtException)
+							{
+							}
+							System.out.println();
+							train(cycles);
+							System.out.println("Training Complete!");
+							break;
+						case 's':
+							save();
+							break;
+						case 'l':
+							load();
+							break;
+						case 'q':
+							System.out.print("Quiting...");
+							break;
+						default:
+							System.out.println("Invalid command");
+					}
+				} while( (currentCommand != 'q')&&(currentCommand >= 0) );
+			}
+			finally
+			{
+				executer.shutdown();
+				System.out.println("Quit");
+			}
 		}
 		catch(Exception caught)
 		{

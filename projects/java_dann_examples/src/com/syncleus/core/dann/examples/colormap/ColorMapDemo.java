@@ -43,12 +43,13 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 	private static final int INITIAL_ITERATIONS = 200;
 	private static final double INITIAL_LEARNING_RATE = 0.5;
 
-	private final ExecutorService executor = Executors.newFixedThreadPool(1);
+	private final ExecutorService executor;
 
 	private final Timer progressTimer = new Timer(100, this);
 
-    public ColorMapDemo()
+    public ColorMapDemo(final ExecutorService executor)
 	{
+		this.executor = executor;
         try
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -345,6 +346,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 
     public static void main(String args[])
 	{
+		final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		try
 		{
 			java.awt.EventQueue.invokeLater(new Runnable()
@@ -353,7 +355,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 				{
 					try
 					{
-						new ColorMapDemo().setVisible(true);
+						new ColorMapDemo(executor).setVisible(true);
 					}
 					catch(Exception caught)
 					{
@@ -377,6 +379,10 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 		{
 			LOGGER.error("Error was caught", caught);
 			throw new Error("Error was caught", caught);
+		}
+		finally
+		{
+			executor.shutdown();
 		}
     }
 
