@@ -23,16 +23,16 @@ import java.awt.event.*;
 import java.util.concurrent.*;
 import javax.swing.*;
 
-public class ViewMap extends JFrame implements ActionListener
+public class ViewMap extends JFrame implements ActionListener, WindowListener
 {
 	private HyperassociativeMapCanvas mapVisual;
 	private LayeredHyperassociativeMap associativeMap;
 	private final ExecutorService executor;
 	private FutureTask<Void> lastRun;
 
-	public ViewMap(final ExecutorService executor)
+	public ViewMap()
 	{
-		this.executor = executor;
+		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		this.associativeMap = new LayeredHyperassociativeMap(8, executor);
 
 		this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
@@ -52,7 +52,37 @@ public class ViewMap extends JFrame implements ActionListener
 		this.executor.execute(this.lastRun);
 
 		new Timer(100, this).start();
+		this.addWindowListener(this);
 
+	}
+
+	public void windowClosing(WindowEvent e)
+	{
+		this.executor.shutdown();
+	}
+
+	public void windowClosed(WindowEvent e)
+	{
+	}
+
+	public void windowOpened(WindowEvent e)
+	{
+	}
+
+	public void windowIconified(WindowEvent e)
+	{
+	}
+
+	public void windowDeiconified(WindowEvent e)
+	{
+	}
+
+	public void windowActivated(WindowEvent e)
+	{
+	}
+
+	public void windowDeactivated(WindowEvent e)
+	{
 	}
 
 	public void actionPerformed(ActionEvent evt)
@@ -88,21 +118,13 @@ public class ViewMap extends JFrame implements ActionListener
 		if(!checkClasses())
 			return;
 
-		final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		try
+		java.awt.EventQueue.invokeLater(new Runnable()
 		{
-			java.awt.EventQueue.invokeLater(new Runnable()
+			public void run()
 			{
-				public void run()
-				{
-					new ViewMap(executor).setVisible(true);
-				}
-			});
-		}
-		finally
-		{
-			executor.shutdown();
-		}
+				new ViewMap().setVisible(true);
+			}
+		});
 	}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
