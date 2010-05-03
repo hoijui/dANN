@@ -45,7 +45,7 @@ public class TestColorMapDemo
 		{
 			protected ColorMapDemo executeInEDT()
 			{
-				return new ColorMapDemo(null);
+				return new ColorMapDemo();
 			}
 		});
 

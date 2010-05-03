@@ -24,7 +24,7 @@ import java.util.concurrent.*;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 
-public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
+public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, WindowListener
 {
 	private final static Logger LOGGER = Logger.getLogger(ColorMapDemo.class);
 
@@ -47,9 +47,9 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 
 	private final Timer progressTimer = new Timer(100, this);
 
-    public ColorMapDemo(final ExecutorService executor)
+    public ColorMapDemo()
 	{
-		this.executor = executor;
+		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());;
         try
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -69,6 +69,35 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 		this.setSize(550, 175);
 		this.color1d = (new ColorMap1dCallable(INITIAL_ITERATIONS, INITIAL_LEARNING_RATE, 500)).call();
     }
+
+	public void windowClosing(WindowEvent e)
+	{
+		this.executor.shutdown();
+	}
+
+	public void windowClosed(WindowEvent e)
+	{
+	}
+
+	public void windowOpened(WindowEvent e)
+	{
+	}
+
+	public void windowIconified(WindowEvent e)
+	{
+	}
+
+	public void windowDeiconified(WindowEvent e)
+	{
+	}
+
+	public void windowActivated(WindowEvent e)
+	{
+	}
+
+	public void windowDeactivated(WindowEvent e)
+	{
+	}
 
 	public void actionPerformed(ActionEvent evt)
 	{
@@ -346,7 +375,6 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 
     public static void main(String args[])
 	{
-		final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		try
 		{
 			java.awt.EventQueue.invokeLater(new Runnable()
@@ -355,7 +383,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 				{
 					try
 					{
-						new ColorMapDemo(executor).setVisible(true);
+						new ColorMapDemo().setVisible(true);
 					}
 					catch(Exception caught)
 					{
@@ -379,10 +407,6 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener
 		{
 			LOGGER.error("Error was caught", caught);
 			throw new Error("Error was caught", caught);
-		}
-		finally
-		{
-			executor.shutdown();
 		}
     }
 
