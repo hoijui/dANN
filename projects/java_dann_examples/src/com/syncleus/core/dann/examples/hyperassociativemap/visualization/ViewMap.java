@@ -63,7 +63,26 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 
 	public void keyPressed(KeyEvent e)
 	{
-		this.associativeMap.reset();
+		if(e.getKeyCode() == KeyEvent.VK_R)
+			this.associativeMap.reset();
+		if(e.getKeyCode() == KeyEvent.VK_L)
+			this.associativeMap.resetLearning();
+		else if(e.getKeyCode() == KeyEvent.VK_UP)
+		{
+			if(this.associativeMap.getEquilibriumDistance() < 1.0)
+				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 1.1);
+			else
+				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() + 1.0);
+			this.associativeMap.resetLearning();
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_DOWN)
+		{
+			if(this.associativeMap.getEquilibriumDistance() < 2.0)
+				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 0.9);
+			else
+				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() - 1.0);
+			this.associativeMap.resetLearning();
+		}
 	}
 
 	public void keyReleased(KeyEvent e)
@@ -136,7 +155,11 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 		if(!checkClasses())
 			return;
 
-		System.out.println("Press R at anytime to reset the Hyperassociative Map");
+		System.out.println("controls:");
+		System.out.println("R: reset");
+		System.out.println("L: reset learing curve");
+		System.out.println("up arrow: increase Equilibrium");
+		System.out.println("down arrow: decrease Equilibrium");
 
 		java.awt.EventQueue.invokeLater(new Runnable()
 		{
