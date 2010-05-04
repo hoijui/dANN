@@ -261,8 +261,10 @@ public class BrainRunner implements Runnable
                     
                     this.listener.brainTrainingComplete();
                 }
-                else
+                else if(!this.brainMap.isAligned())
                     this.brainMap.align();
+				else
+					Thread.sleep(5);
             }
 
 

@@ -36,7 +36,8 @@ public class UpdateViewRun implements Runnable
     
     public void run()
     {
-        this.map.align();
+		if(!this.map.isAligned())
+			this.map.align();
         this.view.refresh();
     }
 }
