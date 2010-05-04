@@ -23,7 +23,7 @@ import java.awt.event.*;
 import java.util.concurrent.*;
 import javax.swing.*;
 
-public class ViewMap extends JFrame implements ActionListener, WindowListener
+public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener
 {
 	private HyperassociativeMapCanvas mapVisual;
 	private LayeredHyperassociativeMap associativeMap;
@@ -52,8 +52,26 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener
 		this.executor.execute(this.lastRun);
 
 		new Timer(100, this).start();
-		this.addWindowListener(this);
 
+		this.setFocusTraversalKeysEnabled(false);
+		this.mapVisual.setFocusTraversalKeysEnabled(false);
+
+		this.addWindowListener(this);
+		this.mapVisual.addKeyListener(this);
+		this.addKeyListener(this);
+	}
+
+	public void keyPressed(KeyEvent e)
+	{
+		this.associativeMap.reset();
+	}
+
+	public void keyReleased(KeyEvent e)
+	{
+	}
+
+	public void keyTyped(KeyEvent e)
+	{
 	}
 
 	public void windowClosing(WindowEvent e)
@@ -117,6 +135,8 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener
 		//check that the java3D drivers are present
 		if(!checkClasses())
 			return;
+
+		System.out.println("Press R at anytime to reset the Hyperassociative Map");
 
 		java.awt.EventQueue.invokeLater(new Runnable()
 		{
