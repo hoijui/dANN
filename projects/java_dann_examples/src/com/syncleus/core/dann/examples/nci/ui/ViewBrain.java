@@ -19,9 +19,12 @@
 package com.syncleus.core.dann.examples.nci.ui;
 
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
+
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -29,7 +32,7 @@ import javax.swing.JDialog;
 import javax.swing.Timer;
 
 
-public class ViewBrain extends JDialog implements ActionListener
+public class ViewBrain extends JDialog implements ActionListener, KeyListener
 {
     private HyperassociativeMapCanvas brainVisual;
     private ExecutorService executor = Executors.newFixedThreadPool(1);
@@ -56,8 +59,27 @@ public class ViewBrain extends JDialog implements ActionListener
         this.executor.execute(this.lastRun);
         
         new Timer(100, this).start();
-        
+
+		this.addKeyListener(this);
+		this.brainVisual.addKeyListener(this);
     }
+
+
+	public void keyPressed(KeyEvent e)
+	{
+		if(e.getKeyCode() == KeyEvent.VK_R)
+			this.brainVisual.getHyperassociativeMap().reset();
+		if(e.getKeyCode() == KeyEvent.VK_L)
+			this.brainVisual.getHyperassociativeMap().resetLearning();
+	}
+
+	public void keyReleased(KeyEvent e)
+	{
+	}
+
+	public void keyTyped(KeyEvent e)
+	{
+	}
     
     
     public void actionPerformed(ActionEvent evt)
