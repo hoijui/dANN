@@ -21,7 +21,7 @@ package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 import com.syncleus.dann.graph.*;
 import java.util.*;
 
-public class SimpleGraph extends AbstractBidirectedGraph<SimpleNode, BidirectedEdge<SimpleNode>>
+public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, BidirectedEdge<SimpleNode>>
 {
 	final private SimpleNode[][] nodes;
 	final private Set<SimpleNode> nodeSet = new HashSet<SimpleNode>();

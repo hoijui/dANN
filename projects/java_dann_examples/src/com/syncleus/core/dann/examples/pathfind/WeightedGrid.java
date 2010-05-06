@@ -25,7 +25,7 @@ import java.util.*;
  * A 2D mesh with individual weights for nodes and edges.  Each node is linked to its four neighbors by weighted undirected edges.
  * @author seh
  */
-public class WeightedGrid extends AbstractBidirectedGraph<GridNode, SimpleWeightedUndirectedEdge<GridNode>>
+public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, SimpleWeightedUndirectedEdge<GridNode>>
 {
 
     private final GridNode[][] nodes;
