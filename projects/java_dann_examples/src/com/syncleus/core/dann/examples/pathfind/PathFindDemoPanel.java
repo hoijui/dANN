@@ -23,7 +23,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-import com.syncleus.dann.graph.WeightedBidirectedEdge;
+import com.syncleus.dann.graph.*;
 import java.util.List;
 
 /**
