@@ -4,3 +4,4 @@ build
 log.html
 junit*
 cobertura.ser
+dist
