@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 import org.apache.commons.collections15.Transformer;
 
 /**
- *
+ * Visualizes a BackpropBrain.  Note: this demo presently automatically propagate()'s the visualized network.
  * @author seh
  */
 public class BrainPanel<N extends Neuron, S extends Synapse> extends GraphPanel<N, S> {

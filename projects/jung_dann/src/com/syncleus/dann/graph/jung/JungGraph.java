@@ -19,6 +19,7 @@
 package com.syncleus.dann.graph.jung;
 
 import com.syncleus.dann.graph.DirectedEdge;
+import com.syncleus.dann.graph.Edge;
 import com.syncleus.dann.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.graph.util.Pair;
@@ -34,8 +35,8 @@ import java.util.Set;
  * @param <N> Node type
  * @param <E> Edge type
  */
-public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung.graph.Graph<N,E> {
-    
+public class JungGraph<N, E extends Edge<N>> implements edu.uci.ics.jung.graph.Graph<N, E> {
+
     final Graph<N, E> dannGraph;
 
     public JungGraph(Graph<N, E> dannGraph) {
@@ -48,10 +49,17 @@ public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung
     }
 
     public Collection<N> getIncidentVertices(E e) {
-        List<N> ll = new LinkedList();
-        ll.add(e.getSourceNode());
-        ll.add(e.getDestinationNode());
-        return ll;
+        return e.getNodes();
+//        if (e instanceof DirectedEdge) {
+//            List<N> ll = new LinkedList();
+//            DirectedEdge d = (DirectedEdge)e;
+//            ll.add(d.getSourceNode());
+//            ll.add(d.getDestinationNode());
+//            return ll;
+//        }
+//        else {
+//            return e.getNodes();
+//        }
     }
 
     public E findEdge(N v, N v1) {
@@ -66,17 +74,35 @@ public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung
         List<E> inEdges = new LinkedList();
         Set<E> edges = dannGraph.getAdjacentEdges(v);
         for (E e : edges) {
-            if (e.getDestinationNode() == v)
-                inEdges.add(e);
+            if (e instanceof DirectedEdge) {
+                if (((DirectedEdge) e).getDestinationNode() == v) {
+                    inEdges.add(e);
+                }
+            }
         }
         return inEdges;
+    }
+
+    public Collection<E> getOutEdges(N v) {
+        List<E> outEdges = new LinkedList();
+        Set<E> edges = dannGraph.getAdjacentEdges(v);
+        for (E e : edges) {
+            if (e instanceof DirectedEdge) {
+                if (((DirectedEdge) e).getSourceNode() == v) {
+                    outEdges.add(e);
+                }
+            }
+        }
+        return outEdges;
     }
 
     public Collection<N> getPredecessors(N v) {
         Collection<E> inEdges = getInEdges(v);
         Set<N> p = new HashSet<N>(inEdges.size());
         for (E e : inEdges) {
-            p.add(e.getSourceNode());
+            if (e instanceof DirectedEdge) {
+                p.add(((DirectedEdge<N>) e).getSourceNode());
+            }
         }
         return p;
     }
@@ -85,7 +111,9 @@ public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung
         Collection<E> outEdges = getOutEdges(v);
         Set<N> p = new HashSet<N>(outEdges.size());
         for (E e : outEdges) {
-            p.add(e.getDestinationNode());
+            if (e instanceof DirectedEdge) {
+                p.add(((DirectedEdge<N>) e).getDestinationNode());
+            }
         }
         return p;
     }
@@ -106,16 +134,6 @@ public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung
         return getSuccessors(v).size();
     }
 
-    public Collection<E> getOutEdges(N v) {
-        List<E> outEdges = new LinkedList();
-        Set<E> edges = dannGraph.getAdjacentEdges(v);
-        for (E e : edges) {
-            if (e.getSourceNode() == v)
-                outEdges.add(e);
-        }
-        return outEdges;
-    }
-
     public int inDegree(N v) {
         //TODO this may be sped up by not needing to create a list in getInEdges
         return getInEdges(v).size();
@@ -127,28 +145,58 @@ public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung
     }
 
     public N getSource(E e) {
-        return e.getSourceNode();
+        if (e instanceof DirectedEdge) {
+            return ((DirectedEdge<N>) e).getSourceNode();
+        }
+        return null;
     }
 
     public N getDest(E e) {
-        return e.getDestinationNode();
+        if (e instanceof DirectedEdge) {
+            return ((DirectedEdge<N>) e).getDestinationNode();
+        }
+        return null;
     }
 
     public boolean isSource(N v, E e) {
-        return e.getSourceNode() == v;
+        if (e instanceof DirectedEdge) {
+            return ((DirectedEdge<N>) e).getSourceNode() == v;
+        }
+        return false;
     }
 
     public boolean isDest(N v, E e) {
-        return e.getDestinationNode() == v;
+        if (e instanceof DirectedEdge) {
+            return ((DirectedEdge<N>) e).getDestinationNode() == v;
+        }
+        return false;
     }
 
     public Pair<N> getEndpoints(E e) {
-        return new Pair<N>(e.getSourceNode(), e.getDestinationNode());
+        if (e instanceof DirectedEdge) {
+            DirectedEdge<N> d = (DirectedEdge<N>) e;
+            return new Pair<N>(d.getSourceNode(), d.getDestinationNode());
+        }
+        return new Pair<N>(e.getNodes().get(0), e.getNodes().get(1));
     }
 
     public N getOpposite(N v, E e) {
-        if (e.getSourceNode() == v) return e.getDestinationNode();
-        return e.getSourceNode();
+        if (e instanceof DirectedEdge) {
+            DirectedEdge<N> d = (DirectedEdge<N>) e;
+            if (d.getSourceNode() == v) {
+                return d.getDestinationNode();
+            } else {
+                return d.getSourceNode();
+            }
+        } else {
+            N a = e.getNodes().get(0);
+            N b = e.getNodes().get(1);
+            if (v == a) {
+                return b;
+            } else {
+                return a;
+            }
+        }
     }
 
     public Collection<E> getEdges() {
@@ -179,7 +227,6 @@ public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung
         return dannGraph.getAdjacentNodes(v);
     }
 
-
     public boolean isNeighbor(N a, N b) {
         return dannGraph.getAdjacentNodes(a).contains(b);
     }
@@ -201,19 +248,33 @@ public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung
     }
 
     public EdgeType getEdgeType(E e) {
-        return EdgeType.DIRECTED;
+        if (e instanceof DirectedEdge) {
+            return EdgeType.DIRECTED;
+        } else {
+            return EdgeType.UNDIRECTED;
+        }
     }
 
     public Collection<E> getEdges(EdgeType et) {
-        if (et == EdgeType.DIRECTED)
-            return getEdges();
-        return new LinkedList<E>();
+        List<E> le = new LinkedList();
+        for (E e : getEdges()) {
+            if (et == EdgeType.DIRECTED) {
+                if (e instanceof DirectedEdge) {
+                    le.add(e);
+                }
+            }
+            else {
+                if (!(e instanceof DirectedEdge)) {
+                    le.add(e);
+                }
+            }
+        }
+        return le;
     }
 
     public int getEdgeCount(EdgeType et) {
         return getEdges(et).size();
     }
-
 
     public boolean addEdge(E e, N v, N v1) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -242,5 +303,4 @@ public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung
     public boolean removeEdge(E e) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

@@ -18,8 +18,11 @@
  ******************************************************************************/
 package com.syncleus.dann.graph.jung.test;
 
+import com.syncleus.dann.graph.Edge;
 import com.syncleus.dann.graph.Graph;
+import com.syncleus.dann.graph.ImmutableUndirectedEdge;
 import com.syncleus.dann.graph.MutableAdjacencyGraph;
+import com.syncleus.dann.graph.MutableDirectedAdjacencyGraph;
 import com.syncleus.dann.graph.jung.BayesianPanel;
 import com.syncleus.dann.graph.jung.BrainPanel;
 import com.syncleus.dann.graph.jung.GraphPanel;
@@ -76,7 +79,7 @@ public class DemoJungGraphVis extends JPanel {
         add(menu, BorderLayout.NORTH);
 
         {
-            JButton undirectedGraph = new ViewGraphButton("Undirected", null);
+            JButton undirectedGraph = new ViewGraphButton("Undirected", newUndirectedGraph());
             menu.add(undirectedGraph);
 
             JButton directedGraph = new ViewGraphButton("Directed", newDirectedGraph());
@@ -108,29 +111,41 @@ public class DemoJungGraphVis extends JPanel {
 
         this.graph = graph;
 
+        graphPanel = null;
 
         if (graph != null) {
             if (graph instanceof BackpropBrain) {
                 graphPanel = new BrainPanel((BackpropBrain) graph, graphPanelWidth, graphPanelHeight);
             } else if (graph instanceof BayesianNetwork) {
-                graphPanel = new BayesianPanel((BayesianNetwork)graph, graphPanelWidth, graphPanelHeight);
-            } else {
+                graphPanel = new BayesianPanel((BayesianNetwork) graph, graphPanelWidth, graphPanelHeight);
+            } else if (graph instanceof Graph) {
                 graphPanel = new GraphPanel(new JungGraph(graph), graphPanelWidth, graphPanelHeight);
             }
+        }
 
-            contentPanel.add(graphPanel, BorderLayout.CENTER);
-        } else {
+        if (graphPanel == null) {
             contentPanel.add(new JLabel("not implemented yet"), BorderLayout.CENTER);
+        }
+        else {
+            contentPanel.add(graphPanel, BorderLayout.CENTER);
         }
 
         contentPanel.updateUI();
     }
 
     public static Graph newDirectedGraph() {
-        MutableAdjacencyGraph<String, ValueDirectedEdge<String, String>> graph = new MutableAdjacencyGraph();
+        MutableDirectedAdjacencyGraph<String, ValueDirectedEdge<String, String>> graph = new MutableDirectedAdjacencyGraph();
         graph.add("x");
         graph.add("y");
         graph.add(new ValueDirectedEdge("xy", "x", "y"));
+        return graph;
+    }
+
+    public static Graph newUndirectedGraph() {
+        MutableAdjacencyGraph<String, Edge<String>> graph = new MutableAdjacencyGraph();
+        graph.add("x");
+        graph.add("y");
+        graph.add(new ImmutableUndirectedEdge<String>("x", "y"));
         return graph;
     }
 
