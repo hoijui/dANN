@@ -28,6 +28,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Adapts a dANN Graph to a JUNG graph interface.  Useful for JUNG's visualization and graph algorithm implementations.
+ * @author seh
+ * @param <N> Node type
+ * @param <E> Edge type
+ */
 public class JungGraph<N, E extends DirectedEdge<N>> implements edu.uci.ics.jung.graph.Graph<N,E> {
     
     final Graph<N, E> dannGraph;

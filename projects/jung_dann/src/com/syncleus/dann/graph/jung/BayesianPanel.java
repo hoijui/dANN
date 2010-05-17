@@ -18,43 +18,48 @@
  ******************************************************************************/
 package com.syncleus.dann.graph.jung;
 
-import com.syncleus.dann.graph.ImmutableDirectedEdge;
+import com.syncleus.dann.graphicalmodel.bayesian.BayesianEdge;
+import com.syncleus.dann.graphicalmodel.bayesian.BayesianNetwork;
+import com.syncleus.dann.graphicalmodel.bayesian.BayesianNode;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 /**
- An edge that takes an arbitrarily typed value as a parameter.
- @param <V> the type of the attached value instance
-*/
-public class ValueDirectedEdge<N,V> extends ImmutableDirectedEdge<N> {
+ *
+ * @author seh
+ */
+public class BayesianPanel extends GraphPanel {
 
-    public final V value;
-
-    public ValueDirectedEdge(V value, N source, N target) {
-        super(source, target);
-        this.value = value;
+    public BayesianPanel(BayesianNetwork network, int width, int height) {
+        super(new JungGraph(network), width, height);
+        
     }
+
 
     @Override
-    public int hashCode() {
-        return super.hashCode() + value.hashCode();
+    protected void initVis(VisualizationViewer vis) {
+        super.initVis(vis);
+        vis.getRenderContext().setVertexLabelTransformer(new ToStringLabeller() {
+
+            @Override
+            public String transform(Object v) {
+                if (v instanceof BayesianNode) {
+                    BayesianNode bn = (BayesianNode) v;
+                    return bn.getState() + " " + bn.stateProbability();
+                }
+                return super.transform(v);
+            }
+        });
+        vis.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller() {
+
+            @Override
+            public String transform(Object v) {
+                if (v instanceof BayesianEdge) {
+                    return "->";
+                }
+                return super.transform(v);
+            }
+        });
+
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (super.equals(obj)) {
-            return value.equals(((ValueDirectedEdge) obj).value);
-        }
-        return false;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
-        return getValue().toString();
-    }
-
-
-    
 }
