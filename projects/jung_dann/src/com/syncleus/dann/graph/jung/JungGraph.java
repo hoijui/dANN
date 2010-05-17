@@ -189,12 +189,17 @@ public class JungGraph<N, E extends Edge<N>> implements edu.uci.ics.jung.graph.G
                 return d.getSourceNode();
             }
         } else {
-            N a = e.getNodes().get(0);
-            N b = e.getNodes().get(1);
-            if (v == a) {
-                return b;
-            } else {
-                return a;
+            if (e.getNodes().size() == 2) {
+                N a = e.getNodes().get(0);
+                N b = e.getNodes().get(1);
+                if (v == a) {
+                    return b;
+                } else {
+                    return a;
+                }
+            }
+            else /* if nodes size == 1 */{
+                return v;
             }
         }
     }

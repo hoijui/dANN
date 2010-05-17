@@ -18,13 +18,19 @@
  ******************************************************************************/
 package com.syncleus.dann.graph.jung;
 
+import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
+import edu.uci.ics.jung.algorithms.util.IterativeContext;
+import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import edu.uci.ics.jung.visualization.picking.ShapePickSupport;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 /**
@@ -33,21 +39,19 @@ import javax.swing.JPanel;
 public class GraphPanel<N, E> extends JPanel {
 
     double animationPeriod = 0.1;
-    public final SpringLayout layout;
-    public final VisualizationViewer<N, E> vis;
+    public Layout layout;
+    public VisualizationViewer<N, E> vis;
     private boolean running;
+    private final ShapePickSupport<N,E> shapePicker;
+    public final Graph graph;
 
     public GraphPanel(edu.uci.ics.jung.graph.Graph g, int w, int h) {
         super(new BorderLayout());
 
-        running = true;
+        this.graph = g;
+        this.running = true;
         
-        layout = new SpringLayout(g);
-        layout.setSize(new Dimension(w, h));
-
-        vis = new VisualizationViewer<N, E>(layout);
-        vis.setPreferredSize(new Dimension(w, h));
-
+        initLayout(w, h);
         initVis(vis);
 
         // Create a graph mouse and add it to the visualization component
@@ -57,13 +61,31 @@ public class GraphPanel<N, E> extends JPanel {
 
         add(vis, BorderLayout.CENTER);
 
+
+        shapePicker = new ShapePickSupport<N,E>(vis);
+        vis.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                N pickedNode = shapePicker.getVertex(layout, e.getX(), e.getY());
+                E pickedEdge = shapePicker.getEdge(layout, e.getX(), e.getY());
+                if (pickedNode!=null) {
+                    onNodeClicked(pickedNode);
+                }
+                else if (pickedEdge!=null) {
+                    onEdgeClicked(pickedEdge);
+                }
+            }
+        });
+        
         if (getAnimationPeriod() > 0) { 
             new Thread(new Runnable() {
                 public void run() {
                     //System.out.println("animation starting");
 
                     while (isRunning()) {
-                        layout.step();
+                        if (layout instanceof IterativeContext)
+                            ((IterativeContext)layout).step();
                         vis.repaint();
                         try {
                             Thread.sleep((long)(getAnimationPeriod() * 1000.0));
@@ -75,6 +97,24 @@ public class GraphPanel<N, E> extends JPanel {
                 }
             }).start();
         }
+    }
+
+    protected void initLayout(int w, int h) {
+        layout = new SpringLayout(graph);
+        layout.setSize(new Dimension(w, h));
+
+        vis = new VisualizationViewer<N, E>(layout);
+        vis.setPreferredSize(new Dimension(w, h));
+    }
+
+    /** called when a node is clicked in this panel */
+    public void onNodeClicked(N n) {
+
+    }
+
+    /** called when an edge is clicked in this panel */
+    public void onEdgeClicked(E e) {
+        
     }
 
     public double getAnimationPeriod() {

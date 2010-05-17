@@ -50,10 +50,15 @@ public class BasicHypergraphRenderer<V,E> extends BasicRenderer<V,E> {
 		                renderContext,
 		                layout,
 		                e);
-		        renderEdgeLabel(
-		                renderContext,
-		                layout,
-		                e);
+                try {
+                    renderEdgeLabel(
+                            renderContext,
+                            layout,
+                            e);
+                }
+                catch (NullPointerException npe) {
+                    //necessary for hypergraph edges with one vertex
+                }
         	}
         } catch(ConcurrentModificationException cme) {
         	renderContext.getScreenDevice().repaint();

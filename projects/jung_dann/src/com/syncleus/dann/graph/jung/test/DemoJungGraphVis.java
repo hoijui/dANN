@@ -20,12 +20,17 @@ package com.syncleus.dann.graph.jung.test;
 
 import com.syncleus.dann.graph.Edge;
 import com.syncleus.dann.graph.Graph;
+import com.syncleus.dann.graph.HyperEdge;
+import com.syncleus.dann.graph.HyperGraph;
+import com.syncleus.dann.graph.ImmutableHyperEdge;
 import com.syncleus.dann.graph.ImmutableUndirectedEdge;
 import com.syncleus.dann.graph.MutableAdjacencyGraph;
 import com.syncleus.dann.graph.MutableDirectedAdjacencyGraph;
+import com.syncleus.dann.graph.MutableHyperAdjacencyGraph;
 import com.syncleus.dann.graph.jung.BayesianPanel;
 import com.syncleus.dann.graph.jung.BrainPanel;
 import com.syncleus.dann.graph.jung.GraphPanel;
+import com.syncleus.dann.graph.jung.HypergraphPanel;
 import com.syncleus.dann.graph.jung.JungGraph;
 import com.syncleus.dann.graph.jung.ValueDirectedEdge;
 import com.syncleus.dann.graphicalmodel.bayesian.BayesianNetwork;
@@ -38,6 +43,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -85,7 +91,7 @@ public class DemoJungGraphVis extends JPanel {
             JButton directedGraph = new ViewGraphButton("Directed", newDirectedGraph());
             menu.add(directedGraph);
 
-            JButton hyperGraph = new ViewGraphButton("Hypergraph", null);
+            JButton hyperGraph = new ViewGraphButton("Hypergraph", newHyperGraph());
             menu.add(hyperGraph);
 
             JButton feedForward = new ViewGraphButton("Feedforward", newFeedForwardNetwork());
@@ -114,7 +120,9 @@ public class DemoJungGraphVis extends JPanel {
         graphPanel = null;
 
         if (graph != null) {
-            if (graph instanceof BackpropBrain) {
+            if (graph instanceof HyperGraph) {
+                graphPanel = new HypergraphPanel((HyperGraph)graph, graphPanelWidth, graphPanelHeight);
+            } else if (graph instanceof BackpropBrain) {
                 graphPanel = new BrainPanel((BackpropBrain) graph, graphPanelWidth, graphPanelHeight);
             } else if (graph instanceof BayesianNetwork) {
                 graphPanel = new BayesianPanel((BayesianNetwork) graph, graphPanelWidth, graphPanelHeight);
@@ -147,6 +155,32 @@ public class DemoJungGraphVis extends JPanel {
         graph.add("y");
         graph.add(new ImmutableUndirectedEdge<String>("x", "y"));
         return graph;
+    }
+
+    public static MutableHyperAdjacencyGraph newHyperGraph() {
+        MutableHyperAdjacencyGraph<Integer, HyperEdge<Integer>> hg = new MutableHyperAdjacencyGraph();
+
+		// add hypervertices
+		hg.add(1);
+		hg.add(2);
+		hg.add(3);
+		hg.add(4);
+		hg.add(5);
+		hg.add(6);
+		hg.add(7);
+
+		// add hyperedges
+		hg.add(new ImmutableHyperEdge(Arrays.asList(6)));
+		hg.add(new ImmutableHyperEdge(Arrays.asList(1, 5)));
+        hg.add(new ImmutableHyperEdge(Arrays.asList(2, 3, 4)));
+        hg.add(new ImmutableHyperEdge(Arrays.asList(1, 2, 3)));
+        hg.add(new ImmutableHyperEdge(Arrays.asList(4, 3)));
+        hg.add(new ImmutableHyperEdge(Arrays.asList(1, 2)));
+        hg.add(new ImmutableHyperEdge(Arrays.asList(7, 6)));
+        hg.add(new ImmutableHyperEdge(Arrays.asList(2, 4)));
+        hg.add(new ImmutableHyperEdge(Arrays.asList(1, 2, 3, 4, 5)));
+
+        return hg;
     }
 
     public static Graph newFeedForwardNetwork() {
