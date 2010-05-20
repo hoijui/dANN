@@ -16,7 +16,7 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.dann.graph.jung.test;
+package com.syncleus.dann.graph.jung.example;
 
 import com.syncleus.dann.graph.jung.GraphPanel;
 import com.syncleus.dann.graph.jung.JungGraph;

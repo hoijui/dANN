@@ -16,7 +16,7 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.dann.graph.jung.test;
+package com.syncleus.dann.graph.jung;
 
 import com.syncleus.dann.graph.Edge;
 import com.syncleus.dann.graph.Graph;
@@ -33,6 +33,7 @@ import com.syncleus.dann.graph.jung.GraphPanel;
 import com.syncleus.dann.graph.jung.HypergraphPanel;
 import com.syncleus.dann.graph.jung.JungGraph;
 import com.syncleus.dann.graph.jung.ValueDirectedEdge;
+import com.syncleus.dann.graph.jung.example.ExampleBayesianNetwork;
 import com.syncleus.dann.graphicalmodel.bayesian.BayesianNetwork;
 import com.syncleus.dann.neural.Synapse;
 import com.syncleus.dann.neural.activation.ActivationFunction;
@@ -53,7 +54,7 @@ import javax.swing.JPanel;
  *
  * @author seh
  */
-public class DemoJungGraphVis extends JPanel {
+public class Main extends JPanel {
 
     private final JPanel contentPanel;
     private Graph graph;
@@ -78,7 +79,7 @@ public class DemoJungGraphVis extends JPanel {
         }
     }
 
-    public DemoJungGraphVis() {
+    public Main() {
         super(new BorderLayout());
 
         JPanel menu = new JPanel(new FlowLayout());
@@ -199,7 +200,7 @@ public class DemoJungGraphVis extends JPanel {
 
     public static void main(String[] args) {
         JFrame f = new JFrame("dANN Graph Visualization Demo");
-        f.getContentPane().add(new DemoJungGraphVis());
+        f.getContentPane().add(new Main());
         f.setSize(800, 600);
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
