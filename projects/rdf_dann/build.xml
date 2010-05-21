@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="RDF dANN" default="all" basedir=".">
+	<taskdef name="lint4j" classname="com.jutils.lint4j.ant.Lint4jAntTask">
+		<classpath>
+			<pathelement location="lib/lint/lint4j.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+		<classpath>
+			<pathelement location="lib/findbugs/findbugs-ant.jar"/>
+			<pathelement location="lib/findbugs/bcel.jar"/>
+			<pathelement location="lib/findbugs/dom4j-1.6.1.jar"/>
+			<pathelement location="lib/findbugs/jFormatString.jar"/>
+			<pathelement location="lib/findbugs/asm-3.1.jar"/>
+			<pathelement location="lib/findbugs/asm-commons-3.1.jar"/>
+			<pathelement location="lib/findbugs/asm-tree-3.1.jar"/>
+			<pathelement location="lib/findbugs/jsr305.jar"/>
+			<pathelement location="lib/findbugs/commons-lang-2.4.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
+		<classpath>
+			<pathelement location="lib/checkstyle/checkstyle-5.0.jar"/>
+			<pathelement location="lib/checkstyle/commons-beanutils-core.jar"/>
+			<pathelement location="lib/checkstyle/commons-cli-1.1.jar"/>
+			<pathelement location="lib/checkstyle/commons-logging.jar"/>
+			<pathelement location="lib/checkstyle/antlr.jar"/>
+			<pathelement location="lib/checkstyle/google-collect-snapshot-20090211.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+		<classpath>
+			<pathelement location="lib/pmd/pmd-4.1.jar"/>
+			<pathelement location="lib/pmd/jaxen-1.1.1.jar"/>
+			<pathelement location="lib/pmd/asm-3.1.jar"/>
+			<pathelement location="lib/pmd/junit-4.4.jar"/>
+		</classpath>
+	</taskdef>
+
+
+    <path id="classpath">
+        <fileset dir="lib" includes="**/*.jar"/>
+		<fileset dir="lib" includes="dann.jar"/>
+        <fileset dir="../java_dann/build/jar" includes="**/dann.jar"/>
+    </path>
+    <path id="classpath.run">
+        <fileset dir="lib" includes="**/*.jar"/>
+		<fileset dir="lib" includes="dann.jar"/>
+        <fileset dir="../java_dann/build/jar" includes="**/dann.jar"/>
+    </path>
+
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+
+    <target name="javadoc">
+        <mkdir dir="build/javadoc"/>
+        <delete includeemptydirs="true">
+            <fileset dir="build/javadoc" includes="**/*"/>
+        </delete>
+        <javadoc Private="true" destdir="build/javadoc/" classpathref="classpath">
+            <fileset dir="src/" includes="**/*.java"/>
+        </javadoc>
+    </target>
+
+
+	<target name="lint" description="Perform lint checks">
+		<mkdir dir="build/lint"/>
+		<lint4j packages="com.syncleus.*" level="5">
+			<sourcepath>
+				<dirset dir="src">
+					<include name="**/*.java" />
+				</dirset>
+				<pathelement path="src/" />
+			</sourcepath>
+			<classpath>
+				<fileset dir="lib/">
+					<include name="**/*.jar" />
+				</fileset>
+				<pathelement location="../java_dann/build/jar/dann.jar"/>
+			</classpath>
+			<formatters>
+				<formatter type="text" />
+				<formatter type="xml" toFile="build/lint/all.xml"/>
+			</formatters>
+		</lint4j>
+	</target>
+
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac destdir="build/classes" classpathref="classpath" debug="true" excludes="com/syncleus/tests/**">
+            <compilerarg value="-Xlint:deprecation"/>
+            <compilerarg value="-Xlint:unchecked"/>
+            <src path="src"/>
+        </javac>
+		<copy file="log4j.xml" todir="build/classes"/>
+        <mkdir dir="build/jar"/>
+		<manifestclasspath property="manifest.classpath" jarfile="./rdf_dann.jar" maxParentLevels="100">
+			<classpath refid="classpath.run" />
+		</manifestclasspath>
+        <jar destfile="build/jar/rdf_dann.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.dann.graph.rdf.Main"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+				<attribute name="Product-Name" value="rdf_dann"/>
+				<attribute name="Package-Title" value="com.syncleus.dann"/>
+				<attribute name="Package-Version" value="2.0"/>
+				<attribute name="Specification-Title" value="An Artificial Intelligence library (RDF extensions)"/>
+				<attribute name="Specification-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Specification-Version" value="2.0"/>
+				<attribute name="Implementation-Title" value="An Artificial Intelligence library (RDF extensions)"/>
+				<attribute name="Implementation-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Implementation-Vendor-Id" value="com.syncleus.dann"/>
+				<attribute name="Implementation-Version" value="2.0"/>
+            </manifest>
+        </jar>
+		
+        <mkdir dir="build/tests/classes"/>
+        <javac destdir="build/tests/classes" classpathref="classpath" debug="true">
+            <compilerarg value="-Xlint:deprecation"/>
+            <compilerarg value="-Xlint:unchecked"/>
+            <src path="src"/>
+        </javac>
+		<copy file="log4j.xml" todir="build/tests/classes"/>
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/rdf_dann-tests.jar" basedir="build/tests/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.dann.graph.rdf.Main"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+				<attribute name="Product-Name" value="rdf_dann"/>
+				<attribute name="Package-Title" value="com.syncleus.dann"/>
+				<attribute name="Package-Version" value="2.0"/>
+				<attribute name="Specification-Title" value="An Artificial Intelligence library (RDF extensions)"/>
+				<attribute name="Specification-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Specification-Version" value="2.0"/>
+				<attribute name="Implementation-Title" value="An Artificial Intelligence library (RDF extensions)"/>
+				<attribute name="Implementation-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Implementation-Vendor-Id" value="com.syncleus.dann"/>
+				<attribute name="Implementation-Version" value="2.0"/>
+            </manifest>
+        </jar>
+    </target>
+
+
+    <target name="compile-warnings">
+        <mkdir dir="build/classes"/>
+        <javac destdir="build/classes" classpathref="classpath" debug="true" excludes="com/syncleus/tests/**">
+            <compilerarg value="-Xlint"/>
+            <src path="src/com"/>
+        </javac>
+		<copy file="log4j.xml" todir="build/classes"/>
+        <mkdir dir="build/jar"/>
+		<manifestclasspath property="manifest.classpath" jarfile="./rdf_dann.jar" maxParentLevels="100">
+			<classpath refid="classpath.run" />
+		</manifestclasspath>
+        <jar destfile="build/jar/rdf_dann.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.dann.graph.rdf.Main"/>
+                <attribute name="Main-Class" value="com.syncleus.dann.graph.rdf.Main"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+				<attribute name="Product-Name" value="rdf_dann"/>
+				<attribute name="Package-Title" value="com.syncleus.dann"/>
+				<attribute name="Package-Version" value="2.0"/>
+				<attribute name="Specification-Title" value="An Artificial Intelligence library (RDF extensions)"/>
+				<attribute name="Specification-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Specification-Version" value="2.0"/>
+				<attribute name="Implementation-Title" value="An Artificial Intelligence library (RDF extensions)"/>
+				<attribute name="Implementation-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Implementation-Vendor-Id" value="com.syncleus.dann"/>
+				<attribute name="Implementation-Version" value="2.0"/>
+            </manifest>
+        </jar>
+
+        <mkdir dir="build/tests/classes"/>
+        <javac destdir="build/tests/classes" classpathref="classpath" debug="true">
+            <compilerarg value="-Xlint"/>
+            <src path="src/com"/>
+        </javac>
+		<copy file="log4j.xml" todir="build/tests/classes"/>
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/rdf_dann-tests.jar" basedir="build/tests/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.dann.graph.rdf.Main"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+				<attribute name="Product-Name" value="rdf_dann"/>
+				<attribute name="Package-Title" value="com.syncleus.dann"/>
+				<attribute name="Package-Version" value="2.0"/>
+				<attribute name="Specification-Title" value="An Artificial Intelligence library (RDF extensions)"/>
+				<attribute name="Specification-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Specification-Version" value="2.0"/>
+				<attribute name="Implementation-Title" value="An Artificial Intelligence library (RDF extensions)"/>
+				<attribute name="Implementation-Vendor" value="Syncleus, Inc."/>
+				<attribute name="Implementation-Vendor-Id" value="com.syncleus.dann"/>
+				<attribute name="Implementation-Version" value="2.0"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="all">
+        <antcall target="clean"/>
+        <antcall target="javadoc"/>
+        <antcall target="compile"/>
+    </target>
+
+    <target name="run">
+        <java fork="true" classname="com.syncleus.dann.graph.rdf.Main">
+            <jvmarg value="-Xmx512m" />
+            <classpath>
+                <path refid="classpath.run"/>
+                <path location="build/jar/rdf_dann.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+<!--
+    <target name="run-tests">
+        <java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d">
+            <jvmarg value="-Xmx512m" />
+            <classpath>
+                <path refid="classpath.run"/>
+                <path location="build/jar/rdf_dann-tests.jar"/>
+            </classpath>
+        </java>
+    </target>
+-->
+	
+    <target name="profile">
+        <nbprofiledirect>
+            <classpath>
+                <path refid="classpath.run"/>
+                <path location="build/jar/rdf_dann.jar"/>
+            </classpath>
+        </nbprofiledirect>
+        <java fork="true" classname="com.syncleus.dann.graph.rdf.Main">
+            <jvmarg value="${profiler.info.jvmargs.agent}"/>
+            <jvmarg value="-Xmx512m" />
+            <classpath>
+                <path refid="classpath.run"/>
+                <path location="build/jar/rdf_dann.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+	<target name="findbugs">
+		<mkdir dir="build/findbugs"/>
+		<findbugs home="lib/findbugs/"
+				  output="xml"
+				  outputFile="build/findbugs/findbugs-report.xml" >
+			<auxClasspath path="lib/openrdf/antlr-2.7.7.jar"/>
+			<auxClasspath path="lib/openrdf/commons-logging-1.1.1.jar"/>
+			<auxClasspath path="lib/openrdf/openrdf-alibaba-2.0-alpha4.jar"/>
+			<auxClasspath path="lib/openrdf/aopalliance-1.0.jar"/>
+			<auxClasspath path="lib/openrdf/commons-pool-1.3.jar"/>
+			<auxClasspath path="lib/openrdf/openrdf-sesame-2.3.1-onejar.jar"/>
+			<auxClasspath path="lib/openrdf/asm-2.2.3.jar"/>
+			<auxClasspath path="lib/openrdf/groovy-1.6.7.jar"/>
+			<auxClasspath path="lib/openrdf/servlet-api-2.5-20081211.jar"/>
+			<auxClasspath path="lib/openrdf/commons-cli-1.2.jar"/>
+			<auxClasspath path="lib/openrdf/javassist-3.11.0.GA.jar"/>
+			<auxClasspath path="lib/openrdf/slf4j-api-1.5.10.jar"/>
+			<auxClasspath path="lib/openrdf/commons-codec-1.3.jar"/>
+			<auxClasspath path="lib/openrdf/jetty-6.1.16.jar"/>
+			<auxClasspath path="lib/openrdf/slf4j-jdk14-1.5.10.jar"/>
+			<auxClasspath path="lib/openrdf/commons-dbcp-1.2.2.jar"/>
+			<auxClasspath path="lib/openrdf/jetty-util-6.1.16.jar"/>
+			<auxClasspath path="lib/openrdf/commons-httpclient-3.1.jar"/>
+			<auxClasspath path="lib/openrdf/mime-util-1.3.jar"/>
+			<sourcePath path="src/" />
+			<class location="build/jar/dann_examples.jar" />
+		</findbugs>
+	</target>
+
+	<target name="checkstyle">
+		<mkdir dir="build/checkstyle"/>
+		<checkstyle config="checks.xml" maxErrors="2147483647">
+			<fileset dir="src" includes="**/*.java"/>
+			<formatter type="plain"/>
+			<formatter type="xml" toFile="build/checkstyle/checkstyle-report.xml"/>
+		</checkstyle>
+	</target>
+
+	<target name="pmd">
+		<mkdir dir="build/pmd"/>
+		<pmd rulesetfiles="pmd.xml">
+			<formatter type="xml" toFile="build/pmd/pmd-report.xml"/>
+			<fileset dir="src/">
+				<include name="**/*.java"/>
+			</fileset>
+		</pmd>
+	</target>
+
+	<target name="tests">
+		<mkdir dir="build/tests"/>
+		<junit printsummary="yes" haltonfailure="no" showoutput="yes" >
+			<classpath>
+				<path refid="classpath"/>
+				<pathelement location="build/jar/rdf_dann-tests.jar"/>
+				<pathelement location="../java_dann/build/jar/rdf_dann.jar"/>
+			</classpath>
+			<formatter type="xml"/>
+			<batchtest fork="yes" todir="build/tests">
+				<fileset dir="src">
+					<include name="com/syncleus/tests/**/Test*.java"/>
+					<exclude name="**/AllTests.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+</project>
