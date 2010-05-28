@@ -35,18 +35,25 @@ import org.openrdf.repository.RepositoryResult;
  */
 public class MemoryRDFGraph extends MutableDirectedAdjacencyGraph<RDFValue, RDFStatement> {
 
-    MemoryRDFGraph() {
+    int maxEdges;
+
+    public MemoryRDFGraph() {
+        this(-1);
+    }
+
+    public MemoryRDFGraph(int maxEdges) {
         super();
+        this.maxEdges = maxEdges;
     }
 
     /** iterates through the entire RDF graph and builds a dANN graph */
-    protected boolean add(Repository rep) {
+    public boolean add(Repository rep) {
         //TODO clear the repository first, then make 'refresh()' a public method
-        
+
         try {
             RepositoryConnection con = rep.getConnection();
-            RepositoryResult<Statement> is = con.getStatements(null, null, null, true, (Resource)null);
-            while (is.hasNext()) {
+            RepositoryResult<Statement> is = con.getStatements(null, null, null, true, (Resource) null);
+            while (is.hasNext() ) {
                 Statement s = is.next();
                 RDFValue subj = new RDFValue(s.getSubject());
                 RDFValue obj = new RDFValue(s.getObject());
@@ -54,6 +61,11 @@ public class MemoryRDFGraph extends MutableDirectedAdjacencyGraph<RDFValue, RDFS
                 add(subj);
                 add(obj);
                 add(statement);
+
+                if (maxEdges>0) {
+                    if (getEdges().size() > maxEdges)
+                        break;
+                }
             }
             is.close();
             con.close();
@@ -61,9 +73,8 @@ public class MemoryRDFGraph extends MutableDirectedAdjacencyGraph<RDFValue, RDFS
             Logger.getLogger(MemoryRDFGraph.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        
+
 
         return true;
     }
-
 }
