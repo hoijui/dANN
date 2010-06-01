@@ -6,3 +6,4 @@ junit*
 cobertura.ser
 dist
 nbproject
+.DS_Store
