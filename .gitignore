@@ -2,6 +2,7 @@
 build
 *.iml
 log.html
+log.htm
 junit*
 cobertura.ser
 dist
