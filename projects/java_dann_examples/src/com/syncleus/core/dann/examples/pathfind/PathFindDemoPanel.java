@@ -157,8 +157,6 @@ public class PathFindDemoPanel extends JPanel
 
     }
 
-//    private class SettingsPanel extends JPanel {
-//    }
     private class PathFindControlPanel extends JTabbedPane
     {
 

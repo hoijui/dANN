@@ -140,18 +140,20 @@ public class TestColorMapDemo
 		//train and display for various parameters
 		colorMapDemoFixture.button("trainDisplayButton").requireEnabled();
 
+		colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("10000");
 		colorMapDemoFixture.button("trainDisplayButton").click();
 		colorMapDemoFixture.button("trainDisplayButton").requireDisabled();
 		colorMapDemoFixture.button("trainDisplayButton").requireEnabled(Timeout.timeout(30000));
 
-		colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("1000");
-		colorMapDemoFixture.spinner("iterationsSpinner").requireValue(1000);
+		colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("5000");
+		colorMapDemoFixture.spinner("iterationsSpinner").requireValue(5000);
 		colorMapDemoFixture.button("trainDisplayButton").click();
 		colorMapDemoFixture.button("trainDisplayButton").requireDisabled();
 		colorMapDemoFixture.button("trainDisplayButton").requireEnabled(Timeout.timeout(30000));
 
 		colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("100");
 		colorMapDemoFixture.spinner("iterationsSpinner").requireValue(100);
+		colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("5000");
 		colorMapDemoFixture.spinner("learningRateSpinner").enterTextAndCommit("0.1");
 		colorMapDemoFixture.spinner("learningRateSpinner").requireValue(0.1);
 		colorMapDemoFixture.comboBox("dimentionalityComboBox").selectItem("2D");
@@ -162,6 +164,7 @@ public class TestColorMapDemo
 
 		colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("250");
 		colorMapDemoFixture.spinner("iterationsSpinner").requireValue(250);
+		colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("5000");
 		colorMapDemoFixture.spinner("learningRateSpinner").enterTextAndCommit("1.0");
 		colorMapDemoFixture.spinner("learningRateSpinner").requireValue(1.0);
 		colorMapDemoFixture.comboBox("dimentionalityComboBox").selectItem("1D");
