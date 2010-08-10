@@ -3,7 +3,7 @@ build
 *.iml
 log.html
 log.htm
-junit*
+junit*.properties
 cobertura.ser
 dist
 nbproject
