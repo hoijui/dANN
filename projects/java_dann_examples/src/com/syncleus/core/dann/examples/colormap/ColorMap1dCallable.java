@@ -22,6 +22,8 @@ import java.util.concurrent.Callable;
 import java.util.Map;
 import java.util.Random;
 import com.syncleus.dann.math.Vector;
+import com.syncleus.dann.neural.Synapse;
+import com.syncleus.dann.neural.som.*;
 import com.syncleus.dann.neural.som.brain.ExponentialDecaySomBrain;
 import java.util.Map.Entry;
 import java.awt.Color;
@@ -48,7 +50,7 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 		try
 		{
 			//initialize brain
-			ExponentialDecaySomBrain brain = new ExponentialDecaySomBrain(3, 1, getIterations(), getLearningRate());
+			ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain = new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(3, 1, getIterations(), getLearningRate());
 
 			//create the output latice
 			for(double x = 0; x < getWidth(); x++)
