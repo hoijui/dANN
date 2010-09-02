@@ -30,7 +30,7 @@ import java.util.*;
  * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
-public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements java.io.Serializable
+public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpropNeuron, OutputBackpropNeuron, BackpropNeuron, Synapse<BackpropNeuron>> implements java.io.Serializable
 {
     private double actualCompression = 0.0;
     private int xSize = 0;
@@ -86,9 +86,9 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
 	protected BackpropNeuron createNeuron(int layer, int index)
 	{
 		if( layer == 0 )
-			return new InputBackpropNeuron(this);
+			return new SimpleInputBackpropNeuron(this);
 		else if(layer >= (this.getLayerCount() - 1))
-			return new OutputBackpropNeuron(this, this.activationFunction, this.learningRate);
+			return new SimpleOutputBackpropNeuron(this, this.activationFunction, this.learningRate);
 		else if(layer == 1)
 		{
 			CompressionNeuron compressionNeuron = new CompressionNeuron(this, this.activationFunction, this.learningRate);
@@ -139,11 +139,11 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        for (Neuron child : this.getNodes())
+        for (BackpropNeuron child : this.getNodes())
         {
 			try
 			{
-				Set<Synapse> childSynapses = this.getTraversableEdges(child);
+				Set<Synapse<BackpropNeuron>> childSynapses = this.getTraversableEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{
@@ -167,11 +167,11 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain implements 
         double weightSum = 0.0;
         double weightCount = 0.0;
 
-        for (Neuron child : this.getNodes())
+        for (BackpropNeuron child : this.getNodes())
         {
 			try
 			{
-				Set<Synapse> childSynapses = this.getTraversableEdges(child);
+				Set<Synapse<BackpropNeuron>> childSynapses = this.getTraversableEdges(child);
 
 				for (Synapse childSynapse : childSynapses)
 				{

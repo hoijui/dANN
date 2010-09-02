@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
-public class CompressionNeuron extends SimpleBackpropNeuron implements Serializable
+public final class CompressionNeuron extends AbstractBackpropNeuron implements Serializable
 {
     /**
      * <!-- Author: Jeffrey Phillips Freeman -->
@@ -122,10 +122,10 @@ public class CompressionNeuron extends SimpleBackpropNeuron implements Serializa
     }
 
 	@Override
-	public void propagate()
+	public void tick()
 	{
         if (this.inputSet == false)
-            super.propagate();
+            super.tick();
 		else
 		{
 			// TODO we shouldnt be calling setOutput, try getting rid of the protected in the parent and instead make some abstracts

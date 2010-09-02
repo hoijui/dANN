@@ -93,7 +93,7 @@
         <mkdir dir="build/classes"/>
         <javac destdir="build/classes" classpathref="classpath.build" debug="true" excludes="com/syncleus/tests/**">
             <compilerarg value="-Xlint:deprecation"/>
-            <compilerarg value="-Xlint:unchecked"/>
+            <!--compilerarg value="-Xlint:unchecked"/-->
             <src path="src/com"/>
         </javac>
 		<copy file="log4j.xml" todir="build/classes"/>
@@ -122,7 +122,7 @@
         <mkdir dir="build/tests/classes"/>
         <javac destdir="build/tests/classes" classpathref="classpath.build" debug="true">
             <compilerarg value="-Xlint:deprecation"/>
-            <compilerarg value="-Xlint:unchecked"/>
+            <!--compilerarg value="-Xlint:unchecked"/-->
             <src path="src/com"/>
         </javac>
 		<copy file="log4j.xml" todir="build/tests/classes"/>
