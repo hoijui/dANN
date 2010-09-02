@@ -19,156 +19,166 @@
 package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.util.concurrent.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
-public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener
-{
-	private HyperassociativeMapCanvas mapVisual;
-	private LayeredHyperassociativeMap associativeMap;
-	private final ExecutorService executor;
-	private FutureTask<Void> lastRun;
+public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener {
 
-	public ViewMap()
-	{
-		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		this.associativeMap = new LayeredHyperassociativeMap(8, executor);
+    private HyperassociativeMapCanvas mapVisual;
+    private LayeredHyperassociativeMap associativeMap;
+    private final ExecutorService executor;
+    private FutureTask<Void> lastRun;
 
-		this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
+    public ViewMap() {
+        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        this.associativeMap = new LayeredHyperassociativeMap(8, executor);
 
-		initComponents();
+        try {
+            this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
+            initComponents();
 
-		this.add(this.mapVisual);
-		this.mapVisual.setLocation(0, 0);
-		this.mapVisual.setSize(800, 600);
-		this.mapVisual.setVisible(true);
+            this.add(this.mapVisual);
+            this.mapVisual.setLocation(0, 0);
+            this.mapVisual.setSize(800, 600);
+            this.mapVisual.setVisible(true);
 
-		this.setSize(800, 600);
 
-		this.mapVisual.refresh();
+            this.mapVisual.refresh();
 
-		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, associativeMap), null);
-		this.executor.execute(this.lastRun);
+            this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, associativeMap), null);
+            this.executor.execute(this.lastRun);
 
-		new Timer(100, this).start();
+            new Timer(100, this).start();
 
-		this.setFocusTraversalKeysEnabled(false);
-		this.mapVisual.setFocusTraversalKeysEnabled(false);
+            this.setFocusTraversalKeysEnabled(false);
+            this.mapVisual.setFocusTraversalKeysEnabled(false);
 
-		this.addWindowListener(this);
-		this.mapVisual.addKeyListener(this);
-		this.addKeyListener(this);
-	}
+            this.addWindowListener(this);
+            this.mapVisual.addKeyListener(this);
+            this.addKeyListener(this);
 
-	public void keyPressed(KeyEvent e)
-	{
-		if(e.getKeyCode() == KeyEvent.VK_R)
-			this.associativeMap.reset();
-		if(e.getKeyCode() == KeyEvent.VK_L)
-			this.associativeMap.resetLearning();
-		else if(e.getKeyCode() == KeyEvent.VK_UP)
-		{
-			if(this.associativeMap.getEquilibriumDistance() < 1.0)
-				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 1.1);
-			else
-				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() + 1.0);
-			this.associativeMap.resetLearning();
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_DOWN)
-		{
-			if(this.associativeMap.getEquilibriumDistance() < 2.0)
-				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 0.9);
-			else
-				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() - 1.0);
-			this.associativeMap.resetLearning();
-		}
-	}
+        } catch (UnsatisfiedLinkError error) {
+            getContentPane().setLayout(new BorderLayout());
 
-	public void keyReleased(KeyEvent e)
-	{
-	}
+            String msg = "<span style=\"font-size: 20pt\"><b>Java Component Missing:</b> " + error.toString() + "</span><br/><br/>";
+            
+            if (error.toString().contains("j3d")) {
+                msg += "See <a href=\"http://www.oracle.com/technetwork/java/javase/tech/index-jsp-138252.html\">http://www.oracle.com/technetwork/java/javase/tech/index-jsp-138252.html</a> for Java3D installation instructions</a>.";
+                        
+            }
+            JTextPane msgArea = new JTextPane();
 
-	public void keyTyped(KeyEvent e)
-	{
-	}
+            int bS = 6;
+            msgArea.setEditable(false);
+            msgArea.setOpaque(false);
+            msgArea.setContentType("text/html");
+            msgArea.setBorder(new EmptyBorder(bS, bS, bS, bS));
+            msgArea.setText("<html> " + msg + " </html>");
 
-	public void windowClosing(WindowEvent e)
-	{
-		this.executor.shutdown();
-	}
 
-	public void windowClosed(WindowEvent e)
-	{
-	}
+            getContentPane().add(msgArea, BorderLayout.CENTER);
+        }
+        this.setSize(800, 600);
 
-	public void windowOpened(WindowEvent e)
-	{
-	}
+    }
 
-	public void windowIconified(WindowEvent e)
-	{
-	}
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            this.associativeMap.reset();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_L) {
+            this.associativeMap.resetLearning();
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            if (this.associativeMap.getEquilibriumDistance() < 1.0) {
+                this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 1.1);
+            } else {
+                this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() + 1.0);
+            }
+            this.associativeMap.resetLearning();
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            if (this.associativeMap.getEquilibriumDistance() < 2.0) {
+                this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 0.9);
+            } else {
+                this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() - 1.0);
+            }
+            this.associativeMap.resetLearning();
+        }
+    }
 
-	public void windowDeiconified(WindowEvent e)
-	{
-	}
+    public void keyReleased(KeyEvent e) {
+    }
 
-	public void windowActivated(WindowEvent e)
-	{
-	}
+    public void keyTyped(KeyEvent e) {
+    }
 
-	public void windowDeactivated(WindowEvent e)
-	{
-	}
+    public void windowClosing(WindowEvent e) {
+        this.executor.shutdown();
+    }
 
-	public void actionPerformed(ActionEvent evt)
-	{
-		if((this.lastRun != null) && (this.lastRun.isDone() == false))
-			return;
+    public void windowClosed(WindowEvent e) {
+    }
 
-		if(this.isVisible() == false)
-			return;
+    public void windowOpened(WindowEvent e) {
+    }
 
-		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, this.associativeMap), null);
-		this.executor.execute(this.lastRun);
-	}
+    public void windowIconified(WindowEvent e) {
+    }
 
-	private static boolean checkClasses()
-	{
-		try
-		{
-			Class.forName("javax.media.j3d.NativePipeline");
-		}
-		catch(ClassNotFoundException caughtException)
-		{
-			System.out.println("java3D library isnt in classpath!");
-			return false;
-		}
+    public void windowDeiconified(WindowEvent e) {
+    }
 
-		return true;
-	}
+    public void windowActivated(WindowEvent e) {
+    }
 
-	public static void main(String args[]) throws Exception
-	{
-		//check that the java3D drivers are present
-		if(!checkClasses())
-			return;
+    public void windowDeactivated(WindowEvent e) {
+    }
 
-		System.out.println("controls:");
-		System.out.println("R: reset");
-		System.out.println("L: reset learing curve");
-		System.out.println("up arrow: increase Equilibrium");
-		System.out.println("down arrow: decrease Equilibrium");
+    public void actionPerformed(ActionEvent evt) {
+        if ((this.lastRun != null) && (this.lastRun.isDone() == false)) {
+            return;
+        }
 
-		java.awt.EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				new ViewMap().setVisible(true);
-			}
-		});
-	}
+        if (this.isVisible() == false) {
+            return;
+        }
+
+        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, this.associativeMap), null);
+        this.executor.execute(this.lastRun);
+    }
+
+    private static boolean checkClasses() {
+        try {
+            Class.forName("javax.media.j3d.NativePipeline");
+        } catch (ClassNotFoundException caughtException) {
+            System.out.println("java3D library isnt in classpath!");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void main(String args[]) throws Exception {
+        //check that the java3D drivers are present
+        if (!checkClasses()) {
+            return;
+        }
+
+        System.out.println("controls:");
+        System.out.println("R: reset");
+        System.out.println("L: reset learing curve");
+        System.out.println("up arrow: increase Equilibrium");
+        System.out.println("down arrow: decrease Equilibrium");
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new ViewMap().setVisible(true);
+            }
+        });
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -191,5 +201,5 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
     }//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-	// </editor-fold>
+    // </editor-fold>
 }
