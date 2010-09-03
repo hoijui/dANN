@@ -195,6 +195,11 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
                 quitMenuItemMouseReleased(evt);
             }
         });
+        quitMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitMenuItem1ActionPerformed(evt);
+            }
+        });
         quitMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
                 quitMenuItemMenuKeyPressed(evt);
@@ -295,7 +300,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(separator, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+                    .addComponent(separator, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -459,6 +464,12 @@ private void brainViewMenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FI
     
     this.viewBrain.setVisible(true);
 }//GEN-LAST:event_brainViewMenuMouseReleased
+
+private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItem1ActionPerformed
+    if (this.brainRunner != null)
+        this.brainRunner.shutdown();
+    System.exit(0);
+}//GEN-LAST:event_quitMenuItem1ActionPerformed
 
 private void refreshOriginalImage()
 {

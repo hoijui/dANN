@@ -36,7 +36,7 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
         this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         this.associativeMap = new LayeredHyperassociativeMap(8, executor);
 
-        try {
+        
             this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
             initComponents();
 
@@ -60,27 +60,6 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
             this.mapVisual.addKeyListener(this);
             this.addKeyListener(this);
 
-        } catch (UnsatisfiedLinkError error) {
-            getContentPane().setLayout(new BorderLayout());
-
-            String msg = "<span style=\"font-size: 20pt\"><b>Java Component Missing:</b> " + error.toString() + "</span><br/><br/>";
-            
-            if (error.toString().contains("j3d")) {
-                msg += "See <a href=\"http://www.oracle.com/technetwork/java/javase/tech/index-jsp-138252.html\">http://www.oracle.com/technetwork/java/javase/tech/index-jsp-138252.html</a> for Java3D installation instructions</a>.";
-                        
-            }
-            JTextPane msgArea = new JTextPane();
-
-            int bS = 6;
-            msgArea.setEditable(false);
-            msgArea.setOpaque(false);
-            msgArea.setContentType("text/html");
-            msgArea.setBorder(new EmptyBorder(bS, bS, bS, bS));
-            msgArea.setText("<html> " + msg + " </html>");
-
-
-            getContentPane().add(msgArea, BorderLayout.CENTER);
-        }
         this.setSize(800, 600);
 
     }
