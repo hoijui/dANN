@@ -18,12 +18,11 @@
  ******************************************************************************/
 package com.syncleus.core.dann.examples.hyperassociativemap.visualization;
 
+import com.syncleus.dann.ComponentUnavailableException;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.*;
-import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.util.concurrent.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener {
 
@@ -36,29 +35,31 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
         this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         this.associativeMap = new LayeredHyperassociativeMap(8, executor);
 
-        
+
+        try {
             this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
             initComponents();
-
-            this.add(this.mapVisual);
-            this.mapVisual.setLocation(0, 0);
-            this.mapVisual.setSize(800, 600);
-            this.mapVisual.setVisible(true);
-
-
-            this.mapVisual.refresh();
 
             this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, associativeMap), null);
             this.executor.execute(this.lastRun);
 
-            new Timer(100, this).start();
-
-            this.setFocusTraversalKeysEnabled(false);
             this.mapVisual.setFocusTraversalKeysEnabled(false);
-
-            this.addWindowListener(this);
             this.mapVisual.addKeyListener(this);
             this.addKeyListener(this);
+
+            new Timer(100, this).start();
+            
+        this.mapVisual.setLocation(0, 0);
+        this.mapVisual.setSize(800, 600);
+        this.mapVisual.setVisible(true);
+        this.mapVisual.refresh();
+
+        } catch (ComponentUnavailableException e) {
+            this.add(e.newPanel());
+        }
+
+        this.addWindowListener(this);
+        this.setFocusTraversalKeysEnabled(false);
 
         this.setSize(800, 600);
 
