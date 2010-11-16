@@ -38,6 +38,9 @@ import com.syncleus.dann.graphicalmodel.bayesian.BayesianNetwork;
 import com.syncleus.dann.neural.Synapse;
 import com.syncleus.dann.neural.activation.ActivationFunction;
 import com.syncleus.dann.neural.activation.SineActivationFunction;
+import com.syncleus.dann.neural.backprop.InputBackpropNeuron;
+import com.syncleus.dann.neural.backprop.OutputBackpropNeuron;
+import com.syncleus.dann.neural.backprop.BackpropNeuron;
 import com.syncleus.dann.neural.backprop.brain.BackpropBrain;
 import com.syncleus.dann.neural.backprop.brain.FullyConnectedFeedforwardBrain;
 import java.awt.BorderLayout;
@@ -188,7 +191,7 @@ public class Main extends JPanel {
         double learningRate = 0.0175;
         ActivationFunction activationFunction = new SineActivationFunction();
 
-        final FullyConnectedFeedforwardBrain brain = new FullyConnectedFeedforwardBrain(new int[]{8, 6, 4}, learningRate, activationFunction);
+        final FullyConnectedFeedforwardBrain<? extends InputBackpropNeuron, ? extends OutputBackpropNeuron, ? extends BackpropNeuron, ? extends Synapse<?>> brain = new FullyConnectedFeedforwardBrain<InputBackpropNeuron, OutputBackpropNeuron, BackpropNeuron, Synapse<BackpropNeuron>>(new int[]{8, 6, 4}, learningRate, activationFunction);
         {
             //randomize the brain
             for (Synapse s : brain.getEdges()) {

@@ -21,6 +21,7 @@ package com.syncleus.dann.graph.jung;
 import com.syncleus.dann.graph.DirectedEdge;
 import com.syncleus.dann.graph.Edge;
 import com.syncleus.dann.graph.Graph;
+import com.syncleus.dann.graph.topological.Topography;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.graph.util.Pair;
 import java.util.Collection;
@@ -241,7 +242,7 @@ public class JungGraph<N, E extends Edge<N>> implements edu.uci.ics.jung.graph.G
     }
 
     public int degree(N v) {
-        return dannGraph.getDegree(v);
+        return Topography.getDegree(dannGraph, v);
     }
 
     public int getNeighborCount(N v) {
