@@ -39,10 +39,24 @@ import java.util.Set;
 public class JungGraph<N, E extends Edge<N>> implements edu.uci.ics.jung.graph.Graph<N, E> {
 
     final Graph<N, E> dannGraph;
+	private EdgeType defaultEdgeType;
 
     public JungGraph(Graph<N, E> dannGraph) {
         super();
         this.dannGraph = dannGraph;
+        this.defaultEdgeType = null;
+    }
+
+    public void setDefaultEdgeType(EdgeType defaultEdgeType) {
+		this.defaultEdgeType = defaultEdgeType;
+    }
+
+    public EdgeType getDefaultEdgeType() {
+		if (defaultEdgeType == null) {
+			return (getEdgeCount(EdgeType.DIRECTED) > getEdgeCount(EdgeType.UNDIRECTED)) ? EdgeType.DIRECTED : EdgeType.UNDIRECTED;
+		} else {
+			return defaultEdgeType;
+		}
     }
 
     public Collection<E> getIncidentEdges(N v) {
