@@ -20,6 +20,7 @@
 		<module>../java_dann</module>
 		<module>../java_dann_examples</module>
 		<module>../jung_dann</module>
+		<module>../neuroph_dann</module>
 	</modules>
 
 	<mailingLists>

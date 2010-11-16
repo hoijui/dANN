@@ -9,6 +9,7 @@ projects/java_dann_examples/build
 projects/jung_dann/build
 /projects/jung_dann/target
 projects/neuroph_dann/build
+/projects/neuroph_dann/target
 projects/rdf_dann/build
 *.iml
 log.html
