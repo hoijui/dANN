@@ -18,11 +18,11 @@
  ******************************************************************************/
 package com.syncleus.dann.graph.rdf;
 
-import com.syncleus.dann.graph.ImmutableDirectedEdge;
+import com.syncleus.dann.graph.AbstractDirectedEdge;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 
-public class RDFStatement extends ImmutableDirectedEdge<RDFValue> {
+public class RDFStatement extends AbstractDirectedEdge<RDFValue> {
 
     public final URI predicate;
     private final Resource contexts;
