@@ -21,6 +21,7 @@ package com.syncleus.dann.graph.jung;
 import com.syncleus.dann.graph.DirectedEdge;
 import com.syncleus.dann.graph.Edge;
 import com.syncleus.dann.graph.Graph;
+import com.syncleus.dann.graph.topological.Topography;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.graph.util.Pair;
 import java.util.Collection;
@@ -38,10 +39,24 @@ import java.util.Set;
 public class JungGraph<N, E extends Edge<N>> implements edu.uci.ics.jung.graph.Graph<N, E> {
 
     final Graph<N, E> dannGraph;
+	private EdgeType defaultEdgeType;
 
     public JungGraph(Graph<N, E> dannGraph) {
         super();
         this.dannGraph = dannGraph;
+        this.defaultEdgeType = null;
+    }
+
+    public void setDefaultEdgeType(EdgeType defaultEdgeType) {
+		this.defaultEdgeType = defaultEdgeType;
+    }
+
+    public EdgeType getDefaultEdgeType() {
+		if (defaultEdgeType == null) {
+			return (getEdgeCount(EdgeType.DIRECTED) > getEdgeCount(EdgeType.UNDIRECTED)) ? EdgeType.DIRECTED : EdgeType.UNDIRECTED;
+		} else {
+			return defaultEdgeType;
+		}
     }
 
     public Collection<E> getIncidentEdges(N v) {
@@ -241,7 +256,7 @@ public class JungGraph<N, E extends Edge<N>> implements edu.uci.ics.jung.graph.G
     }
 
     public int degree(N v) {
-        return dannGraph.getDegree(v);
+        return Topography.getDegree(dannGraph, v);
     }
 
     public int getNeighborCount(N v) {

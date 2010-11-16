@@ -22,6 +22,9 @@ import com.syncleus.dann.neural.InputNeuron;
 import com.syncleus.dann.neural.Neuron;
 import com.syncleus.dann.neural.OutputNeuron;
 import com.syncleus.dann.neural.Synapse;
+import com.syncleus.dann.neural.backprop.InputBackpropNeuron;
+import com.syncleus.dann.neural.backprop.OutputBackpropNeuron;
+import com.syncleus.dann.neural.backprop.BackpropNeuron;
 import com.syncleus.dann.neural.backprop.brain.BackpropBrain;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
@@ -42,7 +45,7 @@ import org.apache.commons.collections15.Transformer;
 public class BrainPanel<N extends Neuron, S extends Synapse> extends GraphPanel<N, S> {
 
     static long brainUpdatePeriodMS = 30;
-    private final BackpropBrain brain;
+    private final BackpropBrain<? extends InputBackpropNeuron, ? extends OutputBackpropNeuron, ? extends BackpropNeuron, ? extends Synapse<?>> brain;
 
     public static class NeuronLabeller extends ToStringLabeller {
 

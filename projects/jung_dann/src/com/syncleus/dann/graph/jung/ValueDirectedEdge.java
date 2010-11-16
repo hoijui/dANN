@@ -18,13 +18,13 @@
  ******************************************************************************/
 package com.syncleus.dann.graph.jung;
 
-import com.syncleus.dann.graph.ImmutableDirectedEdge;
+import com.syncleus.dann.graph.AbstractDirectedEdge;
 
 /**
  An edge that takes an arbitrarily typed value as a parameter.
  @param <V> the type of the attached value instance
 */
-public class ValueDirectedEdge<N,V> extends ImmutableDirectedEdge<N> {
+public class ValueDirectedEdge<N,V> extends AbstractDirectedEdge<N> {
 
     public final V value;
 

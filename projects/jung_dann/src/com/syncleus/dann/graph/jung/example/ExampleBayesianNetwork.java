@@ -55,12 +55,12 @@ public class ExampleBayesianNetwork extends MutableBayesianAdjacencyNetwork {
     private static final Random RANDOM = new Random();
     
     //create nodes
-    private BayesianNode<SeasonState> season = new SimpleBayesianNode<SeasonState>(SeasonState.WINTER, this);
-    private BayesianNode<AgeState> age = new SimpleBayesianNode<AgeState>(AgeState.BABY, this);
-    private BayesianNode<BooleanState> stuffyNose = new SimpleBayesianNode<BooleanState>(BooleanState.TRUE, this);
-    private BayesianNode<FeverState> fever = new SimpleBayesianNode<FeverState>(FeverState.HOT, this);
-    private BayesianNode<BooleanState> tired = new SimpleBayesianNode<BooleanState>(BooleanState.FALSE, this);
-    private BayesianNode<BooleanState> sick = new SimpleBayesianNode<BooleanState>(BooleanState.FALSE, this);
+    private BayesianNode<SeasonState> season = new SimpleBayesianNode<SeasonState>(SeasonState.WINTER);
+    private BayesianNode<AgeState> age = new SimpleBayesianNode<AgeState>(AgeState.BABY);
+    private BayesianNode<BooleanState> stuffyNose = new SimpleBayesianNode<BooleanState>(BooleanState.TRUE);
+    private BayesianNode<FeverState> fever = new SimpleBayesianNode<FeverState>(FeverState.HOT);
+    private BayesianNode<BooleanState> tired = new SimpleBayesianNode<BooleanState>(BooleanState.FALSE);
+    private BayesianNode<BooleanState> sick = new SimpleBayesianNode<BooleanState>(BooleanState.FALSE);
 
     public ExampleBayesianNetwork() {
         MutableBayesianAdjacencyNetwork network = this;
