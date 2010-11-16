@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>syncleus.com</groupId>
+		<artifactId>dann</artifactId>
+		<version>1.4-SNAPSHOT</version>
+		<relativePath>../dann/pom.xml</relativePath>
+	</parent>
+	<packaging>jar</packaging>
+
+	<artifactId>dann-rdf</artifactId>
+	<name>dANN RDF integration</name>
+	<description>Artificial Intelligence and Artificial Genetics library - RDF integration</description>
+
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>log4j.xml</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-repository-sail</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-sail-inferencer</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-sail-memory</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dann-core</artifactId>
+		</dependency>
+
+	</dependencies>
+
+
+
+	<repositories>
+		<repository>
+			<id>maven2-repo.aduna-software.org</id>
+			<name>Aduna's maven repository (for OpenRDF)</name>
+			<url>http://repo.aduna-software.org/maven2/releases/</url>
+		</repository>
+	</repositories>
+
+</project>
