@@ -16,9 +16,8 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.tests.dann.examples.colormap;
+package com.syncleus.dann.examples.colormap;
 
-import com.syncleus.core.dann.examples.colormap.AboutDialog;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;

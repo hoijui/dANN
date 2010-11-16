@@ -16,18 +16,19 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.tests.dann.examples.fft;
+package com.syncleus.dann.examples.nci.ui;
 
-import com.syncleus.core.dann.examples.fft.FftDemo;
-import org.fest.swing.fixture.FrameFixture;
+
+import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiActionRunner;
 import org.junit.*;
 
-public class TestFftDemo
+
+public class TestAboutDialog
 {
-	private FrameFixture fftDemoFixture;
+	private DialogFixture aboutFixture;
 
 	@BeforeClass
 	public static void setUpOnce()
@@ -39,39 +40,29 @@ public class TestFftDemo
 	@Before
 	public void onSetUp()
 	{
-		FftDemo fftDemo = GuiActionRunner.execute(new GuiQuery<FftDemo>()
+		AboutDialog aboutDialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>()
 		{
-			protected FftDemo executeInEDT()
+			protected AboutDialog executeInEDT()
 			{
-				return new FftDemo();
+				return new AboutDialog(null, false);
 			}
 		});
 
-		fftDemoFixture = new FrameFixture(fftDemo);
-		fftDemoFixture.show();
+		aboutFixture = new DialogFixture(aboutDialog);
+		aboutFixture.show();
 	}
 
 	@After
 	public void tearDown()
 	{
-		fftDemoFixture.cleanUp();
+		aboutFixture.cleanUp();
 	}
 
 	@Test
-	public void testComponents()
+	public void testDisplays()
 	{
-		fftDemoFixture.requireVisible();
-
-		//start listening
-		fftDemoFixture.button("listenButton").click();
-
-		//check that its listening
-		fftDemoFixture.button("listenButton").requireText("Stop");
-
-		//stop listening
-		fftDemoFixture.button("listenButton").click();
-
-		//check if stopped
-		fftDemoFixture.button("listenButton").requireText("Listen");
+		aboutFixture.requireVisible();
+		aboutFixture.button("ok button").click();
+		aboutFixture.requireNotVisible();
 	}
 }

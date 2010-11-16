@@ -16,20 +16,17 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.tests.dann.examples.nci.ui;
+package com.syncleus.dann.examples.fft;
 
-
-import com.syncleus.core.dann.examples.nci.ui.AboutDialog;
-import org.fest.swing.fixture.DialogFixture;
+import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiActionRunner;
 import org.junit.*;
 
-
-public class TestAboutDialog
+public class TestFftDemo
 {
-	private DialogFixture aboutFixture;
+	private FrameFixture fftDemoFixture;
 
 	@BeforeClass
 	public static void setUpOnce()
@@ -41,29 +38,39 @@ public class TestAboutDialog
 	@Before
 	public void onSetUp()
 	{
-		AboutDialog aboutDialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>()
+		FftDemo fftDemo = GuiActionRunner.execute(new GuiQuery<FftDemo>()
 		{
-			protected AboutDialog executeInEDT()
+			protected FftDemo executeInEDT()
 			{
-				return new AboutDialog(null, false);
+				return new FftDemo();
 			}
 		});
 
-		aboutFixture = new DialogFixture(aboutDialog);
-		aboutFixture.show();
+		fftDemoFixture = new FrameFixture(fftDemo);
+		fftDemoFixture.show();
 	}
 
 	@After
 	public void tearDown()
 	{
-		aboutFixture.cleanUp();
+		fftDemoFixture.cleanUp();
 	}
 
 	@Test
-	public void testDisplays()
+	public void testComponents()
 	{
-		aboutFixture.requireVisible();
-		aboutFixture.button("ok button").click();
-		aboutFixture.requireNotVisible();
+		fftDemoFixture.requireVisible();
+
+		//start listening
+		fftDemoFixture.button("listenButton").click();
+
+		//check that its listening
+		fftDemoFixture.button("listenButton").requireText("Stop");
+
+		//stop listening
+		fftDemoFixture.button("listenButton").click();
+
+		//check if stopped
+		fftDemoFixture.button("listenButton").requireText("Listen");
 	}
 }
