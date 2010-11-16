@@ -13,7 +13,7 @@
             <fileset dir="build/javadoc" includes="**/*"/>
         </delete>
         <javadoc destdir="build/javadoc/" classpathref="classpath">
-            <fileset dir="src/" includes="**/*.java"/>
+            <fileset dir="src/main/java/" includes="**/*.java"/>
         </javadoc>
     </target>
     <target name="compile">
@@ -22,11 +22,10 @@
         <javac destdir="build/classes" classpathref="classpath" debug="true">
             <compilerarg value="-Xlint:deprecation"/>
             <compilerarg value="-Xlint:unchecked"/>
-            <src path="src/com"/>
+            <src path="src/main/java/com"/>
         </javac>
-        <mkdir dir="build/classes/com/syncleus/core/dann/dannalyzer/ui/resources"/>
         <copy todir="build/classes/com/syncleus/core/dann/dannalyzer/ui/resources">
-            <fileset dir="src/com/syncleus/core/dann/dannalyzer/ui/resources" includes="**/*.svg"/>
+            <fileset dir="src/main/resources" includes="**/*.svg"/>
         </copy>
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/dannalyzer.jar" basedir="build/classes">

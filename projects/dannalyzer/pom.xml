@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>syncleus.com</groupId>
+		<artifactId>dann</artifactId>
+		<version>1.4-SNAPSHOT</version>
+		<relativePath>../dann/pom.xml</relativePath>
+	</parent>
+	<packaging>jar</packaging>
+
+	<artifactId>dann-analyzer</artifactId>
+	<name>dANN Analyzer</name>
+	<description>Artificial Intelligence and Artificial Genetics library - Analyzer</description>
+
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>com/syncleus/core/dann/dannalyzer/ui/resources</targetPath>
+				<includes>
+					<include>**/*.svg</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-bridge</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-swing</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dann-core</artifactId>
+		</dependency>
+
+	</dependencies>
+
+</project>
