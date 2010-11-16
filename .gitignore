@@ -1,5 +1,6 @@
 .idea
 projects/java_dann/build
+/projects/java_dann/target
 projects/dannalyzer/build
 projects/java_dann_examples/build
 projects/jung_dann/build
