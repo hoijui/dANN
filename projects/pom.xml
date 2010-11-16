@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!--
+		This Maven project file is only here for convenience.
+		The real dANN project root is under "dann/",
+		the reason for this is explained under "Recommendations" - "1."
+		on this site:
+		http://blog.infinitechaos.com/2009/07/08/building-a-modern-java-app-with-eclipse-maven-osgi-and-spring-dm-part-1/
+		An other good site for inspiration is this:
+		http://nexnet.wordpress.com/2010/05/21/maven-and-osgi-roundup/
+	-->
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>syncleus.com</groupId>
+	<artifactId>all-projects</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0-SNAPSHOT</version>
+
+	<modules>
+		<module>dann</module>
+	</modules>
+
+	<mailingLists>
+		<mailingList>
+			<name>Syncleus Announcements</name>
+			<subscribe>syncleus-announce-subscribe@lists.syncleus.com</subscribe>
+			<unsubscribe>syncleus-announce-leave@lists.syncleus.com</unsubscribe>
+			<post>syncleus-announce@lists.syncleus.com</post>
+			<archive>http://lists.syncleus.com/pipermail/syncleus-announce/</archive>
+		</mailingList>
+	</mailingLists>
+
+</project>

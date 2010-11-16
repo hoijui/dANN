@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>syncleus.com</groupId>
+		<artifactId>dann</artifactId>
+		<version>1.4-SNAPSHOT</version>
+		<relativePath>../dann/pom.xml</relativePath>
+	</parent>
+	<packaging>jar</packaging>
+
+	<artifactId>dann-examples</artifactId>
+	<name>dANN Example Projects</name>
+	<description>Artificial Intelligence and Artificial Genetics library - Example Projects</description>
+
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>log4j.xml</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.freehep</groupId>
+			<artifactId>freehep-java3d</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<!-- FIXME This is the last jar in the repo we still depend on -->
+			<systemPath>${basedir}/lib/build/java3d/freehep/freehep-j3d.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-swing-junit</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-util</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dann-core</artifactId>
+		</dependency>
+
+	</dependencies>
+
+</project>
