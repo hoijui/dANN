@@ -1,10 +1,10 @@
 package com.syncleus.dann.neuroph;
 
-import com.syncleus.dann.graph.ImmutableDirectedEdge;
+import com.syncleus.dann.graph.AbstractDirectedEdge;
 import org.neuroph.core.Connection;
 import org.neuroph.core.Neuron;
 
-public class ConnectionEdge extends ImmutableDirectedEdge<Neuron> {
+public class ConnectionEdge extends AbstractDirectedEdge<Neuron> {
 
     public final Connection connection;
 
