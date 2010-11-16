@@ -61,7 +61,7 @@
             <fileset dir="build/javadoc" includes="**/*"/>
         </delete>
         <javadoc Private="true" destdir="build/javadoc/" classpathref="classpath">
-            <fileset dir="src/" includes="**/*.java"/>
+            <fileset dir="src/main/java/" includes="**/*.java"/>
         </javadoc>
     </target>
 
@@ -70,10 +70,10 @@
 		<mkdir dir="build/lint"/>
 		<lint4j packages="com.syncleus.*" level="5">
 			<sourcepath>
-				<dirset dir="src">
+				<dirset dir="src/main/java">
 					<include name="**/*.java" />
 				</dirset>
-				<pathelement path="src/" />
+				<pathelement path="src/main/java/" />
 			</sourcepath>
 			<classpath>
 				<fileset dir="lib/">
@@ -94,9 +94,9 @@
         <javac destdir="build/classes" classpathref="classpath" debug="true" excludes="com/syncleus/tests/**">
             <compilerarg value="-Xlint:deprecation"/>
             <compilerarg value="-Xlint:unchecked"/>
-            <src path="src"/>
+            <src path="src/main/java"/>
         </javac>
-		<copy file="log4j.xml" todir="build/classes"/>
+		<copy file="src/main/resources/log4j.xml" todir="build/classes"/>
         <mkdir dir="build/jar"/>
 		<manifestclasspath property="manifest.classpath" jarfile="./jung_dann.jar" maxParentLevels="100">
 			<classpath refid="classpath.run" />
@@ -122,9 +122,9 @@
         <javac destdir="build/tests/classes" classpathref="classpath" debug="true">
             <compilerarg value="-Xlint:deprecation"/>
             <compilerarg value="-Xlint:unchecked"/>
-            <src path="src"/>
+            <src path="src/main/java"/>
         </javac>
-		<copy file="log4j.xml" todir="build/tests/classes"/>
+		<copy file="src/main/resources/log4j.xml" todir="build/tests/classes"/>
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/jung_dann-tests.jar" basedir="build/tests/classes">
             <manifest>
@@ -149,9 +149,9 @@
         <mkdir dir="build/classes"/>
         <javac destdir="build/classes" classpathref="classpath" debug="true" excludes="com/syncleus/tests/**">
             <compilerarg value="-Xlint"/>
-            <src path="src/com"/>
+            <src path="src/main/java/com"/>
         </javac>
-		<copy file="log4j.xml" todir="build/classes"/>
+		<copy file="src/main/resources/log4j.xml" todir="build/classes"/>
         <mkdir dir="build/jar"/>
 		<manifestclasspath property="manifest.classpath" jarfile="./jung_dann.jar" maxParentLevels="100">
 			<classpath refid="classpath.run" />
@@ -177,9 +177,9 @@
         <mkdir dir="build/tests/classes"/>
         <javac destdir="build/tests/classes" classpathref="classpath" debug="true">
             <compilerarg value="-Xlint"/>
-            <src path="src/com"/>
+            <src path="src/main/java/com"/>
         </javac>
-		<copy file="log4j.xml" todir="build/tests/classes"/>
+		<copy file="src/main/resources/log4j.xml" todir="build/tests/classes"/>
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/jung_dann-tests.jar" basedir="build/tests/classes">
             <manifest>
@@ -261,15 +261,15 @@
 			<auxClasspath path="lib/jung/jung-jai-impl-2.0-beta1"/>
 			<auxClasspath path="lib/jung/jung-visualization-impl-2.0-beta1"/>
 			<auxClasspath path="../java_dann/build/jar/dann.jar"/>
-			<sourcePath path="src/" />
+			<sourcePath path="src/main/java/" />
 			<class location="build/jar/dann_examples.jar" />
 		</findbugs>
 	</target>
 
 	<target name="checkstyle">
 		<mkdir dir="build/checkstyle"/>
-		<checkstyle config="checks.xml" maxErrors="2147483647">
-			<fileset dir="src" includes="**/*.java"/>
+		<checkstyle config="src/main/resources/checks.xml" maxErrors="2147483647">
+			<fileset dir="src/main/java" includes="**/*.java"/>
 			<formatter type="plain"/>
 			<formatter type="xml" toFile="build/checkstyle/checkstyle-report.xml"/>
 		</checkstyle>
@@ -277,9 +277,9 @@
 
 	<target name="pmd">
 		<mkdir dir="build/pmd"/>
-		<pmd rulesetfiles="pmd.xml">
+		<pmd rulesetfiles="src/main/resources/pmd.xml">
 			<formatter type="xml" toFile="build/pmd/pmd-report.xml"/>
-			<fileset dir="src/">
+			<fileset dir="src/main/java/">
 				<include name="**/*.java"/>
 			</fileset>
 		</pmd>
@@ -295,7 +295,7 @@
 			</classpath>
 			<formatter type="xml"/>
 			<batchtest fork="yes" todir="build/tests">
-				<fileset dir="src">
+				<fileset dir="src/main/java">
 					<include name="com/syncleus/tests/**/Test*.java"/>
 					<exclude name="**/AllTests.java"/>
 				</fileset>
