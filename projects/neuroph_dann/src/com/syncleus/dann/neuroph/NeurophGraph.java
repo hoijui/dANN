@@ -5,6 +5,7 @@
 
 package com.syncleus.dann.neuroph;
 
+import com.syncleus.dann.graph.AbstractAdjacencyGraph;
 import com.syncleus.dann.graph.BidirectedGraph;
 import com.syncleus.dann.graph.Graph;
 import java.util.Collections;
@@ -20,7 +21,7 @@ import org.neuroph.core.Neuron;
  *
  * @author seh
  */
-public class NeurophGraph implements BidirectedGraph<Neuron, ConnectionEdge> {
+public class NeurophGraph extends AbstractAdjacencyGraph<Neuron, ConnectionEdge> implements BidirectedGraph<Neuron, ConnectionEdge> {
     private final NeuralNetwork net;
 
     public NeurophGraph(NeuralNetwork net) {
@@ -268,31 +269,31 @@ public class NeurophGraph implements BidirectedGraph<Neuron, ConnectionEdge> {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Graph<Neuron, ConnectionEdge> cloneAdd(ConnectionEdge e) {
+    public NeurophGraph cloneAdd(ConnectionEdge e) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Graph<Neuron, ConnectionEdge> cloneAdd(Neuron n) {
+    public NeurophGraph cloneAdd(Neuron n) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Graph<Neuron, ConnectionEdge> cloneAdd(Set<Neuron> set, Set<ConnectionEdge> set1) {
+    public NeurophGraph cloneAdd(Set<Neuron> set, Set<ConnectionEdge> set1) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Graph<Neuron, ConnectionEdge> cloneRemove(ConnectionEdge e) {
+    public NeurophGraph cloneRemove(ConnectionEdge e) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Graph<Neuron, ConnectionEdge> cloneRemove(Neuron n) {
+    public NeurophGraph cloneRemove(Neuron n) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Graph<Neuron, ConnectionEdge> cloneRemove(Set<Neuron> set, Set<ConnectionEdge> set1) {
+    public NeurophGraph cloneRemove(Set<Neuron> set, Set<ConnectionEdge> set1) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Graph<Neuron, ConnectionEdge> clone() {
+    public NeurophGraph clone() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
